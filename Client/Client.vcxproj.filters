@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{d4480e72-88c2-4745-ad1a-ae84d5bd84a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\01. Header">
+      <UniqueIdentifier>{71cd5667-b16e-45a7-a8cd-4447d0093514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\02. Core">
+      <UniqueIdentifier>{8d18d5d3-d540-4bc6-97dd-1b9b957f2c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager">
+      <UniqueIdentifier>{ea7e62c6-aa44-411b-9353-498e23fa793a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CSceneManager">
+      <UniqueIdentifier>{11838178-2423-4acc-9e3d-49ab426b0196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CTimeManager">
+      <UniqueIdentifier>{e9570524-1582-4933-9242-0132c3df76c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object">
+      <UniqueIdentifier>{ae7ab1fd-28b1-4d03-b543-062c052eb290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. Scene">
+      <UniqueIdentifier>{2ae20292-660f-4767-aa21-a596d92e94b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Start">
+      <UniqueIdentifier>{107941d8-df3e-43bd-a771-c593fa57c7e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\06. Layer">
+      <UniqueIdentifier>{c1494c6f-e5ca-409a-9ce7-6812ebf8b598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Resource">
+      <UniqueIdentifier>{724c4838-4735-41a0-87cf-1a239e092c9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CPathManager">
+      <UniqueIdentifier>{8c569522-6e54-4abc-83a0-f423a59294ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CResourceManager">
+      <UniqueIdentifier>{13e9ed1d-969b-46c2-95e6-d8d8f0e58095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Resource\Texture">
+      <UniqueIdentifier>{2709b0fa-6575-44fd-9da5-e56d9036162d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CKeyManager">
+      <UniqueIdentifier>{ba8cf4af-b4dd-41fc-9f14-e6890a207ef0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Stage01">
+      <UniqueIdentifier>{68f840d4-a667-4489-8670-167abb574a27}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="func.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\CCore.h">
+      <Filter>Engine\02. Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CSceneManager.h">
+      <Filter>Engine\03. Manager\CSceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CTimeManager.h">
+      <Filter>Engine\03. Manager\CTimeManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CObject.h">
+      <Filter>Engine\04. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CScene.h">
+      <Filter>Engine\05. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CScene_Start.h">
+      <Filter>Engine\05. Scene\Scene_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer\CLayer.h">
+      <Filter>Engine\06. Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CPathManager.h">
+      <Filter>Engine\03. Manager\CPathManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\CResource.h">
+      <Filter>Engine\07. Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CResourceManager.h">
+      <Filter>Engine\03. Manager\CResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\CTexture.h">
+      <Filter>Engine\07. Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CKeyManager.h">
+      <Filter>Engine\03. Manager\CKeyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CScene_Stage01.h">
+      <Filter>Engine\05. Scene\Scene_Stage01</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\CCore.cpp">
+      <Filter>Engine\02. Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CSceneManager.cpp">
+      <Filter>Engine\03. Manager\CSceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CTimeManager.cpp">
+      <Filter>Engine\03. Manager\CTimeManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CObject.cpp">
+      <Filter>Engine\04. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CScene.cpp">
+      <Filter>Engine\05. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CScene_Start.cpp">
+      <Filter>Engine\05. Scene\Scene_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer\CLayer.cpp">
+      <Filter>Engine\06. Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CPathManager.cpp">
+      <Filter>Engine\03. Manager\CPathManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\CResource.cpp">
+      <Filter>Engine\07. Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CResourceManager.cpp">
+      <Filter>Engine\03. Manager\CResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\CTexture.cpp">
+      <Filter>Engine\07. Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CKeyManager.cpp">
+      <Filter>Engine\03. Manager\CKeyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CScene_Stage01.cpp">
+      <Filter>Engine\05. Scene\Scene_Stage01</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Client.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
