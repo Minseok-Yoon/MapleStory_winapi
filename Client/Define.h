@@ -46,3 +46,13 @@ enum class OBJECT_TYPE
 	UI = 31,
 	END = 32,
 };
+
+enum class EVENT_TYPE
+{
+	CREATE_OBJECT,
+	DELETE_OBJECT,
+	SCENE_CHANGE,
+	CHANGE_AI_STATE,
+
+	END,
+};

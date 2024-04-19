@@ -13,7 +13,7 @@ CScene::~CScene()
 		for (size_t j = 0; j < m_arrLayer[i].size(); ++j)
 		{
 			if (nullptr != m_arrLayer[i][j])
-				delete m_arrLayer;
+				delete m_arrLayer[i][j];
 		}
 	}
 }

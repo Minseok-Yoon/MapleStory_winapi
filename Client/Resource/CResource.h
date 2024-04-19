@@ -4,7 +4,7 @@ class CResource
 {
 public:
 	CResource();
-	~CResource();
+	virtual ~CResource();
 
 private:
 	wstring		m_strKey;

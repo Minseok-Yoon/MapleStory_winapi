@@ -151,6 +151,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="Layer\CLayer.h" />
+    <ClInclude Include="Manager\CEventManager.h" />
     <ClInclude Include="Manager\CKeyManager.h" />
     <ClInclude Include="Manager\CPathManager.h" />
     <ClInclude Include="Manager\CResourceManager.h" />
@@ -169,8 +170,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\CCore.cpp" />
+    <ClCompile Include="func.cpp" />
     <ClCompile Include="Layer\CLayer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager\CEventManager.cpp" />
     <ClCompile Include="Manager\CKeyManager.cpp" />
     <ClCompile Include="Manager\CPathManager.cpp" />
     <ClCompile Include="Manager\CResourceManager.cpp" />

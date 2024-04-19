@@ -20,8 +20,6 @@ void CScene_Stage01::Render(HDC _dc)
 {
 	CScene::Render(_dc);
 
-	CScene::Render(_dc);
-
 	CTexture* pTex = CResourceManager::GetInst()->FindTexture(L"InGameBackGround");
 
 	if (nullptr != pTex)
@@ -33,7 +31,7 @@ void CScene_Stage01::Render(HDC _dc)
 	}
 }
 
-void CScene_Stage01::Start()
+void CScene_Stage01::Enter()
 {
 	CLayer* pLayer = CreateLayer(L"InGameBackGround", 0, LAYER_TYPE::BACKGROUND);
 

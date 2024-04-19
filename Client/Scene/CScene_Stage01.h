@@ -13,7 +13,7 @@ public:
     virtual void Render(HDC _dc);
 
 public:
-    virtual void Start();
+    virtual void Enter();
     virtual void Exit();
 };
 

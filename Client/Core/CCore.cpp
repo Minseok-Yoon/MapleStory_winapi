@@ -4,8 +4,8 @@
 #include "../Manager/CPathManager.h"
 #include "../Manager/CSceneManager.h"
 #include "../Manager/CResourceManager.h"
+#include "../Manager/CEventManager.h"
 #include "../Manager/CKeyManager.h"
-#include "../Resource/CResource.h"
 #include "../Resource/CTexture.h"
 
 CCore::CCore() :
@@ -57,5 +57,7 @@ void CCore::progress()
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,
 		m_pMemTex->GetDC(), 0, 0, SRCCOPY);
 
-	//CTimeManager::GetInst()->Render();
+	CTimeManager::GetInst()->Render();
+
+	CEventManager::GetInst()->Update();
 }

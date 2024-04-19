@@ -1,5 +1,7 @@
 #pragma once
 
+void ChangeScene(SCENE_TYPE _eNext);
+
 template<typename T>
 void Safe_Delete_Vec(vector<T>& _vec)
 {

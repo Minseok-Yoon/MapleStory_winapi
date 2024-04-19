@@ -1,6 +1,7 @@
 #include "../pch.h"
 #include "../Scene/CScene.h"
 #include "../Scene/CScene_Start.h"
+#include "../Scene/CScene_Stage01.h"
 #include "CSceneManager.h"
 
 CSceneManager::CSceneManager() :
@@ -35,6 +36,10 @@ void CSceneManager::Init()
 	//Scene 持失
 	m_arrScene[(UINT)SCENE_TYPE::START] = new CScene_Start;
 	m_arrScene[(UINT)SCENE_TYPE::START]->SetSceneName(L"Start Scene");
+
+	//Scene_Stage01 持失
+	m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
+	m_arrScene[(UINT)SCENE_TYPE::STAGE_01]->SetSceneName(L"Scene Stage01");
 
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
 	m_pCurScene->Enter();

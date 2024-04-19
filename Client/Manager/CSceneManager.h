@@ -4,6 +4,8 @@ class CScene;
 
 class CSceneManager
 {
+	friend class CEventManager;
+
 	SINGLETON(CSceneManager);
 
 private:
