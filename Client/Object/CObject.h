@@ -2,6 +2,8 @@
 
 class CObject
 {
+	friend class CEventManager;
+
 public:
 	CObject();
 	CObject(const CObject& _origin);
@@ -16,6 +18,9 @@ private:
 	bool		m_bAlive;
 
 public:
+	void SetObjName(const wstring& _strObjName) { m_strObjName = _strObjName; }
+	const wstring& GetObjName() { return m_strObjName; }
+
 	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
 	Vec2 GetPos() { return m_vPos; }
 
@@ -28,8 +33,20 @@ private:
 	void SetDead() { m_bAlive = false; }
 
 public:
+	template<typename T>
+	static T* AddObj(const wstring& _strObjName, class CLayer* pLayer = NULL)
+	{
+		T* pObj = new T;
+		pObj->SetObjName(_strObjName);
+
+		return pObj;
+	}
+
+public:
 	virtual void FastUpdate() {}; 	// Scene이 시작되기 직전에 호출되는 함수
 	virtual void Update() = 0;
 	virtual void FinalUpdate();
 	virtual void Render(HDC _dc);
+
+	virtual CObject* Clone() = 0;
 };

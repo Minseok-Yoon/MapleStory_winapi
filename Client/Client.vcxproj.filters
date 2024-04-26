@@ -61,8 +61,17 @@
     <Filter Include="Engine\05. Scene\Scene_Stage01">
       <UniqueIdentifier>{68f840d4-a667-4489-8670-167abb574a27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\03. Manager\EventManager">
+    <Filter Include="Engine\04. Object\UI">
+      <UniqueIdentifier>{4df0d0fc-aa95-4e40-ab70-3e708bc43915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CUIManager">
+      <UniqueIdentifier>{b146c0bc-2e9a-468b-9d2a-eeac575b4a11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CEventManager">
       <UniqueIdentifier>{8dccad3d-7571-438b-a2eb-214c4eb6d595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\UI\UIBtn">
+      <UniqueIdentifier>{1634239c-31b3-423b-829e-47c7ea72347e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +139,16 @@
       <Filter>Engine\05. Scene\Scene_Stage01</Filter>
     </ClInclude>
     <ClInclude Include="Manager\CEventManager.h">
-      <Filter>Engine\03. Manager\EventManager</Filter>
+      <Filter>Engine\03. Manager\CEventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CUI.h">
+      <Filter>Engine\04. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CUIManager.h">
+      <Filter>Engine\03. Manager\CUIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CBtnUI.h">
+      <Filter>Engine\04. Object\UI\UIBtn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -177,10 +195,19 @@
       <Filter>Engine\05. Scene\Scene_Stage01</Filter>
     </ClCompile>
     <ClCompile Include="Manager\CEventManager.cpp">
-      <Filter>Engine\03. Manager\EventManager</Filter>
+      <Filter>Engine\03. Manager\CEventManager</Filter>
     </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CUI.cpp">
+      <Filter>Engine\04. Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CUIManager.cpp">
+      <Filter>Engine\03. Manager\CUIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CBtnUI.cpp">
+      <Filter>Engine\04. Object\UI\UIBtn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

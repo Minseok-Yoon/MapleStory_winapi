@@ -5,6 +5,7 @@
 #include "../Manager/CKeyManager.h"
 #include "../Manager/CResourceManager.h"
 #include "../Manager/CSceneManager.h"
+#include "../Object/CBtnUI.h"
 
 CScene_Start::CScene_Start()
 {
@@ -16,9 +17,18 @@ CScene_Start::~CScene_Start()
 
 void CScene_Start::Enter()
 {
-	CLayer* pLayer = CreateLayer(L"StartBackGround", 0, LAYER_TYPE::BACKGROUND);
-
 	CResourceManager::GetInst()->LoadTexture(L"StartBackGround", L"texture\\StartPanel.bmp");
+
+	CLayer* uiLayer = new CLayer();
+	CObject* pStartBtn = new CBtnUI;
+	pStartBtn->SetObjName(L"StartBtn");
+	pStartBtn->SetPos(Vec2(540.f, 240.f));
+	pStartBtn->SetScale(Vec2(200.f, 100.f));
+
+	uiLayer->AddObject(pStartBtn, OBJECT_TYPE::UI);
+	AddLayer(uiLayer, LAYER_TYPE::UI);
+
+	FastUpdate();
 }
 
 void CScene_Start::Exit()
@@ -36,7 +46,7 @@ void CScene_Start::Update()
 
 void CScene_Start::Render(HDC _dc)
 {
-    CScene::Render(_dc);
+	CScene::Render(_dc);
 
 	CTexture* pTex = CResourceManager::GetInst()->FindTexture(L"StartBackGround");
 

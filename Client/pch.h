@@ -22,6 +22,8 @@ using std::sort;
 
 #include <assert.h>
 
+#pragma comment(lib, "Msimg32.lib")
+
 #include "Define.h"
 #include "Struct.h"
 #include "func.h"

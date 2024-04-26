@@ -33,8 +33,6 @@ void CScene_Stage01::Render(HDC _dc)
 
 void CScene_Stage01::Enter()
 {
-	CLayer* pLayer = CreateLayer(L"InGameBackGround", 0, LAYER_TYPE::BACKGROUND);
-
 	CResourceManager::GetInst()->LoadTexture(L"InGameBackGround", L"texture\\Main.bmp");
 }
 

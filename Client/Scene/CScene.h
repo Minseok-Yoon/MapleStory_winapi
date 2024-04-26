@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../pch.h"
 
 class CLayer;
@@ -14,27 +13,23 @@ public:
 	virtual ~CScene();
 
 private:
-	wstring				m_strSceneName;
-	vector<CLayer*>		m_arrLayer[(UINT)LAYER_TYPE::END];
+	wstring				m_strSceneName;				// Scene의 이름
+	vector<CLayer*>		m_arrLayers;				// Layer을 저장하는 배열
 
 public:
+	// Scene의 이름을 설정(Set)과 반환(Get)하는 함수
 	void SetSceneName(const wstring& _strSceneName) { m_strSceneName = _strSceneName; }
 	const wstring& GetSceneName() const { return m_strSceneName; }
 
-public:
-	void AddLayer(CLayer* _pLayer, LAYER_TYPE _eType) { m_arrLayer[(UINT)_eType].push_back(_pLayer); }
-
-	const vector<CLayer*>& GetGroupLayer(LAYER_TYPE	_eType) { return m_arrLayer[(UINT)_eType]; }
+	// 특정 Layer 타입의 Layer을 반환하는 함수
+	CLayer* CreateLayer(UINT _LayerType);
+	// 특정 타입의 Layer을 삭제하는 함수
 	void DeleteLayer(LAYER_TYPE _eTarget);
-	void DeleteAll();
+
 
 public:
-	CLayer* FindLayer(const wstring& _strLayerName);
-	CLayer* CreateLayer(const wstring& _strLayerName, int _iZOrder, LAYER_TYPE _eType);
-
-public:
-	virtual void Enter() = 0;
-	virtual void Exit() = 0;
+	virtual void Enter() = 0;	// 해당 Scene에 진입 시 호출
+	virtual void Exit() = 0;	// 해당 Scene에 탈출 시 호출
 
 	virtual void FastUpdate();
 	virtual void Update();

@@ -6,6 +6,7 @@
 #include "../Manager/CResourceManager.h"
 #include "../Manager/CEventManager.h"
 #include "../Manager/CKeyManager.h"
+#include "../Manager/CUIManager.h"
 #include "../Resource/CTexture.h"
 
 CCore::CCore() :
@@ -22,6 +23,7 @@ CCore::~CCore()
 
 int CCore::Init(HWND _hWnd, POINT _ptResolution)
 {
+	// main.cpp의 48번째 줄에서 값을 받아온다. _hwnd = g_hWnd, _ptResolution = POINT { 1280, 760 }
 	m_hWnd = _hWnd;
 	m_ptResolution = _ptResolution;
 
@@ -50,6 +52,7 @@ void CCore::progress()
 	CTimeManager::GetInst()->Update();
 	CKeyManager::GetInst()->Update();
 	CSceneManager::GetInst()->Update();
+	CUIManager::GetInst()->Update();
 
 	// Rendering
 	CSceneManager::GetInst()->Render(m_pMemTex->GetDC());

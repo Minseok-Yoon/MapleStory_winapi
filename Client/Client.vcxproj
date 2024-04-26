@@ -157,7 +157,10 @@
     <ClInclude Include="Manager\CResourceManager.h" />
     <ClInclude Include="Manager\CSceneManager.h" />
     <ClInclude Include="Manager\CTimeManager.h" />
+    <ClInclude Include="Manager\CUIManager.h" />
+    <ClInclude Include="Object\CBtnUI.h" />
     <ClInclude Include="Object\CObject.h" />
+    <ClInclude Include="Object\CUI.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Resource\CResource.h" />
@@ -179,7 +182,10 @@
     <ClCompile Include="Manager\CResourceManager.cpp" />
     <ClCompile Include="Manager\CSceneManager.cpp" />
     <ClCompile Include="Manager\CTimeManager.cpp" />
+    <ClCompile Include="Manager\CUIManager.cpp" />
+    <ClCompile Include="Object\CBtnUI.cpp" />
     <ClCompile Include="Object\CObject.cpp" />
+    <ClCompile Include="Object\CUI.cpp" />
     <ClCompile Include="Resource\CResource.cpp" />
     <ClCompile Include="Resource\CTexture.cpp" />
     <ClCompile Include="Scene\CScene.cpp" />

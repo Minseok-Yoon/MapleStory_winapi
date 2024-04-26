@@ -9,12 +9,15 @@ public:
 	~CLayer();
 
 private:
+	UINT				m_LayerType;
 	int					m_iZOrder;
 	bool				m_bIsActive;
 	wstring				m_strLayerName;
 	vector<CObject*>	m_arrObj[(UINT)OBJECT_TYPE::END];
 
 public:
+	UINT GetLayerType() const { return m_LayerType; }
+
 	void SetiZOrder(int _iZOrder) { m_iZOrder = _iZOrder; }
 	int GetiZOrder() const { return m_iZOrder; }
 
@@ -29,6 +32,8 @@ public:
 	void DeleteAll();
 
 	bool IsActive() { return !m_bIsActive; }
+
+	vector<CObject*>& GetUIGroup() { return m_arrObj[(UINT)OBJECT_TYPE::UI]; }
 
 public:
 	static bool LayerSort(CLayer* _pL1, CLayer* _pL2);
