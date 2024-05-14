@@ -2,6 +2,7 @@
 #include "CResourceManager.h"
 #include "CPathManager.h"
 #include "../Resource/CTexture.h"
+#include "../Resource/CResource.h"
 
 CResourceManager::CResourceManager()
 {

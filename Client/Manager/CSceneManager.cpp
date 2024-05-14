@@ -1,8 +1,8 @@
 #include "../pch.h"
-#include "../Scene/CScene.h"
+#include "CSceneManager.h"
 #include "../Scene/CScene_Start.h"
 #include "../Scene/CScene_Stage01.h"
-#include "CSceneManager.h"
+#include "../Manager/CEventManager.h"
 
 CSceneManager::CSceneManager() :
 	m_arrScene{},
@@ -25,9 +25,7 @@ CSceneManager::~CSceneManager()
 void CSceneManager::ChangeScene(SCENE_TYPE _eNextScene)
 {
 	m_pCurScene->Exit();
-
 	m_pCurScene = m_arrScene[(UINT)_eNextScene];
-
 	m_pCurScene->Enter();
 }
 
@@ -41,14 +39,14 @@ void CSceneManager::Init()
 	m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	m_arrScene[(UINT)SCENE_TYPE::STAGE_01]->SetSceneName(L"Scene Stage01");
 
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
+	// 현재 씬을 START씬으로 지정하고, 현재 씬에 진입한다.
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::STAGE_01];
 	m_pCurScene->Enter();
 }
 
 void CSceneManager::Update()
 {
 	m_pCurScene->Update();
-
 	m_pCurScene->FinalUpdate();
 }
 

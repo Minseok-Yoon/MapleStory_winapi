@@ -1,73 +1,96 @@
 #include "../pch.h"
 #include "CScene.h"
-#include "../Layer/CLayer.h"
+#include "../Core/CCore.h"
+#include "../Object/CObject.h"
 
-CScene::CScene()
+CScene::CScene()	:
+	m_pPlayer(nullptr)
 {
 }
 
 CScene::~CScene()
 {
-	// 모든 Layer들을 메모리에서 삭제
-	for (size_t i = 0; i < m_arrLayers.size(); ++i)
+	// 모든 Object들을 메모리에서 삭제
+	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
 	{
-		delete m_arrLayers[i];
-	}
-	m_arrLayers.clear();
-}
-
-void CScene::DeleteLayer(LAYER_TYPE _eTarget)
-{
-	for (size_t i = 0; i < m_arrLayers.size(); ++i)
-	{
-		if (static_cast<UINT>(m_arrLayers[i]->GetLayerType()) == static_cast<UINT>(_eTarget))
+		for (size_t j = 0; j < m_arrObj[i].size(); ++j)
 		{
-			delete m_arrLayers[i];
-			m_arrLayers.erase(m_arrLayers.begin() + i);
-			break;
+			// m_arrObj[i] 그룹 벡터의 j 물체 삭제
+			if (nullptr != m_arrObj[i][j])
+				delete m_arrObj[i][j];
 		}
 	}
 }
 
-CLayer* CScene::CreateLayer(UINT _LayerType)
+void CScene::DeleteGroup(OBJECT_TYPE _eTarget)
 {
-	CLayer* pLayer = new CLayer();
-	pLayer->SetLayerType(static_cast<LAYER_TYPE>(_LayerType));
-	m_arrLayers.push_back(pLayer);
-	return pLayer;
+	Safe_Delete_Vec(m_arrObj[(UINT)_eTarget]);
+}
+
+void CScene::DeleteAll()
+{
+	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
+	{
+		DeleteGroup((OBJECT_TYPE)i);
+	}
 }
 
 void CScene::FastUpdate()
 {
-	for (size_t i = 0; i < m_arrLayers.size(); ++i)
+	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
 	{
-		m_arrLayers[i]->FastUpdate();
+		for (size_t j = 0; j < m_arrObj[i].size(); ++j)
+		{
+			if (!m_arrObj[i][j]->IsDead())
+			{
+				m_arrObj[i][j]->FastUpdate();
+			}
+		}
 	}
 }
 
 void CScene::Update()
 {
-	for (size_t i = 0; i < m_arrLayers.size(); ++i)
+	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
 	{
-		if (!m_arrLayers[i]->IsActive())
+		for (size_t j = 0; j < m_arrObj[i].size(); ++j)
 		{
-			m_arrLayers[i]->Update();
+			if (!m_arrObj[i][j]->IsDead())
+			{
+				m_arrObj[i][j]->Update();
+			}
 		}
 	}
 }
 
 void CScene::FinalUpdate()
 {
-	for (size_t i = 0; i < m_arrLayers.size(); ++i)
+	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
 	{
-		m_arrLayers[i]->FinalUpdate();
+		for (size_t j = 0; j < m_arrObj[i].size(); ++j)
+		{
+			m_arrObj[i][j]->FinalUpdate();
+		}
 	}
 }
 
 void CScene::Render(HDC _dc)
 {
-	for (size_t i = 0; i < m_arrLayers.size(); ++i)
+	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
 	{
-		m_arrLayers[i]->Render(_dc);
+		vector<CObject*>::iterator iter = m_arrObj[i].begin();
+
+		for (; iter != m_arrObj[i].end();)
+		{
+			if (!(*iter)->IsDead())
+			{
+				(*iter)->Render(_dc);
+				++iter;
+			}
+			else
+			{
+				iter = m_arrObj[i].erase(iter);
+			}
+		}
 	}
 }

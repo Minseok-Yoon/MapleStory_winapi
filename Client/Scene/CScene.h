@@ -1,31 +1,40 @@
 #pragma once
 #include "../pch.h"
 
-class CLayer;
+class CObject;
 
 class CScene
 {
-public:
-	friend class CLayer;
-
 public:
 	CScene();
 	virtual ~CScene();
 
 private:
-	wstring				m_strSceneName;				// Scene의 이름
-	vector<CLayer*>		m_arrLayers;				// Layer을 저장하는 배열
+	wstring				m_strSceneName;						// Scene의 이름
+	vector<CObject*>	m_arrObj[(UINT)OBJECT_TYPE::END];	// 오브젝트를 저장 및 관리할 백터를 그룹 개수 만큼 선언
+	
+	CObject*			m_pPlayer;
 
 public:
 	// Scene의 이름을 설정(Set)과 반환(Get)하는 함수
 	void SetSceneName(const wstring& _strSceneName) { m_strSceneName = _strSceneName; }
 	const wstring& GetSceneName() const { return m_strSceneName; }
 
-	// 특정 Layer 타입의 Layer을 반환하는 함수
-	CLayer* CreateLayer(UINT _LayerType);
-	// 특정 타입의 Layer을 삭제하는 함수
-	void DeleteLayer(LAYER_TYPE _eTarget);
+	CObject* GetPlayer() { return m_pPlayer; }
 
+public:
+	void AddObject(CObject* _pObj, OBJECT_TYPE _eType) 
+	{
+		m_arrObj[(UINT)_eType].push_back(_pObj); 
+	}
+	void DeleteGroup(OBJECT_TYPE _eTarget);
+	void DeleteAll();
+
+	void RegisterPlayer(CObject* _pPlayer) { m_pPlayer = _pPlayer; }
+	CObject* GetCurPlayer() { return m_pPlayer; }
+
+	const vector<CObject*>& GetGroupObject(OBJECT_TYPE _eType) { return m_arrObj[(UINT)_eType]; }
+	vector<CObject*>& GetUIGroup(const OBJECT_TYPE& _eType) { return m_arrObj[(UINT)OBJECT_TYPE::UI]; }
 
 public:
 	virtual void Enter() = 0;	// 해당 Scene에 진입 시 호출

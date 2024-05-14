@@ -36,18 +36,22 @@ void CTimeManager::Update()
 	// 이전카운트 값을 현재값으로 갱신(다음번에 계산을 위해서)
 	m_llPrevCount = m_llCurCount;
 
+	Render();
+
+	// 최소 프레임이 60미만으로 안떨어지게 설정
 #ifdef  _DEBUG
-	if (m_dDeltaTime > (1.f / 60.f))
-		m_dDeltaTime = (1.f / 60.f);
+	if (m_dDeltaTime > (1. / 60.))
+		m_dDeltaTime = (1. / 60.);
 #endif //  _DEBUGG
 }
 
+// 프레임 속도(FPS)를 계산하고, 누적된 프레임 시간(DeltaTime)을 갱신하는 역할을 한다.
 void CTimeManager::Render()
 {
 	++m_iCallCount;
 	m_dAcc += m_dDeltaTime;	// DT 누적
 
-	if (m_dAcc >= 1.f)
+	if (m_dAcc >= 1.)
 	{
 		m_iFPS = m_iCallCount;
 		m_dAcc = 0.f;

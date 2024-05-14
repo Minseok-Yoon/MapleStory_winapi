@@ -8,32 +8,51 @@ class CUI :
     friend class CUIManager;
 
 public:
-    CUI();
+    CUI(bool _bCamAff);
     CUI(const CUI& _origin);
     virtual ~CUI();
 
 private:
-    CUI*            m_pParentUI;
     vector<CUI*>    m_vecChildUI;
+    CUI*            m_pParentUI;
     Vec2            m_vFinalPos;
+
+    bool            m_bCamAffected; // UI가 카메라에 영향을 받는 유무
+    bool            m_bMouseOn;     // UI 위에 마우스가 있는지
+    bool            m_bLbtnDown;    // UI에 왼쪽버튼이 눌린적이 있는지
 
 public:
     CUI* GetParent() { return m_pParentUI; }
+    CUI* GetFindChild(CUI* _parentUI, const wstring& _childUI);
+
     const vector<CUI*>& GetChildUI() { return m_vecChildUI; }
     Vec2 GetFinalPos() { return m_vFinalPos; }
 
+    bool IsMouseOn() { return m_bMouseOn; }
+    bool IsLbtnDown() { return m_bLbtnDown; }
+
     void AddChild(CUI* _pUI) { m_vecChildUI.push_back(_pUI); _pUI->m_pParentUI = this; }
+
 
 private:
     void Update_Child();
     void FinalUpdate_Child();
     void Render_Child(HDC _dc);
 
+    void MouseOnCheck();
+
+public:
+    virtual void MouseOn();
+    virtual void MouseLBtnDown();
+    virtual void MouseLBtnUp();
+    virtual void MouseLBtnClicked();
+
 public:
     virtual void Update();
     virtual void FinalUpdate();
     virtual void Render(HDC _dc);
 
+public:
     virtual CUI* Clone() = 0;
 };
 

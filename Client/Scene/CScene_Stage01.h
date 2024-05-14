@@ -1,12 +1,17 @@
 #pragma once
 #include "CScene.h"
 
+class CTexture;
+
 class CScene_Stage01 :
     public CScene
 {
 public:
     CScene_Stage01();
-    ~CScene_Stage01();
+    virtual ~CScene_Stage01();
+
+private:
+    CTexture* m_pBackGround;
 
 public:
     virtual void Update();

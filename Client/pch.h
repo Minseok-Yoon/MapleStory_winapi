@@ -7,6 +7,9 @@
 using std::string;
 using std::wstring;
 
+#include <list>
+using std::list;
+
 #include <vector>
 using std::vector;
 
@@ -20,6 +23,7 @@ using std::make_pair;
 #include <algorithm>
 using std::sort;
 
+#include <math.h>
 #include <assert.h>
 
 #pragma comment(lib, "Msimg32.lib")

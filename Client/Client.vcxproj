@@ -146,11 +146,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Component\CAnimation.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Component\CAnimator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Component\CCollider.h" />
     <ClInclude Include="Core\CCore.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="func.h" />
-    <ClInclude Include="Layer\CLayer.h" />
+    <ClInclude Include="Manager\CCamera.h" />
+    <ClInclude Include="Manager\CColliderManager.h" />
     <ClInclude Include="Manager\CEventManager.h" />
     <ClInclude Include="Manager\CKeyManager.h" />
     <ClInclude Include="Manager\CPathManager.h" />
@@ -158,9 +166,15 @@
     <ClInclude Include="Manager\CSceneManager.h" />
     <ClInclude Include="Manager\CTimeManager.h" />
     <ClInclude Include="Manager\CUIManager.h" />
+    <ClInclude Include="Module\AI.h" />
+    <ClInclude Include="Module\CState.h" />
+    <ClInclude Include="Module\SelectGDI.h" />
     <ClInclude Include="Object\CBtnUI.h" />
+    <ClInclude Include="Object\CMonster.h" />
     <ClInclude Include="Object\CObject.h" />
+    <ClInclude Include="Object\CPlayer.h" />
     <ClInclude Include="Object\CUI.h" />
+    <ClInclude Include="Object\CUIPanel.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Resource\CResource.h" />
@@ -172,10 +186,18 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Component\CAnimation.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Component\CAnimator.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Component\CCollider.cpp" />
     <ClCompile Include="Core\CCore.cpp" />
     <ClCompile Include="func.cpp" />
-    <ClCompile Include="Layer\CLayer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager\CCamera.cpp" />
+    <ClCompile Include="Manager\CColliderManager.cpp" />
     <ClCompile Include="Manager\CEventManager.cpp" />
     <ClCompile Include="Manager\CKeyManager.cpp" />
     <ClCompile Include="Manager\CPathManager.cpp" />
@@ -183,9 +205,15 @@
     <ClCompile Include="Manager\CSceneManager.cpp" />
     <ClCompile Include="Manager\CTimeManager.cpp" />
     <ClCompile Include="Manager\CUIManager.cpp" />
+    <ClCompile Include="Module\AI.cpp" />
+    <ClCompile Include="Module\CState.cpp" />
+    <ClCompile Include="Module\SelectGDI.cpp" />
     <ClCompile Include="Object\CBtnUI.cpp" />
+    <ClCompile Include="Object\CMonster.cpp" />
     <ClCompile Include="Object\CObject.cpp" />
+    <ClCompile Include="Object\CPlayer.cpp" />
     <ClCompile Include="Object\CUI.cpp" />
+    <ClCompile Include="Object\CUIPanel.cpp" />
     <ClCompile Include="Resource\CResource.cpp" />
     <ClCompile Include="Resource\CTexture.cpp" />
     <ClCompile Include="Scene\CScene.cpp" />

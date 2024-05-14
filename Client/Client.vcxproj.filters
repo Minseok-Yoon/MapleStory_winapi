@@ -40,20 +40,11 @@
     <Filter Include="Engine\05. Scene\Scene_Start">
       <UniqueIdentifier>{107941d8-df3e-43bd-a771-c593fa57c7e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\06. Layer">
-      <UniqueIdentifier>{c1494c6f-e5ca-409a-9ce7-6812ebf8b598}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\07. Resource">
-      <UniqueIdentifier>{724c4838-4735-41a0-87cf-1a239e092c9d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\03. Manager\CPathManager">
       <UniqueIdentifier>{8c569522-6e54-4abc-83a0-f423a59294ae}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\03. Manager\CResourceManager">
       <UniqueIdentifier>{13e9ed1d-969b-46c2-95e6-d8d8f0e58095}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\07. Resource\Texture">
-      <UniqueIdentifier>{2709b0fa-6575-44fd-9da5-e56d9036162d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\03. Manager\CKeyManager">
       <UniqueIdentifier>{ba8cf4af-b4dd-41fc-9f14-e6890a207ef0}</UniqueIdentifier>
@@ -72,6 +63,48 @@
     </Filter>
     <Filter Include="Engine\04. Object\UI\UIBtn">
       <UniqueIdentifier>{1634239c-31b3-423b-829e-47c7ea72347e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Player">
+      <UniqueIdentifier>{fb752a2d-3904-4ddc-8f4a-9dcf21eb986e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\06. Resource">
+      <UniqueIdentifier>{724c4838-4735-41a0-87cf-1a239e092c9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\06. Resource\Texture">
+      <UniqueIdentifier>{2709b0fa-6575-44fd-9da5-e56d9036162d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component">
+      <UniqueIdentifier>{8b689de6-1402-42b9-b0ad-d0a17bf1ab6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component\Animator">
+      <UniqueIdentifier>{6e889c93-7e5d-4a5e-8428-156c86678502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component\Animator\Animation">
+      <UniqueIdentifier>{574bce69-2c25-4e4b-91fe-731d19db81f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module">
+      <UniqueIdentifier>{afaf9cd4-a22c-4c04-bde0-afb1e1b3e1f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Monster">
+      <UniqueIdentifier>{7750476e-be80-47b1-9923-b32441e5bd4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI">
+      <UniqueIdentifier>{a2f495cd-d908-4584-a94e-6927b3a0e5b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State">
+      <UniqueIdentifier>{64f04049-dcd2-4cd8-843f-15514a3e28ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CCameraManager">
+      <UniqueIdentifier>{b38e0c7a-a302-4933-9263-c7bc2a54eea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CColliderManager">
+      <UniqueIdentifier>{fa8089be-7548-4ba7-ae3c-d2e521a812e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component\Collider">
+      <UniqueIdentifier>{c50c29b7-8238-4698-a12f-e7f617bd3366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\UI\UIPanel">
+      <UniqueIdentifier>{50c7a4f8-9571-4679-ac0e-7bd002abcca8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,20 +150,17 @@
     <ClInclude Include="Scene\CScene_Start.h">
       <Filter>Engine\05. Scene\Scene_Start</Filter>
     </ClInclude>
-    <ClInclude Include="Layer\CLayer.h">
-      <Filter>Engine\06. Layer</Filter>
-    </ClInclude>
     <ClInclude Include="Manager\CPathManager.h">
       <Filter>Engine\03. Manager\CPathManager</Filter>
     </ClInclude>
     <ClInclude Include="Resource\CResource.h">
-      <Filter>Engine\07. Resource</Filter>
+      <Filter>Engine\06. Resource</Filter>
     </ClInclude>
     <ClInclude Include="Manager\CResourceManager.h">
       <Filter>Engine\03. Manager\CResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="Resource\CTexture.h">
-      <Filter>Engine\07. Resource\Texture</Filter>
+      <Filter>Engine\06. Resource\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Manager\CKeyManager.h">
       <Filter>Engine\03. Manager\CKeyManager</Filter>
@@ -149,6 +179,39 @@
     </ClInclude>
     <ClInclude Include="Object\CBtnUI.h">
       <Filter>Engine\04. Object\UI\UIBtn</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CCamera.h">
+      <Filter>Engine\03. Manager\CCameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CPlayer.h">
+      <Filter>Engine\04. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CAnimator.h">
+      <Filter>Engine\07. Component\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CAnimation.h">
+      <Filter>Engine\07. Component\Animator\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CMonster.h">
+      <Filter>Engine\04. Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\AI.h">
+      <Filter>Engine\08. Module\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\CState.h">
+      <Filter>Engine\08. Module\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\SelectGDI.h">
+      <Filter>Engine\08. Module</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CColliderManager.h">
+      <Filter>Engine\03. Manager\CColliderManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CCollider.h">
+      <Filter>Engine\07. Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CUIPanel.h">
+      <Filter>Engine\04. Object\UI\UIPanel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,20 +236,17 @@
     <ClCompile Include="Scene\CScene_Start.cpp">
       <Filter>Engine\05. Scene\Scene_Start</Filter>
     </ClCompile>
-    <ClCompile Include="Layer\CLayer.cpp">
-      <Filter>Engine\06. Layer</Filter>
-    </ClCompile>
     <ClCompile Include="Manager\CPathManager.cpp">
       <Filter>Engine\03. Manager\CPathManager</Filter>
     </ClCompile>
     <ClCompile Include="Resource\CResource.cpp">
-      <Filter>Engine\07. Resource</Filter>
+      <Filter>Engine\06. Resource</Filter>
     </ClCompile>
     <ClCompile Include="Manager\CResourceManager.cpp">
       <Filter>Engine\03. Manager\CResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Resource\CTexture.cpp">
-      <Filter>Engine\07. Resource\Texture</Filter>
+      <Filter>Engine\06. Resource\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Manager\CKeyManager.cpp">
       <Filter>Engine\03. Manager\CKeyManager</Filter>
@@ -208,6 +268,39 @@
     </ClCompile>
     <ClCompile Include="Object\CBtnUI.cpp">
       <Filter>Engine\04. Object\UI\UIBtn</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CCamera.cpp">
+      <Filter>Engine\03. Manager\CCameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CPlayer.cpp">
+      <Filter>Engine\04. Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CAnimator.cpp">
+      <Filter>Engine\07. Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CAnimation.cpp">
+      <Filter>Engine\07. Component\Animator\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CMonster.cpp">
+      <Filter>Engine\04. Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\AI.cpp">
+      <Filter>Engine\08. Module\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\CState.cpp">
+      <Filter>Engine\08. Module\AI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\SelectGDI.cpp">
+      <Filter>Engine\08. Module</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CColliderManager.cpp">
+      <Filter>Engine\03. Manager\CColliderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CCollider.cpp">
+      <Filter>Engine\07. Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CUIPanel.cpp">
+      <Filter>Engine\04. Object\UI\UIPanel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

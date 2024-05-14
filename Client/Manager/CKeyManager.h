@@ -49,7 +49,7 @@ enum class KEY
 
 struct tKeyInfo
 {
-	KEY_STATE	eState;		// 키의 상태값
+	KEY_STATE	eState;			// 키의 상태값
 	bool		bPrevPush;		// 이전 프레임에서 눌렷는지 여부
 };
 
@@ -62,7 +62,7 @@ private:
 	Vec2			 m_vCurMousePos;
 
 public:
-	void init();
+	void Init();
 	void Update();
 
 public:

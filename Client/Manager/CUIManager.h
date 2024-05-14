@@ -19,6 +19,4 @@ private:
 
 public:
 	void Update();
-
 };
-

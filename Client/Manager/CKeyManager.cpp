@@ -41,15 +41,13 @@ int g_arrVK[(int)KEY::LAST] =
 
 CKeyManager::CKeyManager()
 {
-
 }
 
 CKeyManager::~CKeyManager()
 {
-
 }
 
-void CKeyManager::init()
+void CKeyManager::Init()
 {
 	for (int i = 0; i < (int)KEY::LAST; ++i)
 	{
@@ -64,11 +62,13 @@ void CKeyManager::Update()
 	HWND hWnd = GetFocus();
 
 	// 윈도우 포커싱 중일 때, 키 이벤트 동작
-	if (nullptr != hWnd) {
+	if (nullptr != hWnd) 
+	{
 		for (int i = 0; i < (int)KEY::LAST; ++i)
 		{
 			// 키가 눌려있다.(가상키와 대조)
-			if (GetAsyncKeyState(g_arrVK[i]) & 0x8000) {
+			if (GetAsyncKeyState(g_arrVK[i]) & 0x8000) 
+			{
 				if (m_vecKey[i].bPrevPush)
 				{
 					// 이전에도 눌려있었다.
@@ -79,10 +79,8 @@ void CKeyManager::Update()
 					// 이전에 눌려있지 않았다.
 					m_vecKey[i].eState = KEY_STATE::TAP;
 				}
-
 				m_vecKey[i].bPrevPush = true;
 			}
-
 			// 키가 안눌려있다.
 			else
 			{
@@ -104,6 +102,8 @@ void CKeyManager::Update()
 		// Mouse 위치 계산
 		POINT ptPos = {};
 		GetCursorPos(&ptPos);
+
+		// 윈도우 좌표->클라이언트 좌표(인자로 현재 윈도우 핸들값 넣는다.)
 		ScreenToClient(CCore::GetInst()->GetMainHWnd(), &ptPos);
 
 		m_vCurMousePos = Vec2((float)ptPos.x, (float)ptPos.y);

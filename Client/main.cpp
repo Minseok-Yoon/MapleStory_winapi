@@ -5,6 +5,8 @@
 #include "framework.h"
 #include "Client.h"
 #include "Core/CCore.h"
+#include "Manager/CTimeManager.h"
+#include "Manager/CKeyManager.h"
 
 #define MAX_LOADSTRING 100
 
