@@ -11,6 +11,8 @@
 							type();\
 							~type();
 
+#define SAFE_RELEASE(p)		if(p) { p->Release(); p = NULL; }
+
 #define fDeltaTime CTimeManager::GetInst()->GetfDeltaTime()
 #define DeltaTime CTimeManager::GetInst()->GetDeltaTime()
 
@@ -52,8 +54,11 @@ enum class OBJECT_TYPE
 {
 	DEFAULT,
 	BACKGROUND,
+	PIXEL_BACKGROUND,
 	PLAYER,
 	MONSTER,
+	RECTANGLE,
+	PIXEL,
 
 	UI = 31,
 	END = 32,
@@ -86,4 +91,17 @@ enum class PLAYER_STATE
 	ATTACK,
 	JUMP,
 	DEAD,
+};
+
+enum COLLISION_STATE
+{
+	CS_ENTER,
+	CS_STAY,
+	CS_EXIT
+};
+
+enum COLLIDER_TYPE
+{
+	CT_RECTANGLE,
+	CT_PIXEL
 };

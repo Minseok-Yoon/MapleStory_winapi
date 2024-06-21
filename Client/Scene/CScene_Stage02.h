@@ -2,16 +2,17 @@
 #include "CScene.h"
 
 class CTexture;
+class CBackGround;
 
-class CScene_Stage01 :
+class CScene_Stage02 :
     public CScene
 {
 public:
-    CScene_Stage01();
-    virtual ~CScene_Stage01();
+    CScene_Stage02();
+    virtual ~CScene_Stage02();
 
 private:
-    CTexture* m_pBackGround;
+    CBackGround* m_pBackGround;
 
 public:
     virtual void Update();

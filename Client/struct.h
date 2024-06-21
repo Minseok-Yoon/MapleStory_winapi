@@ -28,6 +28,11 @@ public:
 		y((float)_pt.y)
 	{}
 
+	Vec2(const Vec2& _pos) :
+		x(_pos.x),
+		y(_pos.y)
+	{}
+
 public:
 	bool IsZero()
 	{
@@ -58,11 +63,43 @@ public:
 	{
 		x = (float)_pt.x;
 		y = (float)_pt.y;
+
+		return *this;
 	}
 
-	Vec2 operator + (const Vec2& _vOther)
+	Vec2 operator = (const Vec2& _pos)
+	{
+		x = _pos.x;
+		y = _pos.y;
+
+		return *this;
+	}
+
+	Vec2& operator = (float f[2])
+	{
+		x = f[0];
+		y = f[1];
+		return *this;
+	}
+
+	Vec2 operator + (const Vec2& _vOther) const
 	{
 		return Vec2(x + _vOther.x, y + _vOther.y);
+	}
+
+	Vec2 operator + (const POINT& _pt) const
+	{
+		return Vec2(x + _pt.x, y + _pt.y);
+	}
+
+	Vec2 operator + (float f[2]) const
+	{
+		return Vec2(x + f[0], y + f[1]);
+	}
+
+	Vec2 operator + (float _f) const
+	{
+		return Vec2(x + _f, y + _f);
 	}
 
 	void operator += (const Vec2 _vOther)
@@ -70,40 +107,204 @@ public:
 		x += _vOther.x;
 		y += _vOther.y;
 	}
-	
+
+	void operator += (const POINT& _pt)
+	{
+		x += _pt.x;
+		y += _pt.y;
+	}
+
+	void operator += (float f[2])
+	{
+		x += f[0];
+		y += f[1];
+	}
+
+	void operator += (float _f)
+	{
+		x += _f;
+		y += _f;
+	}
+
+	// ==========================================
 	Vec2 operator - ()
 	{
 		return Vec2(-x, -y);
 	}
 
-	Vec2 operator -= (const Vec2& _vOther)
-	{
-		return Vec2(x -= _vOther.x, y -= _vOther.y);
-	}
-
-	Vec2 operator - (const Vec2& _vOther)
+	Vec2 operator - (const Vec2& _vOther) const
 	{
 		return Vec2(x - _vOther.x, y - _vOther.y);
 	}
 
-	Vec2 operator -= (float _vOther)
+	Vec2 operator - (const POINT& _pt) const
 	{
-		return Vec2(x -= _vOther, y -= _vOther);
+		return Vec2(x - _pt.x, y - _pt.y);
 	}
 
-	Vec2 operator * (const Vec2& _vOther)
+	Vec2 operator - (float f[2]) const
+	{
+		return Vec2(x - f[0], y - f[1]);
+	}
+
+	Vec2 operator - (float _f) const
+	{
+		return Vec2(x - _f, y - _f);
+	}
+
+	void operator -= (const Vec2& _vOther)
+	{
+		x -= _vOther.x;
+		y -= _vOther.y;
+	}
+
+	void operator -= (const POINT& _pt)
+	{
+		x -= _pt.x;
+		y -= _pt.y;
+	}
+
+	void operator -= (float f[2])
+	{
+		x -= f[0];
+		y -= f[1];
+	}
+
+	void operator -= (float f)
+	{
+		x -= f;
+		y -= f;
+	}
+
+	Vec2 operator * (const Vec2& _vOther) const
 	{
 		return Vec2(x * _vOther.x, y * _vOther.y);
 	}
 
-	Vec2 operator * (float _f)
+	Vec2 operator * (const POINT& _pt) const
 	{
-		return Vec2(x * _f, y * _f);
+		return Vec2(x * _pt.x, y * _pt.y);
 	}
 
-	Vec2 operator / (float _f)
+	Vec2 operator * (float f[2]) const
 	{
-		assert(!(0.f == _f));
-		return Vec2(x / _f, y / _f);
+		return Vec2(x * f[0], y * f[1]);
+	}
+
+	Vec2 operator * (float f) const
+	{
+		return Vec2(x * f, y * f);
+	}
+
+	void operator *= (const Vec2& _vOther)
+	{
+		x *= _vOther.x;
+		y *= _vOther.y;
+	}
+
+	void operator *= (const POINT& _pt)
+	{
+		x *= _pt.x;
+		y *= _pt.y;
+	}
+
+	void operator *= (float f[2])
+	{
+		x *= f[0];
+		y *= f[1];
+	}
+
+	void operator *= (float f)
+	{
+		x *= f;
+		y *= f;
+	}
+
+	Vec2 operator / (const Vec2& _vOther) const
+	{
+		return Vec2(x / _vOther.x, y / _vOther.y);
+	}
+
+	Vec2 operator / (const POINT& _pt) const
+	{
+		return Vec2(x / _pt.x, y / _pt.y);
+	}
+
+	Vec2 operator / (float f[2]) const
+	{
+		return Vec2(x / f[0], y / f[1]);
+	}
+
+	Vec2 operator / (float f) const
+	{
+		assert(f != 0.f);
+		return Vec2(x / f, y / f);
+	}
+
+	void operator /= (const Vec2& _vOther)
+	{
+		x /= _vOther.x;
+		y /= _vOther.y;
+	}
+
+	void operator /= (const POINT& _pt)
+	{
+		x /= _pt.x;
+		y /= _pt.y;
+	}
+
+	void operator /= (float f[2])
+	{
+		x /= f[0];
+		y /= f[1];
+	}
+
+	void operator /= (float f)
+	{
+		assert(f != 0.f);
+		x /= f;
+		y /= f;
 	}
 };
+
+typedef struct _tagResolution
+{
+	unsigned int	iW;
+	unsigned int	iH;
+
+	// 생성자 오버로딩
+	_tagResolution() :
+		iW(0),
+		iH(0)
+	{
+	}
+
+	_tagResolution(int x, int y) :
+		iW(x),
+		iH(y)
+	{
+	}
+}RESOLUTION, * PRESOLUTION;
+
+typedef struct _tagRectangle
+{
+	float	l;
+	float	t;
+	float	r;
+	float	b;
+
+	_tagRectangle() :
+		l(0.f),
+		t(0.f),
+		r(0.f),
+		b(0.f)
+	{
+	}
+}RECTANGLE, * PRECTANGLE;
+
+typedef struct _tagPixel
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+}PIXEL, * PPIXEL;

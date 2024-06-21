@@ -40,7 +40,7 @@ int CCore::Init(HWND _hWnd, POINT _ptResolution)
 	m_ptResolution = _ptResolution;
 
 	// 해상도에 맞게 윈도우 크기 조정
-	RECT rt = { 0, 0, _ptResolution.x, _ptResolution.y };
+	RECT rt = { 0, 0, _ptResolution.x, _ptResolution.y };	// 좌상단(0, 0) ~ 우하단(1280, 760)
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
 	SetWindowPos(_hWnd, nullptr, 0, 0, rt.right - rt.left, rt.bottom - rt.top, 0);
 
@@ -61,6 +61,8 @@ int CCore::Init(HWND _hWnd, POINT _ptResolution)
 
 void CCore::progress()
 {
+	float fDeltaTimes = CTimeManager::GetInst()->GetfDeltaTime();
+
 	// Manager Update
 	CTimeManager::GetInst()->Update();
 	CKeyManager::GetInst()->Update();

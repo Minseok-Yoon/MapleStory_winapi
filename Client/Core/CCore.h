@@ -7,17 +7,16 @@ class CCore
 	SINGLETON(CCore);
 
 private:
-	HDC			m_hDC;				// 메인 윈도우에 그릴 DC
-	HWND		m_hWnd;				// 메인 윈도우 핸들
-	POINT		m_ptResolution;		// 메인 윈도우 해상도
-
-	CTexture*	m_pMemTex;			// 백버퍼 택스처
-
-	HBRUSH		m_arrBrush[(UINT)BRUSH_TYPE::END];
-	HPEN		m_arrPen[(UINT)PEN_TYPE::END];
+	HDC			m_hDC;								// 메인 윈도우에 그릴 DC
+	HWND		m_hWnd;								// 메인 윈도우 핸들
+	POINT		m_ptResolution;						// 메인 윈도우 해상도
+	HBRUSH		m_arrBrush[(UINT)BRUSH_TYPE::END];	// 브러쉬 배열 생성
+	HPEN		m_arrPen[(UINT)PEN_TYPE::END];		// 펜 배열 생성
+	
+	CTexture*	m_pMemTex;							// 백버퍼 택스처
 
 public:
-	int Init(HWND _hWnd, POINT _ptResolution);
+	int Init(HWND _hWnd, POINT _ptResolution);		// 게임 엔진 초기화 함수
 	void progress();
 
 private:

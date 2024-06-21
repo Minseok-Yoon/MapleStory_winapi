@@ -1,11 +1,14 @@
 #pragma once
 #include "CObject.h"
 
+class CTexture;
+
 class CUI :
     public CObject
 {
     // CUIManager 클래스가 CUI클래스의 private에 접근할 수 있도록 해준다.
     friend class CUIManager;
+    friend class CBtnUI;
 
 public:
     CUI(bool _bCamAff);
@@ -20,6 +23,8 @@ private:
     bool            m_bCamAffected; // UI가 카메라에 영향을 받는 유무
     bool            m_bMouseOn;     // UI 위에 마우스가 있는지
     bool            m_bLbtnDown;    // UI에 왼쪽버튼이 눌린적이 있는지
+
+    CTexture*       m_pTexture;
 
 public:
     CUI* GetParent() { return m_pParentUI; }

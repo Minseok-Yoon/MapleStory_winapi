@@ -1,7 +1,23 @@
 #pragma once
 
+using namespace std;
+
 #include <Windows.h>
 #include <wchar.h>
+#include <iostream>
+
+#include <utility>
+using std::pair;
+
+#include <memory>
+using std::unique_ptr;
+using std::make_unique;
+
+#include <functional>
+using std::function;
+using std::bind;
+
+#include <stdexcept>
 
 #include <string>
 using std::string;

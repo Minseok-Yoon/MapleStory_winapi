@@ -11,9 +11,11 @@ public:
 
 private:
 	wstring				m_strSceneName;						// Scene의 이름
-	vector<CObject*>	m_arrObj[(UINT)OBJECT_TYPE::END];	// 오브젝트를 저장 및 관리할 백터를 그룹 개수 만큼 선언
 	
 	CObject*			m_pPlayer;
+
+public:
+	vector<CObject*>	m_arrObj[(UINT)OBJECT_TYPE::END];	// 오브젝트를 저장 및 관리할 백터를 그룹 개수 만큼 선언
 
 public:
 	// Scene의 이름을 설정(Set)과 반환(Get)하는 함수

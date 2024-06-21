@@ -1,6 +1,7 @@
 #include "../pch.h"
 #include "CUI.h"
 #include "../Manager/CKeyManager.h"
+#include "../Manager/CResourceManager.h"
 #include "../Manager/CCamera.h"
 #include "../Module/SelectGDI.h"
 #include "../Scene/CScene.h"
@@ -32,7 +33,7 @@ CUI::CUI(const CUI& _origin)	:
 
 CUI::~CUI()
 {
-	Safe_Delete_Vec(m_vecChildUI);
+	Safe_Delete_VecList(m_vecChildUI);
 }
 
 CUI* CUI::GetFindChild(CUI* _parentUI, const wstring& _childUI)

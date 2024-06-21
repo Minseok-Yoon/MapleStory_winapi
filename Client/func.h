@@ -10,17 +10,17 @@ void ChangeAIState(AI* _pAI, MON_STATE _eNextState);
 
 // 벡터 내부의 메모리를 삭제하는 함수 템플릿
 template<typename T>
-void Safe_Delete_Vec(vector<T>& _vec)
+void Safe_Delete_VecList(T& _p)
 {
-	// 벡터 내의 모든 요소를 반복하여 확인
-	for (size_t i = 0; i < _vec.size(); ++i)
+	typename T::iterator iter;
+	typename T::iterator iterEnd = _p.end();
+
+	for (iter = _p.begin(); iter != iterEnd; ++iter)
 	{
-		// 요소가 nullptr이 아니라면 메모리 해제
-		if (nullptr != _vec[i])
-			delete _vec[i];
+		if ((*iter)) { delete (*iter); (*iter) = 0; }
 	}
-	// 요소를 삭제한 후 벡터를 비워줌
-	_vec.clear();
+
+	_p.clear();
 }
 
 // Map 내부를 순회하면서 메모리를 삭제하는 함수 템플릿

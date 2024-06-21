@@ -8,10 +8,9 @@
 #include "../Resource/CTexture.h"
 
 CCamera::CCamera() :
-	m_vLookAt{},
-	m_pTargetObj(),
-	m_fGetTargetTime(1.f),
-	m_fGetTargetSpeed(0.f),
+	m_pTargetObj(nullptr),
+	m_fTime(0.5f),
+	m_fSpeed(0.f),
 	m_fAccTime(0.5f),
 	m_pVeilTex(nullptr),
 	m_listCamEffect{}
@@ -22,39 +21,41 @@ CCamera::~CCamera()
 {
 }
 
+
 void CCamera::CalDiff()
 {
-	// 이전 LookAt과 현재 Look의 차이값을 보정해서 현재의 LookAt을 구한다.
+	// 누적 시간 갱신
 	m_fAccTime += fDeltaTime;
 
-	if (m_fAccTime >= m_fGetTargetTime)
+	if (m_fTime <= m_fAccTime)
 	{
 		m_vCurLookAt = m_vLookAt;
 	}
 	else
 	{
-		Vec2 vLookDir = (m_vLookAt - m_vPrevLookAt);
+		Vec2 vLookDir = m_vLookAt - m_vPrevLookAt;
 
 		if (!vLookDir.IsZero())
 		{
-			m_vCurLookAt = m_vPrevLookAt + vLookDir.Normalize() * m_fGetTargetSpeed * fDeltaTime;
+			m_vCurLookAt = m_vPrevLookAt + vLookDir.Normalize() * m_fSpeed * fDeltaTime;
 		}
 	}
-	Vec2 vResolution = CCore::GetInst()->GetResolution();
-	Vec2 vCenter = vResolution / 2.f;
 
-	m_vDiff = m_vCurLookAt - vCenter;
+	m_vDiff = m_vCurLookAt;
 	m_vPrevLookAt = m_vCurLookAt;
 }
 
-void CCamera::Init(const RESOLUTION& tRS, const RESOLUTION& tWorldRS)
+void CCamera::Init(const RESOLUTION& _tRS, const RESOLUTION& _tWorldRS)
 {
-	m_tClientRS = tRS;
-	m_tWorldRS = tWorldRS;
+	m_tClientRS = _tRS;			// { 1280, 760 }
+	m_tWorldRS = _tWorldRS;		// { 1368, 1061 }
 
 	// Core 클래스에서 위치 값을 받아온다.
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	m_pVeilTex = CResourceManager::GetInst()->CreateTexture(L"CameraVeil", (UINT)vResolution.x, (UINT)vResolution.y);
+
+	m_vLookAt = Vec2(0.f, 0.f);
+	m_vCurLookAt = m_vLookAt;
 }
 
 void CCamera::Update()
@@ -67,19 +68,19 @@ void CCamera::Update()
 		}
 		else
 		{
-			m_vLookAt = m_pTargetObj->GetPos();
+			m_vLookAt = m_pTargetObj->GetPos() - Vec2(m_tClientRS.iW * 0.5f, m_tClientRS.iH * 0.5f);
 		}
 	}
 
-	// Camera 이동 테스트
-	if (KEY_HOLD(KEY::UP))
- 		m_vLookAt.y -= 500.f * fDeltaTime;
-	if (KEY_HOLD(KEY::DOWN))
-		m_vLookAt.y += 500.f * fDeltaTime;
-	if (KEY_HOLD(KEY::LEFT))
-		m_vLookAt.x -= 500.f * fDeltaTime;
-	if (KEY_HOLD(KEY::RIGHT))
-		m_vLookAt.x += 500.f * fDeltaTime;
+	if (m_vLookAt.x < 0)
+		m_vLookAt.x = 0;
+	else if (m_vLookAt.x > m_tWorldRS.iW - m_tClientRS.iW)
+		m_vLookAt.x = m_tWorldRS.iW - m_tClientRS.iW;
+	
+	if (m_vLookAt.y < 0)
+		m_vLookAt.y = 0;
+	else if (m_vLookAt.y > m_tWorldRS.iH - m_tClientRS.iH)
+		m_vLookAt.y = (m_tWorldRS.iH - m_tClientRS.iH) - 10.f;
 
 	// 화면 중앙좌표와 카메라 LookAt좌표간의 차이값 계산
 	CalDiff();

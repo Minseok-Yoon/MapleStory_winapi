@@ -3,6 +3,7 @@
 
 class CUI;
 class CBtnUI;
+class CTexture;
 
 class CScene_Start :
     public CScene
@@ -13,6 +14,7 @@ public:
 
 private:
     CUI* m_pUI;
+    CTexture* m_pTexture;
 
 private:
     virtual void Enter();

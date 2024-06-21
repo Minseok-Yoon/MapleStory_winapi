@@ -19,6 +19,7 @@ void AI::SetCurState(MON_STATE _eState)
 	// 현재 상태를 전달 받은 상태로 설정
 	m_pCurState = GetCurState(_eState);
 
+	// 현재 상태가 없으면 중단
 	if(m_pCurState == nullptr)
 		assert(m_pCurState);
 }
@@ -27,6 +28,7 @@ CState* AI::GetCurState(MON_STATE _eState)
 {
 	// 맵에서 몬스터의 해당 상태를 찾는다.
 	map<MON_STATE, CState*>::iterator iter = m_mapState.find(_eState);
+
 	// iter가 가리키는게 맵의 끝부분이면 nullptr을 반환
 	if (iter == m_mapState.end())
 		return nullptr;

@@ -5,6 +5,7 @@
 
 UINT CCollider::g_iNextID = 0;
 
+
 CCollider::CCollider()	:
 	m_pOwner(nullptr),
 	m_iID(g_iNextID++),
@@ -33,21 +34,21 @@ void CCollider::OnCollision(CCollider* _pOther)
 
 void CCollider::OnCollisionEnter(CCollider* _pOther)
 {
-	m_pOwner->OnCollision(_pOther);
 	++m_iCol;
+	m_pOwner->OnCollisionEnter(_pOther);
 }
 
 void CCollider::OnCollisionExit(CCollider* _pOther)
 {
-	m_pOwner->OnCollision(_pOther);
 	--m_iCol;
+	m_pOwner->OnCollisionExit(_pOther);
 }
 
 void CCollider::FinalUpdate()
 {
 	// 충돌체의 소유자 오브젝트의 위치를 가져온다.
 	Vec2 vObjectPos = m_pOwner->GetPos();
-	m_vFinalPos = vObjectPos + m_vOffsetPos;	// 상대적인 위치인 m_vOffsetPos를 더하여 충돌체의 최종위치를 계산한다.
+	m_vFinalPos = vObjectPos + m_vOffsetPos;
 
 	assert(0 <= m_iCol);
 }
@@ -70,3 +71,5 @@ void CCollider::Render(HDC _dc)
 		(int)(vRenderPos.x + m_vScale.x / 2.f),
 		(int)(vRenderPos.y + m_vScale.y / 2.f));
 }
+
+// 게임에서 물체간의 충돌 감지를 수행하는 데 사용.

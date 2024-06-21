@@ -106,6 +106,24 @@
     <Filter Include="Engine\04. Object\UI\UIPanel">
       <UniqueIdentifier>{50c7a4f8-9571-4679-ac0e-7bd002abcca8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\09. Factory">
+      <UniqueIdentifier>{4af92d79-cbbd-4eca-910f-f73668cbe61d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\Idle">
+      <UniqueIdentifier>{e035ffdb-1c5b-4de2-91fc-bf73f48448f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\Trace">
+      <UniqueIdentifier>{8cec3e2e-38c3-4a00-8482-159906e73d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Stage02">
+      <UniqueIdentifier>{07f3f465-b316-4068-b3c0-2ee02d3aa985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Ground">
+      <UniqueIdentifier>{0c987e52-bf75-4ed0-90f4-54f059f48fd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component\Gravity">
+      <UniqueIdentifier>{1b91c92d-e600-48cb-828c-ed5461324b83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -213,6 +231,27 @@
     <ClInclude Include="Object\CUIPanel.h">
       <Filter>Engine\04. Object\UI\UIPanel</Filter>
     </ClInclude>
+    <ClInclude Include="Factory\CMonFactory.h">
+      <Filter>Engine\09. Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\CIdleState.h">
+      <Filter>Engine\08. Module\AI\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\CTraceState.h">
+      <Filter>Engine\08. Module\AI\State\Trace</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CScene_Stage02.h">
+      <Filter>Engine\05. Scene\Scene_Stage02</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CBackGround.h">
+      <Filter>Engine\04. Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CColliderPixel.h">
+      <Filter>Engine\07. Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CGravity.h">
+      <Filter>Engine\07. Component\Gravity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -301,6 +340,27 @@
     </ClCompile>
     <ClCompile Include="Object\CUIPanel.cpp">
       <Filter>Engine\04. Object\UI\UIPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="Factory\CMonFactory.cpp">
+      <Filter>Engine\09. Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\CIdleState.cpp">
+      <Filter>Engine\08. Module\AI\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\CTraceState.cpp">
+      <Filter>Engine\08. Module\AI\State\Trace</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CScene_Stage02.cpp">
+      <Filter>Engine\05. Scene\Scene_Stage02</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CBackGround.cpp">
+      <Filter>Engine\04. Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CColliderPixel.cpp">
+      <Filter>Engine\07. Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CGravity.cpp">
+      <Filter>Engine\07. Component\Gravity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

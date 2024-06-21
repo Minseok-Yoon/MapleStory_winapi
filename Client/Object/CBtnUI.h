@@ -3,6 +3,8 @@
 #include "../Scene/CScene.h"
 #include "CObject.h"
 
+class CTexture;
+
 // 'BTN_FUNC'는 함수 포인터 타입을 정의하는 typedef
 typedef void(*BTN_FUNC) (DWORD_PTR, DWORD_PTR);
 // 'SCENE_MEMFUNC'는 멤버 함수 포인터 타입을 정의하는 typedef
@@ -27,11 +29,15 @@ private:
     OBJECT_MEMFUNC  m_pObjectFunc;
     CObject*        m_pObjectInst;
 
+    CTexture*       m_pBtnTexture;
+
 public:
     virtual void MouseOn();
     virtual void MouseLBtnDown();
     virtual void MouseLBtnUp();
     virtual void MouseLBtnClicked();
+
+    void SetBtnTexture(const wstring& _strKey, const wstring& _strRelativePath);
 
     void SetClickedCallBack(BTN_FUNC _pFunc, DWORD_PTR _param1, DWORD_PTR _param2)
     {

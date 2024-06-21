@@ -12,28 +12,37 @@ public:
 	~CCollider();
 
 private:
-	static UINT	g_iNextID;
+	static UINT		g_iNextID;
 
-	CObject* m_pOwner;				// Collidr를 소유하고 있는 오브젝트
+	CObject*		m_pOwner;		// Collidr를 소유하고 있는 오브젝트
 	Vec2			m_vOffsetPos;	// 오브젝트로 부터 상대적인 위치
 	Vec2			m_vFinalPos;	// finalUpdate에서 매 프레임마다 계산
 	Vec2			m_vScale;		// 충돌체의 크기
-
+	
 	UINT			m_iID;			// 충돌체 고유한 ID 값
 	UINT			m_iCol;
+	
+	bool			m_bActive;
 
-	bool			m_bActive;		// 충돌체 활성화 여부
 
 public:
-	CObject* GetColObj() { return m_pOwner; }
+	string			m_strColTag;
+
+public:
+	void SetOwner(CObject* _pOwner) { m_pOwner = _pOwner; }
+	CObject* GetOwner() const { return m_pOwner; }
 
 	void SetOffsetPos(Vec2 _vPos) { m_vOffsetPos = _vPos; }
 	Vec2 GetOffsetPos() { return m_vOffsetPos; }
 
+	void SetFinalPos(Vec2 _vPos) { m_vFinalPos = _vPos; }
 	Vec2 GetFinalPos() { return m_vFinalPos; }
 
 	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
 	Vec2 GetScale() { return m_vScale; }
+
+	void SetColTag(string _strColTag) { m_strColTag = _strColTag; }
+	string GetColTag() { return m_strColTag; }
 
 	UINT GetID() { return m_iID; }
 
@@ -47,6 +56,6 @@ public:
 	CCollider& operator = (const CCollider& _origin) = delete;
 
 public:
-	void FinalUpdate();
-	void Render(HDC _dc);
+	virtual void FinalUpdate();
+	virtual void Render(HDC _dc);
 };

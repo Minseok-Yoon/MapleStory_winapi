@@ -1,8 +1,12 @@
 #pragma once
 #include "../Manager/CCamera.h"
+#include "../Component/CCollider.h"
 
 class CCollider;
+class CAnimator;
+class CGravity;
 
+// 충돌 처리, 중력, 애니메이션 등 다양한 기능을 가진 게임 오브젝트 클래스
 class CObject
 {
 	friend class CEventManager;
@@ -12,42 +16,52 @@ public:
 	CObject(const CObject& _origin);
 	virtual ~CObject();
 
-private:
+public:
 	wstring		m_strObjName;		// Object의 이름
 	Vec2		m_vPos;				// Object의 위치
 	Vec2		m_vScale;			// Object의 크기
-
-	Vec2		m_vDir;
+	Vec2		m_vDir;				// Object의 방향
 
 	bool		m_bAlive;
 
 	// Component
-	CCollider* m_pCollider;
+	CCollider*	m_pCollider;
+	CAnimator*	m_pAnimator;
+	CGravity*	m_pGravity;
 
 public:
+	// 오브젝트의 이름 설정 및 반환
 	void SetObjName(const wstring& _strObjName) { m_strObjName = _strObjName; }
 	const wstring& GetObjName() { return m_strObjName; }
 
+	// 오브젝트의 위치 설정 및 반환
 	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
 	Vec2 GetPos() { return m_vPos; }
 
+	// 오브젝트의 크기 설정 및 반환
 	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
 	Vec2 GetScale() { return m_vScale; }
 
+	// 오브젝트의 방향 설정 및 반환
 	void SetDir(Vec2 _vDir) { m_vDir = _vDir; _vDir.Normalize(); }
 	Vec2 GetDir() { return m_vDir; }
 
+	// 오브젝트의 생존 여부 반환
 	bool IsDead() { return !m_bAlive; }
 
+public:
 	CCollider* GetCollider() { return m_pCollider; }
+	CAnimator* GetAnimator() { return m_pAnimator; }
+	CGravity* GetGravity() { return m_pGravity; }
 
 private:
 	void SetDead() { m_bAlive = false; }
 
 public:
 	void CreateCollider();
+	void CreateAnimator();
+	void CreateGravity();
 
-public:
 	virtual void OnCollision(CCollider* _pOther) {}
 	virtual void OnCollisionEnter(CCollider* _pOther) {}
 	virtual void OnCollisionExit(CCollider* _pOther) {}

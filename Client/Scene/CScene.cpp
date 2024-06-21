@@ -24,7 +24,7 @@ CScene::~CScene()
 
 void CScene::DeleteGroup(OBJECT_TYPE _eTarget)
 {
-	Safe_Delete_Vec(m_arrObj[(UINT)_eTarget]);
+	Safe_Delete_VecList(m_arrObj[(UINT)_eTarget]);
 }
 
 void CScene::DeleteAll()

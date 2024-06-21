@@ -16,7 +16,7 @@ void ChangeSceneByBtn(DWORD_PTR, DWORD_PTR);
 CScene_Start::CScene_Start()	:
 	m_pUI(nullptr)
 {
-	CResourceManager::GetInst()->LoadTexture(L"StartBackGround", L"texture\\StartPanel.bmp");
+	m_pTexture = CResourceManager::GetInst()->LoadTexture(L"StartBackGround", L"texture\\StartPanel.bmp");
 }
 
 CScene_Start::~CScene_Start()
@@ -30,8 +30,9 @@ void CScene_Start::Enter()
 
 	CBtnUI* pStartBtn = new CBtnUI;
 	pStartBtn->SetObjName(L"StartBtn");
-	pStartBtn->SetScale(Vec2(100.f, 40.f));
-	pStartBtn->SetPos(Vec2(100.f, 100.f));
+	pStartBtn->SetScale(Vec2(256.f, 100.f));
+	pStartBtn->SetPos(Vec2(500.f, 300.f));
+	pStartBtn->SetBtnTexture(L"StartBtn", L"texture\\StartBtn.bmp");
 	pStartBtn->SetClickedCallBack(ChangeSceneByBtn, 0, 0);
 	AddObject(pStartBtn, OBJECT_TYPE::UI);
 
@@ -56,14 +57,14 @@ void CScene_Start::Update()
 
 void CScene_Start::Render(HDC _dc)
 {
-	CTexture* pTex = CResourceManager::GetInst()->FindTexture(L"StartBackGround");
+	//CTexture* pTex = CResourceManager::GetInst()->FindTexture(L"StartBackGround");
 	
-	if (nullptr != pTex)
+	if (nullptr != m_pTexture)
 	{
-		int iTexWidth = pTex->Width();
-		int iTexHeight = pTex->Height();
+		int iTexWidth = m_pTexture->Width();
+		int iTexHeight = m_pTexture->Height();
 	
-		BitBlt(_dc, 0, 0, iTexWidth, iTexHeight, pTex->GetDC(), 0, 0, SRCCOPY);
+		BitBlt(_dc, 0, 0, iTexWidth, iTexHeight, m_pTexture->GetDC(), 0, 0, SRCCOPY);
 	}
 
 	CScene::Render(_dc);

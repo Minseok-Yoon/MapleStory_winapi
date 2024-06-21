@@ -1,6 +1,7 @@
 #include "../pch.h"
 #include "CAnimator.h"
 #include "CAnimation.h"
+#include "../Manager/CResourceManager.h"
 
 CAnimator::CAnimator()	:
 	m_pCurAnim(nullptr),
@@ -15,6 +16,7 @@ CAnimator::~CAnimator()
 	Safe_Delete_Map(m_mapAnim);
 }
 
+// 애니메이션 생성(애니메이션 이름, 택스쳐, 좌상단, 프레임 크기, , 재생시간, 프레임카운트)
 void CAnimator::CreateAnimation(const wstring& _strName, CTexture* _pTex, 
 	Vec2 _vLT, Vec2 _vSlicesize, Vec2 _vStep, float _fDuration, UINT _iFrameCount)
 {
@@ -23,11 +25,38 @@ void CAnimator::CreateAnimation(const wstring& _strName, CTexture* _pTex,
 	assert(nullptr == pAnim);	// 중복이 없어야 한다.
 
 	pAnim = new CAnimation();
-
 	pAnim->SetAnimName(_strName);
 	pAnim->m_pAnimator = this;	// 애니메이션 객체에 Animatior 포인터 설정
-	pAnim->Create(_pTex, _vLT, _vSlicesize, _vStep, _fDuration, _iFrameCount);
+	// 아틀라스 애니메이션 생성
+	pAnim->CreateAtlas(_pTex, _vLT, _vSlicesize, _vStep, _fDuration, _iFrameCount);
 
+	m_mapAnim.insert(make_pair(_strName, pAnim));
+}
+
+void CAnimator::CreateFrameAnimation(const wstring& _strName, const vector<wstring>& _vecFileNames,
+	Vec2 _vLT, Vec2 _vSlicesize, float _fDuration)
+{
+	// 이미 같은 이름의 애니메이션이 존재하는지 확인
+	CAnimation* pAnim = FindAnimation(_strName);
+	assert(nullptr == pAnim); // 중복이 없어야 한다.
+
+	pAnim = new CAnimation();
+	pAnim->SetAnimName(_strName);
+	pAnim->m_pAnimator = this;
+
+	vector<CTexture*> vecTextures;
+
+	// 각 파일 이름에 대해 텍스처를 로드하여 vecTextures에 추가
+	for (const auto& fileName : _vecFileNames)
+	{
+		CTexture* pTexture = CResourceManager::GetInst()->LoadTexture(fileName, fileName);
+		vecTextures.push_back(pTexture);
+	}
+
+	// 로드된 텍스처 벡터를 사용하여 프레임 애니메이션 생성
+	pAnim->CreateFrame(vecTextures, _vLT, _vSlicesize, _fDuration);
+
+	// 애니메이션 맵에 추가
 	m_mapAnim.insert(make_pair(_strName, pAnim));
 }
 
@@ -68,7 +97,7 @@ void CAnimator::Update()
 {
 }
 
-void CAnimator::finalUpdate()
+void CAnimator::FinalUpdate()
 {
 	// 현재 애니메이션이 존재하는 경우
 	if (nullptr != m_pCurAnim)
