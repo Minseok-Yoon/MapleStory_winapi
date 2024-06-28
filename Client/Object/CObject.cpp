@@ -6,6 +6,7 @@
 #include"../Resource/CTexture.h"
 #include "../Resource/CResource.h"
 #include "../Component/CCollider.h"
+#include "../Component/CColliderPixel.h"
 #include "../Component/CAnimator.h"
 #include "../Component/CGravity.h"
 
@@ -109,8 +110,7 @@ void CObject::ComponentRender(HDC _dc)
 		m_pAnimator->Render(_dc);
 	}
 
-
-	if (nullptr != m_pCollider)
+	if(nullptr != m_pCollider)
 	{
 		m_pCollider->Render(_dc);
 	}

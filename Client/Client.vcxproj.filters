@@ -124,6 +124,9 @@
     <Filter Include="Engine\07. Component\Gravity">
       <UniqueIdentifier>{1b91c92d-e600-48cb-828c-ed5461324b83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\Portal">
+      <UniqueIdentifier>{03163314-fcc6-42a3-93a0-e59865000675}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -252,6 +255,9 @@
     <ClInclude Include="Component\CGravity.h">
       <Filter>Engine\07. Component\Gravity</Filter>
     </ClInclude>
+    <ClInclude Include="Object\CPortal.h">
+      <Filter>Engine\04. Object\Portal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -361,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="Component\CGravity.cpp">
       <Filter>Engine\07. Component\Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CPortal.cpp">
+      <Filter>Engine\04. Object\Portal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

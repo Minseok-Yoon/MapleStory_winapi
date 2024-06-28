@@ -179,6 +179,7 @@
     <ClInclude Include="Object\CMonster.h" />
     <ClInclude Include="Object\CObject.h" />
     <ClInclude Include="Object\CPlayer.h" />
+    <ClInclude Include="Object\CPortal.h" />
     <ClInclude Include="Object\CUI.h" />
     <ClInclude Include="Object\CUIPanel.h" />
     <ClInclude Include="pch.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="Object\CMonster.cpp" />
     <ClCompile Include="Object\CObject.cpp" />
     <ClCompile Include="Object\CPlayer.cpp" />
+    <ClCompile Include="Object\CPortal.cpp" />
     <ClCompile Include="Object\CUI.cpp" />
     <ClCompile Include="Object\CUIPanel.cpp" />
     <ClCompile Include="Resource\CResource.cpp" />

@@ -3,6 +3,7 @@
 #include "../Component/CCollider.h"
 
 class CCollider;
+class CColliderPixel;
 class CAnimator;
 class CGravity;
 
@@ -17,17 +18,19 @@ public:
 	virtual ~CObject();
 
 public:
-	wstring		m_strObjName;		// Object의 이름
-	Vec2		m_vPos;				// Object의 위치
-	Vec2		m_vScale;			// Object의 크기
-	Vec2		m_vDir;				// Object의 방향
+	wstring			m_strObjName;		// Object의 이름
+	Vec2			m_vPos;				// Object의 위치
+	Vec2			m_vScale;			// Object의 크기
+	Vec2			m_vDir;				// Object의 방향
 
-	bool		m_bAlive;
+	bool			m_bAlive;
 
 	// Component
-	CCollider*	m_pCollider;
-	CAnimator*	m_pAnimator;
-	CGravity*	m_pGravity;
+	CCollider*		m_pCollider;
+	CColliderPixel* m_pPixelCollider;
+	CAnimator*		m_pAnimator;
+	CGravity*		m_pGravity;
+
 
 public:
 	// 오브젝트의 이름 설정 및 반환
@@ -48,6 +51,8 @@ public:
 
 	// 오브젝트의 생존 여부 반환
 	bool IsDead() { return !m_bAlive; }
+
+	void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
 
 public:
 	CCollider* GetCollider() { return m_pCollider; }

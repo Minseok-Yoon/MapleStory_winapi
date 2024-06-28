@@ -12,6 +12,7 @@
 #include "../Factory/CMonFactory.h"
 #include "../Component/CColliderPixel.h"
 #include "../Object/CBackGround.h"
+#include "../Object/CPortal.h"
 
 CScene_Stage01::CScene_Stage01()
 {
@@ -70,10 +71,17 @@ void CScene_Stage01::Enter()
 	pBackGround->Init(L"InGameBackGround");
 	AddObject(pBackGround, OBJECT_TYPE::PIXEL_BACKGROUND);
 
+	// 포탈 객체 초기화
+	CPortal* pPortal = new CPortal();
+	pPortal->SetObjName(L"Portal");
+	pPortal->SetPortalTag(L"Portal 0");
+	pPortal->SetPos(Vec2(150.f, 820.f));
+	AddObject(pPortal, OBJECT_TYPE::PORTAL);
+
 	// 플레이어 객체 초기화
 	CPlayer* pPlayer = new CPlayer();
 	pPlayer->SetObjName(L"Player");
-	pPlayer->SetPos(Vec2(100.f, 320.f));
+	pPlayer->SetPos(Vec2(760.f, 777.f));
 	pPlayer->SetScale(Vec2(100.f, 100.f));
 	pPlayer->SetPixelCollider(pBackGround->GetPixelCollider());
 	AddObject(pPlayer, OBJECT_TYPE::PLAYER);
@@ -84,14 +92,18 @@ void CScene_Stage01::Enter()
 
 	// 몬스터 배치
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
-	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(0.f, 300.f));
+	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(350.f, 0.f));
+	pMon->SetObjName(L"Orange Mushroom");
+	pMon->SetPixelCollider(pBackGround->GetPixelCollider());
 	AddObject(pMon, OBJECT_TYPE::MONSTER);
 
 	CCamera::GetInst()->FadeIn(1.f);
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 
 	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::MONSTER);
+	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::PORTAL);
 	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::PIXEL_BACKGROUND);
+	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::MONSTER, OBJECT_TYPE::PIXEL_BACKGROUND);
 
 	FastUpdate();
 }

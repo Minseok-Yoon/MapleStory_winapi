@@ -1,6 +1,7 @@
 #include "../pch.h"
 #include "CPlayer.h"
-#include "../Object/CObject.h"
+#include "CObject.h"
+#include "CMonster.h"
 #include "../Manager/CColliderManager.h"
 #include "../Manager/CKeyManager.h"
 #include "../Manager/CTimeManager.h"
@@ -12,6 +13,7 @@
 #include "../Component/CColliderPixel.h"
 #include "../Component/CGravity.h"
 #include "../Component/CAnimator.h"
+#include "CPortal.h"
 
 CPlayer::CPlayer() :
     m_eCurState(PLAYER_STATE::IDLE),
@@ -20,9 +22,12 @@ CPlayer::CPlayer() :
     m_iPrevDir(1),
     m_bLeftEnable(true),
     m_bRightEnable(true),
-    m_bIsOnWall(false)
+    m_iWallCollisionCount(0),
+    m_bIsColPortal(false),
+    m_bAttack(false)
 {
     CreateCollider();
+    GetCollider()->SetColTag("Monster");
     GetCollider()->SetOffsetPos(Vec2{ 0.f, 0.f });
     GetCollider()->SetScale(Vec2{ 20.f, 20.f });
 
@@ -232,12 +237,22 @@ void CPlayer::CheckPixelColor()
 
 void CPlayer::OnCollisionEnter(CCollider* _pOther)
 {
+    if (_pOther->GetColTag() == "Portal 0")
+    {
+        OutputDebugStringA("Collidong Portal");
+        m_bIsColPortal = true; // Portal과 충돌 상태로 설정
+        m_strPortalTag = static_cast<CPortal*>(_pOther->GetOwner())->GetPortalTag(); // 충돌한 포탈의 태그 저장
+    }
+
     if (_pOther->GetColTag() == "StageColl")
     {
         OutputDebugStringA("Magenta Pixel Colliders!\n");
         Vec2 vPos = GetPos();
 
         GetGravity()->SetOnGround(true);
+
+        m_bLeftEnable = true;
+        m_bRightEnable = true;
     }
 }
 
@@ -255,6 +270,12 @@ void CPlayer::OnCollision(CCollider* _pOther)
 
 void CPlayer::OnCollisionExit(CCollider* _pOther)
 {
+    if (_pOther->GetColTag() == "Portal 0")
+    {
+        m_bIsColPortal = false; // Portal과 충돌 상태 해제
+        m_strPortalTag.clear(); // 포탈 태그 초기화
+    }
+
     if (_pOther->GetColTag() == "StageColl")
     {
         OutputDebugStringA("Collision Exit!\n");
@@ -267,7 +288,7 @@ void CPlayer::OnWallCollisionEnter(CCollider* _pOther)
     if (_pOther->GetColTag() == "Wall")
     {
         OutputDebugStringA("Wall Collider\n");
-        m_bIsOnWall = true; // Wall 충돌 상태 설정
+        m_iWallCollisionCount++; // Wall 충돌 횟수 증가
 
         if (m_iDir == -1) {
             m_bLeftEnable = false;
@@ -286,13 +307,18 @@ void CPlayer::OnWallCollision(CCollider* _pOther)
 void CPlayer::OnWallCollisionExit(CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "Wall")
-        {
+    {
         OutputDebugStringA("Wall Collision Exit\n");
-        m_bIsOnWall = false; // Wall 충돌 상태 해제
 
-        // StageColl 충돌 여부와 관계없이 m_bLeftEnable과 m_bRightEnable을 true로 설정
-        m_bLeftEnable = true;
-        m_bRightEnable = true;
+        m_iWallCollisionCount--; // Wall 충돌 횟수 감소
+
+        if (m_iWallCollisionCount <= 0) {
+            m_iWallCollisionCount = 0; // 충돌 횟수 음수 방지
+
+            // Wall 충돌 상태가 없을 때만 움직임 제어 해제
+            m_bLeftEnable = true;
+            m_bRightEnable = true;
+        }
     }
 }
 
@@ -303,6 +329,12 @@ void CPlayer::Update()
     Update_Animation();
 
     CheckPixelColor();
+
+    if (m_bIsColPortal && KEY_TAP(KEY::W))
+    {
+        // Portal과 충돌 중이고 위쪽 방향키가 눌린 경우 ChangeScene 호출
+        ChangeScene(SCENE_TYPE::STAGE_02);
+    }
 
     m_ePrevState = m_eCurState;
     m_iPrevDir = m_iDir;

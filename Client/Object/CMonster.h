@@ -3,6 +3,7 @@
 
 class AI;
 class CTexture;
+class CColliderPixel;
 
 struct tMonInfo
 {
@@ -30,11 +31,13 @@ private:
     Vec2        m_vCenterPos;
     float       m_fSpeed;
     float       m_fMaxDistance;
-    int                 m_iDir;
-    int                 m_iPrevDir;
+    int         m_iDir;
+    int         m_iPrevDir;
     
+    CColliderPixel* m_pPixelCollider;
     tMonInfo    m_tMonInfo;
     AI*         m_pAI;
+
 
 private:
     float m_fIdleTime; // 대기 시간을 관리하는 변수
@@ -63,6 +66,10 @@ public:
     virtual void OnCollision(CCollider* _pOther);
     virtual void OnCollisionEnter(CCollider* _pOther);
     virtual void OnCollisionExit(CCollider* _pOther);
+
+public:
+    void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
+    void CheckPixelColor();
 
 public:
     void Update_Animation();

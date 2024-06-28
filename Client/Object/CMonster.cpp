@@ -2,24 +2,31 @@
 #include "CMonster.h"
 #include "../Object/CObject.h"
 #include "../Component/CCollider.h"
+#include "../Component/CGravity.h"
 #include "../Module/AI.h"
 #include "../Resource/CTexture.h"
 #include "../Manager/CTimeManager.h"
 #include "../Manager/CResourceManager.h"
 #include "../Component/CAnimator.h"
+#include "../Component/CColliderPixel.h"
 
 CMonster::CMonster()
     : m_tMonInfo(),
     m_fSpeed(100.f), // 초기 속도 설정
     m_iDir(1), // 초기 이동 방향 설정 (1: 오른쪽, -1: 왼쪽)
-    m_vCenterPos(Vec2(500.f, 0.f)), // 초기 중심 위치
+    m_vCenterPos(Vec2(300.f, 0.f)), // 초기 중심 위치
     m_fMaxDistance(200.f), // 초기 최대 배회 거리
     m_eCurMonState(MON_STATE::PATROL), // 초기 상태를 PATROL로 설정
     m_ePrevMonState(MON_STATE::IDLE),
     m_fIdleTime(0.f), // 대기 시간 초기화
     m_bWaiting(false) // 대기 상태 초기화
 {
+    CreateCollider();
+    GetCollider()->SetOffsetPos(Vec2{ 0.f, 0.f });
+    GetCollider()->SetScale(Vec2{ 20.f, 20.f });
+
     MonsterAnimationClip();
+    CreateGravity();
 }
 
 CMonster::~CMonster()
@@ -34,16 +41,86 @@ void CMonster::SetAI(AI* _AI)
     m_pAI->m_pMonster = this;
 }
 
-void CMonster::OnCollision(CCollider* _pOther)
-{
-}
-
 void CMonster::OnCollisionEnter(CCollider* _pOther)
 {
+    if (_pOther->GetColTag() == "StageColl")
+    {
+        OutputDebugStringA("Monster! Magenta Pixel Collidering!\n");
+        Vec2 vPos = GetPos();
+
+        GetGravity()->SetOnGround(true);
+    }
+}
+
+void CMonster::OnCollision(CCollider* _pOther)
+{
+    if (_pOther->GetColTag() == "StageColl")
+    {
+        Vec2 vPos = GetPos();
+
+        GetGravity()->SetOnGround(true);
+    }
 }
 
 void CMonster::OnCollisionExit(CCollider* _pOther)
 {
+    if (_pOther->GetColTag() == "StageColl")
+    {
+        OutputDebugStringA("Collision Exit!\n");
+        GetGravity()->SetOnGround(false);
+    }
+}
+
+void CMonster::CheckPixelColor()
+{
+    if (m_pPixelCollider) {
+        Vec2 vPos = GetPos();
+
+        int playerHeightHalf = 32; // 예: 플레이어 높이의 절반
+        int offsetY = playerHeightHalf;
+
+        // 좌표 변환을 추가합니다. (필요에 따라 변환 방법 수정)
+        int x = static_cast<int>(vPos.x);
+        int y = static_cast<int>(vPos.y + offsetY);
+
+        // 좌표 변환을 추가합니다. (필요에 따라 변환 방법 수정)
+        if (x >= 0 && x < m_pPixelCollider->GetWidth() && y >= 0 && y < m_pPixelCollider->GetHeight()) {
+            PIXEL pixel = m_pPixelCollider->GetPixelColor(x, y);
+
+            if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255) {
+                if (GetCollider() && GetCollider()->GetColTag() != "StageColl") {
+                    GetCollider()->SetColTag("StageColl");
+
+                    // 가상 CCollider 객체 생성
+                    CCollider tempCollider;
+                    tempCollider.SetColTag("StageColl");
+
+                    // OnCollisionEnter 함수 호출
+                    OnCollisionEnter(&tempCollider);
+                }
+            }
+            else {
+                // 플레이어가 마젠타 색상을 벗어난 경우 OnCollisionExit 호출
+                if (GetCollider() && GetCollider()->GetColTag() == "StageColl") {
+                    // 가상 CCollider 객체 생성
+                    CCollider tempCollider;
+                    tempCollider.SetColTag("StageColl");
+
+                    // OnCollisionExit 함수 호출
+                    OnCollisionExit(&tempCollider);
+
+                    // Collider 태그 초기화
+                    GetCollider()->SetColTag("");
+                }
+            }
+        }
+        else {
+            OutputDebugStringA("Monster position out of bounds.\n");
+        }
+    }
+    else {
+        OutputDebugStringA("Pixel collider not set.\n");
+    }
 }
 
 void CMonster::Update_Animation()
@@ -158,7 +235,13 @@ void CMonster::Update()
         }
     }
 
+    else if (m_eCurMonState == MON_STATE::TRACE)
+    {
+    }
+
     SetPos(vMonCurPos);
+
+    CheckPixelColor();
 
     Update_Animation();
 }

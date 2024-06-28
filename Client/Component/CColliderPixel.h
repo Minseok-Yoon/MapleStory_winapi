@@ -13,29 +13,14 @@ public:
 
 private:
 	vector<PIXEL>	m_vecPixel;
-	int		m_iWidth;
-	int		m_iHeight;
-
-	CColliderPixel* m_pPixelCollider;
+	int				m_iWidth;
+	int				m_iHeight;
 
 public:
-	const vector<PIXEL>& GetPixel()	const
-	{
-		return m_vecPixel;
-	}
+	const vector<PIXEL>& GetPixel()	const { return m_vecPixel; }
 
-	int GetWidth()	const
-	{
-		return m_iWidth;
-	}
-
-	int GetHeight()	const
-	{
-		return m_iHeight;
-	}
-
-public:
-	void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
+	int GetWidth()	const { return m_iWidth; }
+	int GetHeight()	const {	return m_iHeight; }
 
 public:
 	// 픽셀 정보를 설정하는 함수

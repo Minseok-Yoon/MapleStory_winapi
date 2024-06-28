@@ -18,9 +18,16 @@ private:
     int                 m_iPrevDir;     // 플레이어의 이전 방향
     bool                m_bJump;
 
-    bool                m_bIsOnWall;
+    int                 m_iWallCollisionCount;
     bool                m_bLeftEnable;
     bool                m_bRightEnable;
+
+    // Portal관련
+    bool                m_bIsColPortal;
+    wstring             m_strPortalTag; // 충돌한 포탈의 태그를 저장하는 변수
+
+    // Attack관련
+    bool        m_bAttack;
 
     CTexture*           m_pTex;
     CColliderPixel*     m_pPixelCollider;
