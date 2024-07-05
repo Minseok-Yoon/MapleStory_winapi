@@ -4,11 +4,16 @@
 #include "../Component/CCollider.h"
 #include "../Component/CGravity.h"
 #include "../Module/AI.h"
+#include "../Manager/CEventManager.h"
 #include "../Resource/CTexture.h"
 #include "../Manager/CTimeManager.h"
 #include "../Manager/CResourceManager.h"
 #include "../Component/CAnimator.h"
 #include "../Component/CColliderPixel.h"
+#include "CItem.h"
+#include "CMeso.h"
+#include "../Scene/CScene.h"
+#include "../Manager/CSceneManager.h"
 
 CMonster::CMonster()
     : m_tMonInfo(),
@@ -21,12 +26,18 @@ CMonster::CMonster()
     m_fIdleTime(0.f), // 대기 시간 초기화
     m_bWaiting(false) // 대기 상태 초기화
 {
-    CreateCollider();
-    GetCollider()->SetOffsetPos(Vec2{ 0.f, 0.f });
-    GetCollider()->SetScale(Vec2{ 20.f, 20.f });
+    AddCollider();
+    auto monsterCollider = GetCollider().back();
+    monsterCollider->SetColTag("Monster");
+    monsterCollider->SetOffsetPos(Vec2{ 0.f, 0.f });
+    monsterCollider->SetScale(Vec2{ 20.f, 20.f });
+    monsterCollider->SetLayer(1);  // Player 레이어 설정
 
     MonsterAnimationClip();
+
     CreateGravity();
+
+    srand(static_cast<unsigned int>(time(nullptr)));
 }
 
 CMonster::~CMonster()
@@ -41,7 +52,7 @@ void CMonster::SetAI(AI* _AI)
     m_pAI->m_pMonster = this;
 }
 
-void CMonster::OnCollisionEnter(CCollider* _pOther)
+void CMonster::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "StageColl")
     {
@@ -50,9 +61,57 @@ void CMonster::OnCollisionEnter(CCollider* _pOther)
 
         GetGravity()->SetOnGround(true);
     }
+
+    if (_pOther->GetColTag() == "Attack")
+    {
+        m_iHP -= 1;
+        if (m_iHP <= 0 && m_eCurMonState != MON_STATE::DEAD)
+        {
+            OutputDebugStringA("Monster is dead!\n");
+            //DeleteObject(this);
+            m_eCurMonState = MON_STATE::DEAD;
+            Sleep(3.5);
+            DropItem();
+            DeleteObject(this);
+        }
+    }
 }
 
-void CMonster::OnCollision(CCollider* _pOther)
+void CMonster::DropItem()
+{
+    CScene* pScene = CSceneManager::GetInst()->GetCurScene();
+    Vec2 vPos = GetPos();
+
+    if (pScene)
+    {
+        // 50% 확률로 아이템 드롭
+        int itemDropChance = std::rand() % 100; // 0-99 사이의 랜덤 숫자 생성
+        if (itemDropChance < 100)
+        {
+            CItem* pItem = new CItem();
+            Vec2 vItemOffset = Vec2(-10.f, 0.f); // 아이템의 오프셋 설정 (왼쪽으로 10단위)
+            Vec2 vItemPos = vPos + vItemOffset;
+            pItem->SetItemInfo(vItemPos); // 몬스터의 위치에서 오프셋을 더하여 설정
+            pScene->AddObject(pItem, OBJECT_TYPE::ITEM);
+            OutputDebugStringA("Item dropped!\n");
+        }
+
+        // 100% 확률로 돈 드롭
+        CMeso* pMoney = new CMeso();
+        Vec2 vMoneyOffset = Vec2(20.f, 0.f); // 돈의 오프셋 설정 (오른쪽으로 20단위)
+        Vec2 vMoneyPos = vPos + vMoneyOffset;
+        pMoney->SetItemInfo(vMoneyPos); // 몬스터의 위치에서 오프셋을 더하여 설정
+        pMoney->SetMoneyAmount(100);
+        pScene->AddObject(pMoney, OBJECT_TYPE::MESO);
+        OutputDebugStringA("Money dropped!\n");
+    }
+    else
+    {
+        OutputDebugStringA("Failed to drop item or money: Scene not set.\n");
+    }
+}
+
+void CMonster::OnCollision(CCollider* _ColTag, CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "StageColl")
     {
@@ -62,7 +121,7 @@ void CMonster::OnCollision(CCollider* _pOther)
     }
 }
 
-void CMonster::OnCollisionExit(CCollider* _pOther)
+void CMonster::OnCollisionExit(CCollider* _ColTag, CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "StageColl")
     {
@@ -87,35 +146,29 @@ void CMonster::CheckPixelColor()
         if (x >= 0 && x < m_pPixelCollider->GetWidth() && y >= 0 && y < m_pPixelCollider->GetHeight()) {
             PIXEL pixel = m_pPixelCollider->GetPixelColor(x, y);
 
-            if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255) {
-                if (GetCollider() && GetCollider()->GetColTag() != "StageColl") {
-                    GetCollider()->SetColTag("StageColl");
-
-                    // 가상 CCollider 객체 생성
-                    CCollider tempCollider;
-                    tempCollider.SetColTag("StageColl");
-
-                    // OnCollisionEnter 함수 호출
-                    OnCollisionEnter(&tempCollider);
-                }
-            }
-            else {
-                // 플레이어가 마젠타 색상을 벗어난 경우 OnCollisionExit 호출
-                if (GetCollider() && GetCollider()->GetColTag() == "StageColl") {
-                    // 가상 CCollider 객체 생성
-                    CCollider tempCollider;
-                    tempCollider.SetColTag("StageColl");
-
-                    // OnCollisionExit 함수 호출
-                    OnCollisionExit(&tempCollider);
-
-                    // Collider 태그 초기화
-                    GetCollider()->SetColTag("");
+            for (auto collider : GetCollider())
+            {
+                if (collider && collider->GetLayer() == 1) {  // Player 레이어인지 확인
+                    if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255) {
+                        if (collider->GetColTag() != "StageColl") {
+                            // 기존 태그가 StageColl이 아니면 새로운 가상 Collider로 충돌 처리
+                            CCollider tempCollider;
+                            tempCollider.SetColTag("StageColl");
+                            OnCollisionEnter(collider, &tempCollider);
+                        }
+                    }
+                    else {
+                        if (collider->GetColTag() == "StageColl") {
+                            CCollider tempCollider;
+                            tempCollider.SetColTag("StageColl");
+                            OnCollisionExit(collider, &tempCollider);
+                        }
+                    }
                 }
             }
         }
         else {
-            OutputDebugStringA("Monster position out of bounds.\n");
+            OutputDebugStringA("Player position out of bounds.\n");
         }
     }
     else {
@@ -160,6 +213,18 @@ void CMonster::Update_Animation()
         }
         break;
 
+    case MON_STATE::DEAD:
+        if (m_iDir == -1)
+        {
+            GetAnimator()->Play(L"DeadLeft", false);
+        }
+        else
+        {
+            GetAnimator()->Play(L"DeadRight", false);
+        }
+
+        break;
+
     default:
         OutputDebugStringA("Current State is not IDLE\n");
         break;
@@ -177,6 +242,8 @@ void CMonster::MonsterAnimationClip()
     AddAnimationClip(L"StandLeft", L"texture\\Monster\\Idle\\Left\\%d.bmp", 2, 0.7f, 63.f, 58.f);
     AddAnimationClip(L"WalkRight", L"texture\\Monster\\Walk\\Right\\%d.bmp", 3, 0.6f, 64.f, 64.f);
     AddAnimationClip(L"WalkLeft", L"texture\\Monster\\Walk\\Left\\%d.bmp", 3, 0.6f, 64.f, 64.f);
+    AddAnimationClip(L"DeadRight", L"texture\\Monster\\Dead\\Right\\%d.bmp", 3, 0.5f, 61.f, 59.f);
+    AddAnimationClip(L"DeadLeft", L"texture\\Monster\\Dead\\Left\\%d.bmp", 3, 0.5f, 61.f, 59.f);
 }
 
 void CMonster::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, int iFrameMax, float fAnimationLimitTime, float fFrameSizeX, float fFrameSizeY)

@@ -93,6 +93,15 @@ void CAnimator::Pause(const wstring& _strName, bool _bPause)
 	}
 }
 
+bool CAnimator::End() const
+{
+	if (m_pCurAnim != nullptr)
+	{
+		return m_pCurAnim->IsEnd();
+	}
+	return false;
+}
+
 void CAnimator::Update()
 {
 }

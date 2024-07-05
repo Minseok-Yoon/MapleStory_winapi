@@ -26,21 +26,30 @@ CCollider::~CCollider()
 {
 }
 
-void CCollider::OnCollision(CCollider* _pOther)
+void CCollider::OnCollision(CCollider* _ColTag, CCollider* _pOther)
 {
-	m_pOwner->OnCollision(_pOther);
+	if (m_pOwner)
+	{
+		m_pOwner->OnCollision(_ColTag, _pOther);
+	}
 }
 
-void CCollider::OnCollisionEnter(CCollider* _pOther)
+void CCollider::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
 {
 	++m_iCol;
-	m_pOwner->OnCollisionEnter(_pOther);
+	if (m_pOwner)
+	{
+		m_pOwner->OnCollisionEnter(_ColTag, _pOther);
+	}
 }
 
-void CCollider::OnCollisionExit(CCollider* _pOther)
+void CCollider::OnCollisionExit(CCollider* _ColTag, CCollider* _pOther)
 {
 	--m_iCol;
-	m_pOwner->OnCollisionExit(_pOther);
+	if (m_pOwner)
+	{
+		m_pOwner->OnCollisionExit(_ColTag, _pOther);
+	}
 }
 
 void CCollider::FinalUpdate()

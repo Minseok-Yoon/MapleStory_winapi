@@ -27,7 +27,7 @@ private:
     wstring             m_strPortalTag; // 충돌한 포탈의 태그를 저장하는 변수
 
     // Attack관련
-    bool        m_bAttack;
+    bool                m_bIsColMonster;
 
     CTexture*           m_pTex;
     CColliderPixel*     m_pPixelCollider;
@@ -45,9 +45,11 @@ public:
    
     void CheckPixelColor();
 
-    virtual void OnCollisionEnter(CCollider* _pOther);
-    virtual void OnCollision(CCollider* _pOther);
-    virtual void OnCollisionExit(CCollider* _pOther);
+    void Attack();
+
+    virtual void OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnCollision(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnCollisionExit(CCollider* _ColTag, CCollider* _pOther);
 
     virtual void OnWallCollisionEnter(CCollider* _pOther);
     virtual void OnWallCollision(CCollider* _pOther);

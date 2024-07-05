@@ -24,6 +24,8 @@ private:
 	
 	bool			m_bActive;
 
+	int				m_iLayer;
+
 public:
 	string			m_strColTag;
 
@@ -47,11 +49,14 @@ public:
 
 	void SetActive(bool _bActive) { m_bActive = _bActive; }
 
+	void SetLayer(int layer) { m_iLayer = layer; }
+	int GetLayer() const { return m_iLayer; }
+
 public:
 	// 충돌 시점 함수
-	void OnCollision(CCollider* _pOther); // 충돌 중인 경우 호출되는 함수
-	void OnCollisionEnter(CCollider* _pOther);	// 충돌 진입 시
-	void OnCollisionExit(CCollider* _pOther);	// 충돌 해제 시
+	void OnCollision(CCollider* _ColTag, CCollider* _pOther); // 충돌 중인 경우 호출되는 함수
+	void OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther);	// 충돌 진입 시
+	void OnCollisionExit(CCollider* _ColTag, CCollider* _pOther);	// 충돌 해제 시
 
 	// 대입 연산자를 만들지 않게 하기 위해
 	CCollider& operator = (const CCollider& _origin) = delete;

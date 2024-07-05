@@ -18,92 +18,74 @@ CColliderManager::~CColliderManager()
 
 void CColliderManager::CollisionGroupUpdate(OBJECT_TYPE _eLeft, OBJECT_TYPE _eRight)
 {
-	CScene* pCurScene = CSceneManager::GetInst()->GetCurScene();
+    CScene* pCurScene = CSceneManager::GetInst()->GetCurScene();
 
-	const vector<CObject*>& vecLeft = pCurScene->GetGroupObject(_eLeft);
-	const vector<CObject*>& vecRight = pCurScene->GetGroupObject(_eRight);
-	map<ULONGLONG, bool>::iterator iter;
+    const vector<CObject*>& vecLeft = pCurScene->GetGroupObject(_eLeft);
+    const vector<CObject*>& vecRight = pCurScene->GetGroupObject(_eRight);
 
-	for (size_t i = 0; i < vecLeft.size(); ++i)
-	{
-		// 충돌체를 보유하지 않는 경우
-		if (nullptr == vecLeft[i]->GetCollider())
-		{
-			continue;
-		}
+    for (auto pLeftObj : vecLeft)
+    {
+        const vector<CCollider*>& vecLeftColliders = pLeftObj->GetCollider();
+        for (auto pLeftCol : vecLeftColliders)
+        {
+            for (auto pRightObj : vecRight)
+            {
+                if (pLeftObj == pRightObj)
+                {
+                    continue;
+                }
 
-		for (size_t j = 0; j < vecRight.size(); ++j)
-		{
-			// 충돌체가 없거나, 자기 자신과의 충돌인 경우
-			if (nullptr == vecRight[j]->GetCollider() ||
-				vecLeft[i] == vecRight[j])
-			{
-				continue;
-			}
+                const vector<CCollider*>& vecRightColliders = pRightObj->GetCollider();
+                for (auto pRightCol : vecRightColliders)
+                {
+                    ULONGLONG leftID = pLeftCol->GetID();
+                    ULONGLONG rightID = pRightCol->GetID();
 
-			CCollider* pLeftCol = vecLeft[i]->GetCollider();
-			CCollider* pRightCol = vecRight[j]->GetCollider();
+                    COLLIDER_ID colID;
+                    colID.Left_id = leftID;
+                    colID.Right_id = rightID;
 
-			// 두 충돌체 조합 아이디 생성
-			COLLIDER_ID ID;
-			ID.Left_id = pLeftCol->GetID();
-			ID.Right_id = pRightCol->GetID();
+                    bool isColliding = IsCollision(pLeftCol, pRightCol);
 
-			iter = m_mapColInfo.find(ID.ID);
-
-			// 충돌 정보가 미 등록 상태인 경우 등록(충돌하지 않았다 로)
-			if (m_mapColInfo.end() == iter)
-			{
-				m_mapColInfo.insert(make_pair(ID.ID, false));
-				iter = m_mapColInfo.find(ID.ID);
-			}
-
-			if (IsCollision(pLeftCol, pRightCol))
-			{
-				// 현재 충돌 중이다.
-				if (iter->second)
-				{
-					// 이전에도 충돌 하고 있었다.
-					if (vecLeft[i]->IsDead() || vecRight[j]->IsDead())
-					{
-						// 근데 둘중 하나가 삭제 예정이라면, 충돌 해제시켜준다.
-						pLeftCol->OnCollisionExit(pRightCol);
-						pRightCol->OnCollisionExit(pLeftCol);
-						iter->second = false;
-					}
-					else
-					{
-						pLeftCol->OnCollision(pRightCol);
-						pRightCol->OnCollision(pLeftCol);
-					}
-				}
-
-				else
-				{
-					// 이전에는 충돌하지 않았다.
-					// 근데 둘중 하나가 삭제 예정이라면, 충돌하지 않은것으로 취급	
-					if (!vecLeft[i]->IsDead() && !vecRight[j]->IsDead())
-					{
-						pLeftCol->OnCollisionEnter(pRightCol);
-						pRightCol->OnCollisionEnter(pLeftCol);
-						iter->second = true;
-					}
-				}
-			}
-
-			else
-			{
-				// 현재 충돌하고 있지 않다.
-				if (iter->second)
-				{
-					// 이전에는 충돌하고 있었다.
-					pLeftCol->OnCollisionExit(pRightCol);
-					pRightCol->OnCollisionExit(pLeftCol);
-					iter->second = false;
-				}
-			}
-		}
-	}
+                    if (isColliding)
+                    {
+                        if (m_mapColInfo[colID.ID])
+                        {
+                            if (pLeftObj->IsDead() || pRightObj->IsDead())
+                            {
+                                pLeftCol->OnCollisionExit(pLeftCol, pRightCol);
+                                pRightCol->OnCollisionExit(pRightCol, pLeftCol);
+                                m_mapColInfo[colID.ID] = false;
+                            }
+                            else
+                            {
+                                pLeftCol->OnCollision(pLeftCol, pRightCol);
+                                pRightCol->OnCollision(pRightCol, pLeftCol);
+                            }
+                        }
+                        else
+                        {
+                            if (!pLeftObj->IsDead() && !pRightObj->IsDead())
+                            {
+                                pLeftCol->OnCollisionEnter(pLeftCol, pRightCol);
+                                pRightCol->OnCollisionEnter(pRightCol, pLeftCol);
+                                m_mapColInfo[colID.ID] = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (m_mapColInfo[colID.ID])
+                        {
+                            pLeftCol->OnCollisionExit(pLeftCol, pRightCol);
+                            pRightCol->OnCollisionExit(pRightCol, pLeftCol);
+                            m_mapColInfo[colID.ID] = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 bool CColliderManager::IsCollision(CCollider* _pLeftCol, CCollider* _pRightCol)

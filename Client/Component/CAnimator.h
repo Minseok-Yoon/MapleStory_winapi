@@ -29,6 +29,7 @@ public:
 
 	void Play(const wstring& _strName, bool _bRepeat);
 	void Pause(const wstring& _strName, bool _bPause);
+	bool End() const;
 
 	void Update();
 	void FinalUpdate();

@@ -24,12 +24,21 @@ CPlayer::CPlayer() :
     m_bRightEnable(true),
     m_iWallCollisionCount(0),
     m_bIsColPortal(false),
-    m_bAttack(false)
+    m_bIsColMonster(false)
 {
-    CreateCollider();
-    GetCollider()->SetColTag("Monster");
-    GetCollider()->SetOffsetPos(Vec2{ 0.f, 0.f });
-    GetCollider()->SetScale(Vec2{ 20.f, 20.f });
+    AddCollider();
+    auto playerCollider = GetCollider().back();
+    playerCollider->SetColTag("Player");
+    playerCollider->SetOffsetPos(Vec2{ 0.f, 0.f });
+    playerCollider->SetScale(Vec2{ 20.f, 20.f });
+    playerCollider->SetLayer(1);  // Player 레이어 설정
+
+    AddCollider();
+    auto attackCollider = GetCollider().back();
+    attackCollider->SetColTag("Attack");
+    attackCollider->SetOffsetPos(Vec2{ 70.f, 0.f });
+    attackCollider->SetScale(Vec2{ 20.f, 20.f });
+    attackCollider->SetLayer(2);  // Attack 레이어 설정
 
     PlayerAnimationClip(); // Initialize animations
 
@@ -78,7 +87,12 @@ void CPlayer::Update_State()
     }
     else
     {
-        m_eCurState = PLAYER_STATE::IDLE; // 예시: IDLE 상태로 변경
+        m_eCurState = PLAYER_STATE::IDLE;
+    }
+
+    if (m_bIsColMonster && KEY_TAP(KEY::SPACE))
+    {
+        Attack();
     }
 }
 
@@ -152,7 +166,6 @@ void CPlayer::Update_Animation()
     break;
 
     default:
-        OutputDebugStringA("Current State is not IDLE\n");
         break;
     }
 
@@ -165,64 +178,45 @@ void CPlayer::CheckPixelColor()
     if (m_pPixelCollider) {
         Vec2 vPos = GetPos();
 
-        int playerHeightHalf = 32; // 예: 플레이어 높이의 절반
+        int playerHeightHalf = 32;
         int offsetY = playerHeightHalf;
 
-        // 좌표 변환을 추가합니다. (필요에 따라 변환 방법 수정)
         int x = static_cast<int>(vPos.x);
         int y = static_cast<int>(vPos.y + offsetY);
 
-        // 좌표 변환을 추가합니다. (필요에 따라 변환 방법 수정)
         if (x >= 0 && x < m_pPixelCollider->GetWidth() && y >= 0 && y < m_pPixelCollider->GetHeight()) {
             PIXEL pixel = m_pPixelCollider->GetPixelColor(x, y);
 
-            if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255) {
-                if (GetCollider() && GetCollider()->GetColTag() != "StageColl") {
-                    GetCollider()->SetColTag("StageColl");
-
-                    // 가상 CCollider 객체 생성
-                    CCollider tempCollider;
-                    tempCollider.SetColTag("StageColl");
-
-                    // OnCollisionEnter 함수 호출
-                    OnCollisionEnter(&tempCollider);
-                }
-            }
-            else if (pixel.r == 0 && pixel.g == 255 && pixel.b == 255) {
-                if (GetCollider() && GetCollider()->GetColTag() != "Wall") {
-                    GetCollider()->SetColTag("Wall");
-
-                    // 가상 CCollider 객체 생성
-                    CCollider tempCollider;
-                    tempCollider.SetColTag("Wall");
-
-                    // OnCollisionEnter 함수 호출
-                    OnWallCollisionEnter(&tempCollider);
-                }
-            }
-            else {
-                // 플레이어가 마젠타 색상을 벗어난 경우 OnCollisionExit 호출
-                if (GetCollider() && GetCollider()->GetColTag() == "StageColl") {
-                    // 가상 CCollider 객체 생성
-                    CCollider tempCollider;
-                    tempCollider.SetColTag("StageColl");
-
-                    // OnCollisionExit 함수 호출
-                    OnCollisionExit(&tempCollider);
-
-                    // Collider 태그 초기화
-                    GetCollider()->SetColTag("");
-                }
-                else if (GetCollider() && GetCollider()->GetColTag() == "Wall") {
-                    // 가상 CCollider 객체 생성
-                    CCollider tempCollider;
-                    tempCollider.SetColTag("Wall");
-
-                    // OnCollisionExit 함수 호출
-                    OnWallCollisionExit(&tempCollider);
-
-                    // Collider 태그 초기화
-                    GetCollider()->SetColTag("");
+            for (auto collider : GetCollider())
+            {
+                if (collider && collider->GetLayer() == 1) {  // Player 레이어인지 확인
+                    if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255) {
+                        if (collider->GetColTag() != "StageColl") {
+                            // 기존 태그가 StageColl이 아니면 새로운 가상 Collider로 충돌 처리
+                            CCollider tempCollider;
+                            tempCollider.SetColTag("StageColl");
+                            OnCollisionEnter(collider, &tempCollider);
+                        }
+                    }
+                    else if (pixel.r == 0 && pixel.g == 255 && pixel.b == 255) {
+                        if (collider->GetColTag() != "Wall") {
+                            CCollider tempCollider;
+                            tempCollider.SetColTag("Wall");
+                            OnWallCollisionEnter(&tempCollider);
+                        }
+                    }
+                    else {
+                        if (collider->GetColTag() == "StageColl") {
+                            CCollider tempCollider;
+                            tempCollider.SetColTag("StageColl");
+                            OnCollisionExit(collider, &tempCollider);
+                        }
+                        else if (collider->GetColTag() == "Wall") {
+                            CCollider tempCollider;
+                            tempCollider.SetColTag("Wall");
+                            OnWallCollisionExit(&tempCollider);
+                        }
+                    }
                 }
             }
         }
@@ -235,28 +229,64 @@ void CPlayer::CheckPixelColor()
     }
 }
 
-void CPlayer::OnCollisionEnter(CCollider* _pOther)
+void CPlayer::Attack()
 {
-    if (_pOther->GetColTag() == "Portal 0")
+    for (auto collider : GetCollider())
     {
-        OutputDebugStringA("Collidong Portal");
-        m_bIsColPortal = true; // Portal과 충돌 상태로 설정
-        m_strPortalTag = static_cast<CPortal*>(_pOther->GetOwner())->GetPortalTag(); // 충돌한 포탈의 태그 저장
+        if (collider->GetColTag() == "Attack")
+        {
+            // 공격 콜라이더 활성화
+            collider->SetActive(true);
+            break;
+        }
+    }
+
+    // 일정 시간 후에 공격 콜라이더 비활성화
+    // 이 부분은 비동기 타이머나 다른 방법으로 구현할 수 있습니다.
+    // 여기서는 단순 예시로 Sleep 사용
+    Sleep(100); // 100ms 동안 활성화 (조정 가능)
+
+    for (auto collider : GetCollider())
+    {
+        if (collider->GetColTag() == "Attack")
+        {
+            // 공격 콜라이더 비활성화
+            collider->SetActive(false);
+            break;
+        }
+    }
+}
+
+void CPlayer::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
+{
+    std::string debugMsg = "OnCollisionEnter called\n";
+    debugMsg += "Colliding with: " + _pOther->GetColTag() + "\n";
+    debugMsg += "Player Collider Tag: " + _ColTag->GetColTag() + "\n";
+    debugMsg += "Other Collider Tag: " + _pOther->GetColTag() + "\n";
+    OutputDebugStringA(debugMsg.c_str());
+
+    if (_ColTag->GetColTag() == "Player" && _pOther->GetColTag() == "Portal 0")
+    {
+        OutputDebugStringA("Colliding with Portal");
+        m_bIsColPortal = true;
+    }
+
+    if (_pOther->GetColTag() == "Player" && _pOther->GetColTag() == "Monster")
+    {
+        OutputDebugStringA("Collidering with Monster");
+        m_bIsColMonster = true;
     }
 
     if (_pOther->GetColTag() == "StageColl")
     {
-        OutputDebugStringA("Magenta Pixel Colliders!\n");
         Vec2 vPos = GetPos();
-
         GetGravity()->SetOnGround(true);
-
         m_bLeftEnable = true;
         m_bRightEnable = true;
     }
 }
 
-void CPlayer::OnCollision(CCollider* _pOther)
+void CPlayer::OnCollision(CCollider* _ColTag, CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "StageColl")
     {
@@ -265,21 +295,24 @@ void CPlayer::OnCollision(CCollider* _pOther)
 
         GetGravity()->SetOnGround(true);
     }
-
 }
 
-void CPlayer::OnCollisionExit(CCollider* _pOther)
+void CPlayer::OnCollisionExit(CCollider* _ColTag, CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "Portal 0")
     {
-        m_bIsColPortal = false; // Portal과 충돌 상태 해제
-        m_strPortalTag.clear(); // 포탈 태그 초기화
+        m_bIsColPortal = false;
+        m_strPortalTag.clear();
     }
 
     if (_pOther->GetColTag() == "StageColl")
     {
-        OutputDebugStringA("Collision Exit!\n");
         GetGravity()->SetOnGround(false);
+    }
+
+    if (_ColTag->GetColTag() == "Player" && _pOther->GetColTag() == "Monster")
+    {
+        m_bIsColMonster = false;
     }
 }
 

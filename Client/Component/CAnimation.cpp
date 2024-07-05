@@ -76,6 +76,7 @@ void CAnimation::Update()
 		{
 			m_iCurFrm = 0;
 			m_bFinish = true;
+			m_bEnd = true;
 		}
 	}
 }

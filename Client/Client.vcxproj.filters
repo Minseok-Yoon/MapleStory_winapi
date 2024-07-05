@@ -127,6 +127,12 @@
     <Filter Include="Engine\04. Object\Portal">
       <UniqueIdentifier>{03163314-fcc6-42a3-93a0-e59865000675}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\Item">
+      <UniqueIdentifier>{488d0c43-7c53-483b-b03c-65bec35c3626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Item\Meso">
+      <UniqueIdentifier>{520cade6-d02f-4fbd-8c8a-afdfa9a6857f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -258,6 +264,12 @@
     <ClInclude Include="Object\CPortal.h">
       <Filter>Engine\04. Object\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="Object\CItem.h">
+      <Filter>Engine\04. Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CMeso.h">
+      <Filter>Engine\04. Object\Item\Meso</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -370,6 +382,12 @@
     </ClCompile>
     <ClCompile Include="Object\CPortal.cpp">
       <Filter>Engine\04. Object\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CItem.cpp">
+      <Filter>Engine\04. Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CMeso.cpp">
+      <Filter>Engine\04. Object\Item\Meso</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

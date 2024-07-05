@@ -27,6 +27,7 @@ private:
 	float				m_fAccTime;		// 시간 누적
 	bool				m_bFinish;		// 재생 끝에 도달여부
 	bool				m_bPause;		// 일시정지 여부
+	bool				m_bEnd;			// 종료 여부
 
 	CAnimator*			m_pAnimator;	// 애니메이션의 제어
 	CTexture*			m_pTex;			// 애니메이션이 사용할 택스처
@@ -45,6 +46,7 @@ public:
 
 	bool IsFinish() { return m_bFinish; }
 	bool IsPause() { return m_bPause; }
+	bool IsEnd() { return m_bEnd; }
 
 	CAnimator* GetAnimator() { return m_pAnimator; }
 

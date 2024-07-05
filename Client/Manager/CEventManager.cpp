@@ -20,7 +20,11 @@ void CEventManager::Update()
 	// 이전 프레임에서 등록해둔 Dead Object들을 삭제한다.
 	for (size_t i = 0; i < m_vecDead.size(); ++i)
 	{
-		delete m_vecDead[i];
+		if (m_vecDead[i])
+		{
+			delete m_vecDead[i];
+			m_vecDead[i] = nullptr;
+		}
 	}
 	m_vecDead.clear();
 

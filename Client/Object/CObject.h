@@ -26,10 +26,10 @@ public:
 	bool			m_bAlive;
 
 	// Component
-	CCollider*		m_pCollider;
-	CColliderPixel* m_pPixelCollider;
-	CAnimator*		m_pAnimator;
-	CGravity*		m_pGravity;
+	vector<CCollider*>	m_vecCollider;
+	CColliderPixel*		m_pPixelCollider;
+	CAnimator*			m_pAnimator;
+	CGravity*			m_pGravity;
 
 
 public:
@@ -55,7 +55,7 @@ public:
 	void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
 
 public:
-	CCollider* GetCollider() { return m_pCollider; }
+	const vector<CCollider*>& GetCollider() const { return m_vecCollider; }
 	CAnimator* GetAnimator() { return m_pAnimator; }
 	CGravity* GetGravity() { return m_pGravity; }
 
@@ -63,13 +63,13 @@ private:
 	void SetDead() { m_bAlive = false; }
 
 public:
-	void CreateCollider();
+	void AddCollider();
 	void CreateAnimator();
 	void CreateGravity();
 
-	virtual void OnCollision(CCollider* _pOther) {}
-	virtual void OnCollisionEnter(CCollider* _pOther) {}
-	virtual void OnCollisionExit(CCollider* _pOther) {}
+	virtual void OnCollision(CCollider* _ColTag, CCollider* _pOther) {}
+	virtual void OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther) {}
+	virtual void OnCollisionExit(CCollider* _ColTag, CCollider* _pOther) {}
 
 public:
 	virtual void FastUpdate() {}; 	// Scene이 시작되기 직전에 호출되는 함수

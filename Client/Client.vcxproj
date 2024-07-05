@@ -176,6 +176,8 @@
     <ClInclude Include="Module\SelectGDI.h" />
     <ClInclude Include="Object\CBackGround.h" />
     <ClInclude Include="Object\CBtnUI.h" />
+    <ClInclude Include="Object\CItem.h" />
+    <ClInclude Include="Object\CMeso.h" />
     <ClInclude Include="Object\CMonster.h" />
     <ClInclude Include="Object\CObject.h" />
     <ClInclude Include="Object\CPlayer.h" />
@@ -223,6 +225,8 @@
     <ClCompile Include="Module\SelectGDI.cpp" />
     <ClCompile Include="Object\CBackGround.cpp" />
     <ClCompile Include="Object\CBtnUI.cpp" />
+    <ClCompile Include="Object\CItem.cpp" />
+    <ClCompile Include="Object\CMeso.cpp" />
     <ClCompile Include="Object\CMonster.cpp" />
     <ClCompile Include="Object\CObject.cpp" />
     <ClCompile Include="Object\CPlayer.cpp" />

@@ -47,12 +47,15 @@ enum class PEN_TYPE
 	RED,
 	GREEN,
 	BLUE,
+	YELLOW,
 	END,
 };
 
 enum class OBJECT_TYPE
 {
 	DEFAULT,
+	ITEM,
+	MESO,
 	PORTAL,
 	BACKGROUND,
 	PIXEL_BACKGROUND,

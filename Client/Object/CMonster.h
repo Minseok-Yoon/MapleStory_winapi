@@ -33,6 +33,8 @@ private:
     float       m_fMaxDistance;
     int         m_iDir;
     int         m_iPrevDir;
+
+    int         m_iHP = 2;
     
     CColliderPixel* m_pPixelCollider;
     tMonInfo    m_tMonInfo;
@@ -61,11 +63,12 @@ public:
 
 private:
     void    SetMonInfo(const tMonInfo& _Info) { m_tMonInfo = _Info; }
+    void    DropItem();
 
 public:
-    virtual void OnCollision(CCollider* _pOther);
-    virtual void OnCollisionEnter(CCollider* _pOther);
-    virtual void OnCollisionExit(CCollider* _pOther);
+    virtual void OnCollision(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnCollisionExit(CCollider* _ColTag, CCollider* _pOther);
 
 public:
     void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }

@@ -13,7 +13,7 @@
 CObject::CObject() :
 	m_vPos{},
 	m_vScale{},
-	m_pCollider(nullptr),
+	m_vecCollider{},
 	m_pAnimator(nullptr),
 	m_pGravity(nullptr),
 	m_bAlive(true)
@@ -24,15 +24,16 @@ CObject::CObject(const CObject& _origin)	:
 	m_strObjName(_origin.m_strObjName),
 	m_vPos(_origin.m_vPos),
 	m_vScale(_origin.m_vScale),
-	m_pCollider(nullptr),
+	m_vecCollider{},
 	m_pAnimator(nullptr),
 	m_pGravity(nullptr),
 	m_bAlive(true)
 {
-	if (_origin.m_pCollider)
+	for (const auto& collider : _origin.m_vecCollider)
 	{
-		m_pCollider = new CCollider(*_origin.m_pCollider);
-		m_pCollider->m_pOwner = this;
+		CCollider* newCollider = new CCollider(*collider);
+		newCollider->SetOwner(this);
+		m_vecCollider.push_back(newCollider);
 	}
 
 	if (_origin.m_pAnimator)
@@ -50,8 +51,10 @@ CObject::CObject(const CObject& _origin)	:
 
 CObject::~CObject()
 {
-	if (nullptr != m_pCollider)
-		delete m_pCollider;
+	for (auto collider : m_vecCollider)
+	{
+		delete collider;
+	}
 
 	if (nullptr != m_pAnimator)
 		delete m_pAnimator;
@@ -60,10 +63,11 @@ CObject::~CObject()
 		delete m_pGravity;
 }
 
-void CObject::CreateCollider()
+void CObject::AddCollider()
 {
-	m_pCollider = new CCollider;
-	m_pCollider->m_pOwner = this;
+	CCollider* newCollider = new CCollider();
+	newCollider->SetOwner(this);
+	m_vecCollider.push_back(newCollider);
 }
 
 void CObject::CreateAnimator()
@@ -80,8 +84,10 @@ void CObject::CreateGravity()
 
 void CObject::FinalUpdate()
 {
-	if (m_pCollider)
-		m_pCollider->FinalUpdate();
+	for (auto collider : m_vecCollider)
+	{
+		collider->FinalUpdate();
+	}
 
 	if (m_pAnimator)
 		m_pAnimator->FinalUpdate();
@@ -110,8 +116,8 @@ void CObject::ComponentRender(HDC _dc)
 		m_pAnimator->Render(_dc);
 	}
 
-	if(nullptr != m_pCollider)
+	for (auto collider : m_vecCollider)
 	{
-		m_pCollider->Render(_dc);
+		collider->Render(_dc);
 	}
 }

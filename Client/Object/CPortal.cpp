@@ -9,10 +9,10 @@ int CPortal::m_iPortalCount = 0;
 
 CPortal::CPortal()
 {
-	CreateCollider();
-	GetCollider()->SetOffsetPos(Vec2{ 0.f, 0.f });
-	GetCollider()->SetScale(Vec2{ 20.f, 20.f });
-	GetCollider()->SetColTag("Portal 0");
+	AddCollider();
+	GetCollider().back()->SetOffsetPos(Vec2{ 0.f, 0.f });
+	GetCollider().back()->SetScale(Vec2{ 20.f, 20.f });
+	GetCollider().back()->SetColTag("Portal 0");
 
     PortalAnimationClip();
 }
