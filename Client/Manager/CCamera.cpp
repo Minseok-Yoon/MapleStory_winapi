@@ -6,12 +6,14 @@
 #include "../Manager/CTimeManager.h"
 #include "../Manager/CResourceManager.h"
 #include "../Resource/CTexture.h"
+#include "../Scene/CScene.h"
+#include "../Manager/CSceneManager.h"
 
 CCamera::CCamera() :
 	m_pTargetObj(nullptr),
 	m_fTime(0.5f),
 	m_fSpeed(0.f),
-	m_fAccTime(0.5f),
+	m_fAccTime(0.f),
 	m_pVeilTex(nullptr),
 	m_listCamEffect{}
 {
@@ -20,7 +22,6 @@ CCamera::CCamera() :
 CCamera::~CCamera()
 {
 }
-
 
 void CCamera::CalDiff()
 {
@@ -45,11 +46,9 @@ void CCamera::CalDiff()
 	m_vPrevLookAt = m_vCurLookAt;
 }
 
-void CCamera::Init(const RESOLUTION& _tRS, const RESOLUTION& _tWorldRS)
-{
-	m_tClientRS = _tRS;			// { 1280, 760 }
-	m_tWorldRS = _tWorldRS;		// { 1368, 1061 }
 
+void CCamera::Init()
+{
 	// Core 클래스에서 위치 값을 받아온다.
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	m_pVeilTex = CResourceManager::GetInst()->CreateTexture(L"CameraVeil", (UINT)vResolution.x, (UINT)vResolution.y);
@@ -60,6 +59,11 @@ void CCamera::Init(const RESOLUTION& _tRS, const RESOLUTION& _tWorldRS)
 
 void CCamera::Update()
 {
+	CScene* pCurScene = CSceneManager::GetInst()->GetCurScene();
+	Vec2 vMapSize = pCurScene->GetMapSize();
+
+	Vec2 vResolution = CCore::GetInst()->GetResolution();
+
 	if (m_pTargetObj)
 	{
 		if (m_pTargetObj->IsDead())
@@ -68,19 +72,20 @@ void CCamera::Update()
 		}
 		else
 		{
-			m_vLookAt = m_pTargetObj->GetPos() - Vec2(m_tClientRS.iW * 0.5f, m_tClientRS.iH * 0.5f);
+			m_vLookAt = m_pTargetObj->GetPos() - Vec2(vResolution.x * 0.5f, vResolution .y * 0.5f);
 		}
+
 	}
 
 	if (m_vLookAt.x < 0)
 		m_vLookAt.x = 0;
-	else if (m_vLookAt.x > m_tWorldRS.iW - m_tClientRS.iW)
-		m_vLookAt.x = m_tWorldRS.iW - m_tClientRS.iW;
-	
+	else if (m_vLookAt.x > vMapSize.x - vResolution.x)
+		m_vLookAt.x = vMapSize.x - vResolution.x;
+
 	if (m_vLookAt.y < 0)
 		m_vLookAt.y = 0;
-	else if (m_vLookAt.y > m_tWorldRS.iH - m_tClientRS.iH)
-		m_vLookAt.y = (m_tWorldRS.iH - m_tClientRS.iH) - 10.f;
+	else if (m_vLookAt.y > vMapSize.y - vResolution.y)
+		m_vLookAt.y = (vMapSize.y - vResolution.y) - 10.f;
 
 	// 화면 중앙좌표와 카메라 LookAt좌표간의 차이값 계산
 	CalDiff();

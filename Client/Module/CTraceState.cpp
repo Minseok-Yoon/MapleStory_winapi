@@ -1,6 +1,5 @@
 #include "../pch.h"
 #include "CTraceState.h"
-
 #include "../Manager/CSceneManager.h"
 #include "../Scene/CScene.h"
 #include "../Object/CPlayer.h"
@@ -8,7 +7,9 @@
 #include "../Manager/CTimeManager.h"
 
 CTraceState::CTraceState() :
-	CState(MON_STATE::TRACE)
+	CState(MON_STATE::TRACE),
+	m_fLostTime(0.f),
+	m_fMaxLostTime(5.f)
 {
 }
 
@@ -18,22 +19,51 @@ CTraceState::~CTraceState()
 
 void CTraceState::Update()
 {
-	// 타겟팅 된 Player를 쫒아간다.
-	CPlayer* pPlayer = (CPlayer*)CSceneManager::GetInst()->GetCurScene()->GetPlayer();
-	Vec2 vPlayerPos = pPlayer->GetPos();
+    CPlayer* pPlayer = (CPlayer*)CSceneManager::GetInst()->GetCurScene()->GetPlayer();
+    Vec2 vPlayerPos = pPlayer->GetPos();
 
-	Vec2 vMonPos = GetMonster()->GetPos();
+    CMonster* pMonster = GetMonster();
+    Vec2 vMonPos = pMonster->GetPos();
 
-	Vec2 vMonDir = vPlayerPos - vMonPos;
-	vMonDir.Normalize();
+    Vec2 vMonDir = vPlayerPos - vMonPos;
+    vMonDir.Normalize();
 
-	vMonPos += vMonDir * GetMonster()->GetInfo().fSpeed * fDeltaTime;
+    // 몬스터의 충돌 상태를 확인
+    bool bIsCollidingWithStage = !pMonster->m_CollisionPoint.empty();
 
-	GetMonster()->SetPos(vMonPos);
+    // Y축 이동 제어
+    if (!bIsCollidingWithStage)
+    {
+        vMonPos += vMonDir * GetMonster()->GetInfo().fSpeed * fDeltaTime;
+    }
+    else
+    {
+        // 충돌 중일 때 Y축 이동을 막고 X축 이동만 수행
+        vMonPos.x += vMonDir.x * GetMonster()->GetInfo().fSpeed * fDeltaTime;
+    }
+
+    GetMonster()->SetPos(vMonPos);
+
+    // 추적 범위 체크
+    Vec2 vDiff = vPlayerPos - vMonPos;
+    float fLen = vDiff.Length();
+    if (fLen >= pMonster->GetInfo().fRecoRange)
+    {
+        m_fLostTime += fDeltaTime;
+        if (m_fLostTime >= m_fMaxLostTime)
+        {
+            ChangeAIState(GetAI(), MON_STATE::IDLE);
+        }
+    }
+    else
+    {
+        m_fLostTime = 0.f;
+    }
 }
 
 void CTraceState::Enter()
 {
+	m_fLostTime = 0.f;
 }
 
 void CTraceState::Exit()

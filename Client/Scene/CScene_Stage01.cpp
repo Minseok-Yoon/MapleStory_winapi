@@ -17,6 +17,7 @@
 CScene_Stage01::CScene_Stage01()
 {
 	m_pBackGround = CResourceManager::GetInst()->LoadTexture(L"InGameBackGround", L"texture\\Main.bmp");
+	SetMapSize(Vec2(1368.f, 1061.f));
 }
 
 CScene_Stage01::~CScene_Stage01()
@@ -97,11 +98,30 @@ void CScene_Stage01::Enter()
 	pMon->SetPixelCollider(pBackGround->GetPixelCollider());
 	AddObject(pMon, OBJECT_TYPE::MONSTER);
 
+	//vector<Vec2> monsterPositions = {
+	//	Vec2(680.f, 350.f)
+	//};
+	//
+	//for (const Vec2& pos : monsterPositions)
+	//{
+	//	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, pos)->Clone();
+	//	pMon->SetObjName(L"Orange Mushroom");
+	//	pMon->SetPixelCollider(pBackGround->GetPixelCollider());
+	//	AddObject(pMon, OBJECT_TYPE::MONSTER);
+
+	//	// 디버그 출력
+	//	char debugMessage[256];
+	//	sprintf_s(debugMessage, "Monster Position: %.2f, %.2f\n", pos.x, pos.y);
+	//	OutputDebugStringA(debugMessage);
+	//}
+
 	CCamera::GetInst()->FadeIn(1.f);
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 
 	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::MONSTER);
 	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::PORTAL);
+	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::ITEM);
+	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::MESO);
 	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::PLAYER, OBJECT_TYPE::PIXEL_BACKGROUND);
 	CColliderManager::GetInst()->CheckGroup(OBJECT_TYPE::MONSTER, OBJECT_TYPE::PIXEL_BACKGROUND);
 

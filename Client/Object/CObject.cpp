@@ -9,6 +9,7 @@
 #include "../Component/CColliderPixel.h"
 #include "../Component/CAnimator.h"
 #include "../Component/CGravity.h"
+#include "../Component/CRigidBody.h"
 
 CObject::CObject() :
 	m_vPos{},
@@ -16,6 +17,7 @@ CObject::CObject() :
 	m_vecCollider{},
 	m_pAnimator(nullptr),
 	m_pGravity(nullptr),
+	m_pRigidBody(nullptr),
 	m_bAlive(true)
 {
 }
@@ -27,6 +29,7 @@ CObject::CObject(const CObject& _origin)	:
 	m_vecCollider{},
 	m_pAnimator(nullptr),
 	m_pGravity(nullptr),
+	m_pRigidBody(nullptr),
 	m_bAlive(true)
 {
 	for (const auto& collider : _origin.m_vecCollider)
@@ -47,6 +50,12 @@ CObject::CObject(const CObject& _origin)	:
 		m_pGravity = new CGravity(*_origin.m_pGravity);
 		m_pGravity->m_pOwner = this;
 	}
+
+	if (_origin.m_pRigidBody)
+	{
+		m_pRigidBody = new CRigidBody(*_origin.m_pRigidBody);
+		m_pRigidBody->m_pOwner = this;
+	}
 }
 
 CObject::~CObject()
@@ -61,6 +70,9 @@ CObject::~CObject()
 
 	if (nullptr != m_pGravity)
 		delete m_pGravity;
+
+	if (nullptr != m_pRigidBody)
+		delete m_pRigidBody;
 }
 
 void CObject::AddCollider()
@@ -82,6 +94,12 @@ void CObject::CreateGravity()
 	m_pGravity->m_pOwner = this;
 }
 
+void CObject::CreateRigidBody()
+{
+	m_pRigidBody = new CRigidBody;
+	m_pRigidBody->m_pOwner = this;
+}
+
 void CObject::FinalUpdate()
 {
 	for (auto collider : m_vecCollider)
@@ -94,6 +112,9 @@ void CObject::FinalUpdate()
 
 	if (m_pGravity)
 		m_pGravity->FinalUpdate();
+
+	if (m_pRigidBody)
+		m_pRigidBody->FinalUpdate();
 }
 
 void CObject::Render(HDC _dc)

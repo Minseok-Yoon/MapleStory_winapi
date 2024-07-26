@@ -1,8 +1,7 @@
 #pragma once
 #include "CObject.h"
 
-class CTexture;
-class CColliderPixel;
+class CGravity;
 
 class CPlayer :
     public CObject
@@ -29,8 +28,17 @@ private:
     // Attack包访
     bool                m_bIsColMonster;
 
-    CTexture*           m_pTex;
-    CColliderPixel*     m_pPixelCollider;
+    // Pixel
+    PIXEL   m_CollisionPixelColor;
+    bool                m_bStageCollision;
+
+    // Rope 包访
+    bool                m_bRopeCollision;
+    Vec2                m_vRopePos;
+
+    CTexture* m_pTex;
+    CColliderPixel* m_pPixelCollider;
+    vector<Vec2> m_CollisionPoint;
 
 public:
     void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
@@ -41,19 +49,38 @@ public:
     void Update_Animation();
     void PlayerAnimationClip();
 
-    void AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, int iFrameMax, float fAnimationLimitTime, float fFrameSizeX, float fFrameSizeY);
-   
+    void AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath, int _iFrameMax, float _fAnimationLimitTime, float _fFrameSizeX, float _fFrameSizeY);
+
+    vector<Vec2>GetCollisionPoints(const Vec2& _vPos, int _iPlayerWidthHalf, int _iPlayerHeightHalf);
+    bool CheckPixelCollision(int _iPosX, int _iPosY, PIXEL& _pPixel, const string& _colTag);
+    void UpdateCollisionState(bool& _bIsColiding, bool _bCollisionDetected, const string& _strColTag, void (CPlayer::* onEnter)(), void (CPlayer::* onExit)());
     void CheckPixelColor();
 
-    void Attack();
+    // 面倒贸府 妮归
+    void OnStageCollisionEnter();
+    void OnStageCollisionExit();
+    void OnWallCollisionEnter();
+    void OnWallCollisionExit();
+    void OnRopeCollisionEnter();
+    void OnRopeCollisionExit();
 
     virtual void OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
     virtual void OnCollision(CCollider* _ColTag, CCollider* _pOther);
     virtual void OnCollisionExit(CCollider* _ColTag, CCollider* _pOther);
 
+    virtual void OnStageCollisionEnter(CCollider* _pOther);
+    virtual void OnStageCollision(CCollider* _pOther);
+    virtual void OnStageCollisionExit(CCollider* _pOther);
+
     virtual void OnWallCollisionEnter(CCollider* _pOther);
     virtual void OnWallCollision(CCollider* _pOther);
     virtual void OnWallCollisionExit(CCollider* _pOther);
+
+    virtual void OnRopeCollisionEnter(CCollider* _pOther);
+    virtual void OnRopeCollision(CCollider* _pOther);
+    virtual void OnRopeCollisionExit(CCollider* _pOther);
+
+    CGravity* GetGravity() { return m_pGravity; }
 
 public:
     virtual void Update();

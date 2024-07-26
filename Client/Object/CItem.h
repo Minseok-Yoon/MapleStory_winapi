@@ -12,16 +12,15 @@ public:
     CItem();
     ~CItem();
 
-private:
+public:
     Vec2 m_vPos;
 
 public:
-    void SetItemInfo(const Vec2& _pos);
+    void SetItemInfo(const Vec2& _pos) { m_vPos = _pos; };
     Vec2 GetItemInfo() const { return m_vPos; }
 
 public:
     virtual void Update();
-    virtual void FinalUpdate();
     virtual void Render(HDC _dc);
     CLONE(CItem);
 };

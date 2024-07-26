@@ -45,6 +45,12 @@ using std::sort;
 #include <math.h>
 #include <assert.h>
 
+#include <gdiplus.h>
+
+using namespace Gdiplus;
+
+#pragma comment(lib, "Gdiplus.lib")
+
 #pragma comment(lib, "Msimg32.lib")
 
 #include "Define.h"

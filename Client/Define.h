@@ -94,6 +94,7 @@ enum class PLAYER_STATE
 	WALK,
 	ATTACK,
 	JUMP,
+	ROPE,
 	DEAD,
 };
 
@@ -108,4 +109,12 @@ enum COLLIDER_TYPE
 {
 	CT_RECTANGLE,
 	CT_PIXEL
+};
+
+enum ITEM_TAG
+{
+	IT_NONE,
+	IT_RED_POTION,
+	IT_MESO,
+	IT_SIZE
 };

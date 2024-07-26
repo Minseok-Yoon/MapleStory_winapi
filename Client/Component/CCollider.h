@@ -18,6 +18,7 @@ private:
 	Vec2			m_vOffsetPos;	// 오브젝트로 부터 상대적인 위치
 	Vec2			m_vFinalPos;	// finalUpdate에서 매 프레임마다 계산
 	Vec2			m_vScale;		// 충돌체의 크기
+	Vec2			m_vPos;
 	
 	UINT			m_iID;			// 충돌체 고유한 ID 값
 	UINT			m_iCol;
@@ -41,6 +42,9 @@ public:
 
 	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
 	Vec2 GetScale() { return m_vScale; }
+
+	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
+	Vec2 GetPos() { return m_vPos; }
 
 	void SetColTag(string _strColTag) { m_strColTag = _strColTag; }
 	string GetColTag() { return m_strColTag; }

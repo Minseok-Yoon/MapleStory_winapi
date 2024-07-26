@@ -14,6 +14,7 @@
 #include "CMeso.h"
 #include "../Scene/CScene.h"
 #include "../Manager/CSceneManager.h"
+#include "../Component/CRigidBody.h"
 
 CMonster::CMonster()
     : m_tMonInfo(),
@@ -31,11 +32,12 @@ CMonster::CMonster()
     monsterCollider->SetColTag("Monster");
     monsterCollider->SetOffsetPos(Vec2{ 0.f, 0.f });
     monsterCollider->SetScale(Vec2{ 20.f, 20.f });
-    monsterCollider->SetLayer(1);  // Player 레이어 설정
+    monsterCollider->SetLayer(1);
 
     MonsterAnimationClip();
 
     CreateGravity();
+    CreateRigidBody();
 
     srand(static_cast<unsigned int>(time(nullptr)));
 }
@@ -52,31 +54,6 @@ void CMonster::SetAI(AI* _AI)
     m_pAI->m_pMonster = this;
 }
 
-void CMonster::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
-{
-    if (_pOther->GetColTag() == "StageColl")
-    {
-        OutputDebugStringA("Monster! Magenta Pixel Collidering!\n");
-        Vec2 vPos = GetPos();
-
-        GetGravity()->SetOnGround(true);
-    }
-
-    if (_pOther->GetColTag() == "Attack")
-    {
-        m_iHP -= 1;
-        if (m_iHP <= 0 && m_eCurMonState != MON_STATE::DEAD)
-        {
-            OutputDebugStringA("Monster is dead!\n");
-            //DeleteObject(this);
-            m_eCurMonState = MON_STATE::DEAD;
-            Sleep(3.5);
-            DropItem();
-            DeleteObject(this);
-        }
-    }
-}
-
 void CMonster::DropItem()
 {
     CScene* pScene = CSceneManager::GetInst()->GetCurScene();
@@ -91,7 +68,7 @@ void CMonster::DropItem()
             CItem* pItem = new CItem();
             Vec2 vItemOffset = Vec2(-10.f, 0.f); // 아이템의 오프셋 설정 (왼쪽으로 10단위)
             Vec2 vItemPos = vPos + vItemOffset;
-            pItem->SetItemInfo(vItemPos); // 몬스터의 위치에서 오프셋을 더하여 설정
+            pItem->SetPos(vItemPos); // 몬스터의 위치에서 오프셋을 더하여 설정
             pScene->AddObject(pItem, OBJECT_TYPE::ITEM);
             OutputDebugStringA("Item dropped!\n");
         }
@@ -100,7 +77,7 @@ void CMonster::DropItem()
         CMeso* pMoney = new CMeso();
         Vec2 vMoneyOffset = Vec2(20.f, 0.f); // 돈의 오프셋 설정 (오른쪽으로 20단위)
         Vec2 vMoneyPos = vPos + vMoneyOffset;
-        pMoney->SetItemInfo(vMoneyPos); // 몬스터의 위치에서 오프셋을 더하여 설정
+        pMoney->SetPos(vMoneyPos); // 몬스터의 위치에서 오프셋을 더하여 설정
         pMoney->SetMoneyAmount(100);
         pScene->AddObject(pMoney, OBJECT_TYPE::MESO);
         OutputDebugStringA("Money dropped!\n");
@@ -111,13 +88,38 @@ void CMonster::DropItem()
     }
 }
 
+void CMonster::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
+{
+    if (_pOther->GetColTag() == "StageColl")
+    {
+        //OutputDebugStringA("Monster! Magenta Pixel Collidering!\n");
+        Vec2 vPos = GetPos();
+        vPos.y = floor(vPos.y);
+        SetPos(vPos);
+        GetGravity()->SetOnGround(true);
+    }
+
+    if (_pOther->GetColTag() == "Attack")
+    {
+        m_iHP -= 1;
+        if (m_iHP <= 0 && m_eCurMonState != MON_STATE::DEAD)
+        {
+            m_eCurMonState = MON_STATE::DEAD;
+            Sleep(3.5);
+            DropItem();
+            DeleteObject(this);
+        }
+    }
+}
+
 void CMonster::OnCollision(CCollider* _ColTag, CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "StageColl")
     {
-        Vec2 vPos = GetPos();
-
         GetGravity()->SetOnGround(true);
+        Vec2 vPos = GetPos();
+        vPos.y = floor(vPos.y);
+        SetPos(vPos);
     }
 }
 
@@ -130,50 +132,108 @@ void CMonster::OnCollisionExit(CCollider* _ColTag, CCollider* _pOther)
     }
 }
 
+vector<Vec2> CMonster::GetCollisionPoint(const Vec2& _vPos, int _iMonHeightHalf)
+{
+    vector<Vec2> collisionPoint;
+    int offsetY = _iMonHeightHalf;
+
+    // 현재 위치의 정수 좌표로 계산
+    int x = static_cast<int>(_vPos.x);
+    int y = static_cast<int>(_vPos.y + offsetY);
+
+    // 충돌 좌표에  벡터를 추가
+    collisionPoint.emplace_back(Vec2(x, y));
+
+    // 디버깅 출력
+    /*for (const auto& point : collisionPoint) {
+        char debugOutput[100];
+        snprintf(debugOutput, sizeof(debugOutput), "Monster Collision Point: (%d, %d)\n", point.x, point.y);
+        OutputDebugStringA(debugOutput);
+    }*/
+
+    return collisionPoint;
+}
+
+bool CMonster::CheckPixelCollision(int _iPosX, int _iPosY, PIXEL& _pPixel, const string& _colTag)
+{
+    // 좌표가 픽셀 충돌 객체의 범위 내에 있는지 확인
+    if (_iPosX >= 0 && _iPosX < m_pPixelCollider->GetWidth() && _iPosY >= 0 && _iPosY < m_pPixelCollider->GetHeight()) {
+        _pPixel = m_pPixelCollider->GetPixelColor(_iPosX, _iPosY);
+
+        // 픽셀 값 디버깅 출력
+        char debugOutput[100];
+        snprintf(debugOutput, sizeof(debugOutput), "Monster Pixel Color at (%d, %d): (%d, %d, %d)\n",
+            _iPosX, _iPosY, static_cast<int>(_pPixel.r), static_cast<int>(_pPixel.g), static_cast<int>(_pPixel.b));
+        OutputDebugStringA(debugOutput);
+
+        // 충돌 태그에 따라 충돌 여부를 판정
+        if (_colTag == "StageColl") {
+            return (_pPixel.r == 255 && _pPixel.g == 0 && _pPixel.b == 255);
+        }
+    }
+    else {
+        OutputDebugStringA("Position out of bounds.\n");
+    }
+    return false;
+}
+
+void CMonster::UpdateCollisionState(bool& _bIsColiding, bool _bCollisionDetected, const string& _strColTag, void(CMonster::* onEnter)(), void(CMonster::* onExit)())
+{
+    if (_bCollisionDetected) {
+        if (!_bIsColiding) {
+            _bIsColiding = true;
+            (this->*onEnter)();
+        }
+    }
+    else {
+        if (_bIsColiding) {
+            _bIsColiding = false;
+            (this->*onExit)();
+        }
+    }
+}
+
 void CMonster::CheckPixelColor()
 {
+    static bool bIsCollStage = false;
+
     if (m_pPixelCollider) {
         Vec2 vPos = GetPos();
 
-        int playerHeightHalf = 32; // 예: 플레이어 높이의 절반
-        int offsetY = playerHeightHalf;
+        int monHeightHalf = 29; // 예: 플레이어 높이의 절반
+        int offsetY = monHeightHalf;
 
-        // 좌표 변환을 추가합니다. (필요에 따라 변환 방법 수정)
-        int x = static_cast<int>(vPos.x);
-        int y = static_cast<int>(vPos.y + offsetY);
+        auto collisionPoints = GetCollisionPoint(vPos, monHeightHalf);
+        m_CollisionPoint.clear();
 
-        // 좌표 변환을 추가합니다. (필요에 따라 변환 방법 수정)
-        if (x >= 0 && x < m_pPixelCollider->GetWidth() && y >= 0 && y < m_pPixelCollider->GetHeight()) {
-            PIXEL pixel = m_pPixelCollider->GetPixelColor(x, y);
+        // 충돌 감지 플래그 초기화
+        bool stageCollisionDetected = false;
 
-            for (auto collider : GetCollider())
-            {
-                if (collider && collider->GetLayer() == 1) {  // Player 레이어인지 확인
-                    if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255) {
-                        if (collider->GetColTag() != "StageColl") {
-                            // 기존 태그가 StageColl이 아니면 새로운 가상 Collider로 충돌 처리
-                            CCollider tempCollider;
-                            tempCollider.SetColTag("StageColl");
-                            OnCollisionEnter(collider, &tempCollider);
-                        }
-                    }
-                    else {
-                        if (collider->GetColTag() == "StageColl") {
-                            CCollider tempCollider;
-                            tempCollider.SetColTag("StageColl");
-                            OnCollisionExit(collider, &tempCollider);
-                        }
-                    }
-                }
+        PIXEL pixel;
+        for (const auto& point : collisionPoints) {
+            if (CheckPixelCollision(point.x, point.y, pixel, "StageColl")) {
+                m_CollisionPoint.emplace_back(point);
+                stageCollisionDetected = true;
             }
         }
-        else {
-            OutputDebugStringA("Player position out of bounds.\n");
-        }
+
+        UpdateCollisionState(bIsCollStage, stageCollisionDetected, "StageColl", &CMonster::OnStageCollisionEnter, &CMonster::OnStageCollisionExit);
     }
     else {
         OutputDebugStringA("Pixel collider not set.\n");
     }
+}
+
+void CMonster::OnStageCollisionEnter() {
+    CCollider tempCollider;
+    tempCollider.SetColTag("StageColl");
+    OnCollisionEnter(GetCollider().back(), &tempCollider);
+}
+
+void CMonster::OnStageCollisionExit() {
+    CCollider tempCollider;
+    tempCollider.SetColTag("StageColl");
+    OnCollisionExit(GetCollider().back(), &tempCollider);
 }
 
 void CMonster::Update_Animation()
@@ -262,6 +322,8 @@ void CMonster::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath,
 
 void CMonster::Update()
 {
+    CheckPixelColor();
+
     if (nullptr != m_pAI)
         m_pAI->Update();
 
@@ -308,8 +370,6 @@ void CMonster::Update()
 
     SetPos(vMonCurPos);
 
-    CheckPixelColor();
-
     Update_Animation();
 }
 
@@ -319,4 +379,16 @@ void CMonster::Render(HDC _dc)
 
     Vec2 vPos = GetPos();
     vPos = CCamera::GetInst()->GetRenderPos(vPos);
+
+    // 충돌 위치를 시각화
+    HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));
+    HBRUSH hOldBrush = (HBRUSH)SelectObject(_dc, hBrush);
+
+    for (const Vec2& point : m_CollisionPoint) {
+        Vec2 renderPos = CCamera::GetInst()->GetRenderPos(point);
+        Ellipse(_dc, static_cast<int>(renderPos.x - 2), static_cast<int>(renderPos.y - 2), static_cast<int>(renderPos.x + 2), static_cast<int>(renderPos.y + 2));
+    }
+
+    SelectObject(_dc, hOldBrush);
+    DeleteObject(hBrush);
 }

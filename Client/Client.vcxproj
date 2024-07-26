@@ -155,6 +155,7 @@
     <ClInclude Include="Component\CCollider.h" />
     <ClInclude Include="Component\CColliderPixel.h" />
     <ClInclude Include="Component\CGravity.h" />
+    <ClInclude Include="Component\CRigidBody.h" />
     <ClInclude Include="Core\CCore.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Factory\CMonFactory.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Module\SelectGDI.h" />
     <ClInclude Include="Object\CBackGround.h" />
     <ClInclude Include="Object\CBtnUI.h" />
+    <ClInclude Include="Object\CInventory.h" />
     <ClInclude Include="Object\CItem.h" />
     <ClInclude Include="Object\CMeso.h" />
     <ClInclude Include="Object\CMonster.h" />
@@ -205,6 +207,7 @@
     <ClCompile Include="Component\CCollider.cpp" />
     <ClCompile Include="Component\CColliderPixel.cpp" />
     <ClCompile Include="Component\CGravity.cpp" />
+    <ClCompile Include="Component\CRigidBody.cpp" />
     <ClCompile Include="Core\CCore.cpp" />
     <ClCompile Include="Factory\CMonFactory.cpp" />
     <ClCompile Include="func.cpp" />
@@ -225,6 +228,7 @@
     <ClCompile Include="Module\SelectGDI.cpp" />
     <ClCompile Include="Object\CBackGround.cpp" />
     <ClCompile Include="Object\CBtnUI.cpp" />
+    <ClCompile Include="Object\CInventory.cpp" />
     <ClCompile Include="Object\CItem.cpp" />
     <ClCompile Include="Object\CMeso.cpp" />
     <ClCompile Include="Object\CMonster.cpp" />

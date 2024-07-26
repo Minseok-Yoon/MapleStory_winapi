@@ -12,6 +12,7 @@ public:
 private:
 	wstring				m_strSceneName;						// Scene의 이름
 	
+	Vec2				m_vMapSize;
 	CObject*			m_pPlayer;
 
 public:
@@ -21,6 +22,9 @@ public:
 	// Scene의 이름을 설정(Set)과 반환(Get)하는 함수
 	void SetSceneName(const wstring& _strSceneName) { m_strSceneName = _strSceneName; }
 	const wstring& GetSceneName() const { return m_strSceneName; }
+
+	void SetMapSize(Vec2 _vMapSize) { m_vMapSize = _vMapSize; }
+	Vec2 GetMapSize() { return m_vMapSize; }
 
 	CObject* GetPlayer() { return m_pPlayer; }
 

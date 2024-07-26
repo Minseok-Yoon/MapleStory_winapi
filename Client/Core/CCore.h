@@ -13,6 +13,7 @@ private:
 	HBRUSH		m_arrBrush[(UINT)BRUSH_TYPE::END];	// 브러쉬 배열 생성
 	HPEN		m_arrPen[(UINT)PEN_TYPE::END];		// 펜 배열 생성
 	
+	bool		m_bRenderOption;
 	CTexture*	m_pMemTex;							// 백버퍼 택스처
 
 public:
@@ -30,4 +31,6 @@ public:
 	POINT	GetResolution() { return m_ptResolution; }
 	HBRUSH	GetBrush(BRUSH_TYPE _eBrush) { return m_arrBrush[(UINT)_eBrush]; }
 	HPEN	GetPen(PEN_TYPE _ePen) { return m_arrPen[(UINT)_ePen]; }
+
+	bool GetRenderOption() { return m_bRenderOption; }
 };

@@ -1,6 +1,5 @@
 #include "../pch.h"
 #include "CIdleState.h"
-
 #include "../Manager/CSceneManager.h"
 #include "../Scene/CScene.h"
 #include "../Object/CPlayer.h"

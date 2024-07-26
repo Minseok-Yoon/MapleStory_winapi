@@ -11,7 +11,7 @@ CMeso::CMeso() :
     auto moneyCollider = GetCollider().back();
     moneyCollider->SetColTag("Meso");
     moneyCollider->SetOffsetPos(Vec2{ 0.f, 0.f });
-    moneyCollider->SetScale(Vec2{ 20.f, 20.f });
+    moneyCollider->SetScale(Vec2{ 30.f, 30.f });
     moneyCollider->SetLayer(1);
 }
 
@@ -23,15 +23,11 @@ void CMeso::Update()
 {
 }
 
-void CMeso::FinalUpdate()
-{
-}
-
 void CMeso::Render(HDC _dc)
 {
     CObject::ComponentRender(_dc);
 
-    Vec2 vPos = GetItemInfo();
+    Vec2 vPos = GetPos();
     vPos = CCamera::GetInst()->GetRenderPos(vPos);
 
     // 돈의 렌더링 로직 추가

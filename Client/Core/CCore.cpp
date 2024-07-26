@@ -53,7 +53,7 @@ int CCore::Init(HWND _hWnd, POINT _ptResolution)
 	CPathManager::GetInst()->Init();
 	CTimeManager::GetInst()->Init();
 	CKeyManager::GetInst()->Init();
-	CCamera::GetInst()->Init(RESOLUTION(m_ptResolution.x, m_ptResolution.y), RESOLUTION(1368, 1071));
+	CCamera::GetInst()->Init();
 	CSceneManager::GetInst()->Init();
 
 	return S_OK;

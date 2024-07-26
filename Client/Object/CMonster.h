@@ -19,6 +19,7 @@ class CMonster :
     public CObject
 {
     friend class CMonFactory;
+    friend class CTraceState;
 
 public:
     CMonster();
@@ -27,7 +28,7 @@ public:
 private:
     MON_STATE   m_eCurMonState;
     MON_STATE   m_ePrevMonState;
-    CTexture*   m_pTex;
+    CTexture* m_pTex;
     Vec2        m_vCenterPos;
     float       m_fSpeed;
     float       m_fMaxDistance;
@@ -35,11 +36,12 @@ private:
     int         m_iPrevDir;
 
     int         m_iHP = 2;
-    
+
+    vector<Vec2> m_CollisionPoint;
+
     CColliderPixel* m_pPixelCollider;
     tMonInfo    m_tMonInfo;
-    AI*         m_pAI;
-
+    AI* m_pAI;
 
 private:
     float m_fIdleTime; // 대기 시간을 관리하는 변수
@@ -61,6 +63,9 @@ public:
 
     void    SetAI(AI* _AI);
 
+public:
+    bool    IsCollidingWithStage() const { return !m_CollisionPoint.empty(); }
+
 private:
     void    SetMonInfo(const tMonInfo& _Info) { m_tMonInfo = _Info; }
     void    DropItem();
@@ -72,7 +77,15 @@ public:
 
 public:
     void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
+
+    vector<Vec2>GetCollisionPoint(const Vec2& _vPos, int _iMonHeightHalf);
+    bool CheckPixelCollision(int _iPosX, int _iPosY, PIXEL& _pPixel, const string& _colTag);
+    void UpdateCollisionState(bool& _bIsColiding, bool _bCollisionDetected, const string& _strColTag, void(CMonster::* onEnter)(), void(CMonster::* onExit)());
     void CheckPixelColor();
+
+    // 충돌처리 콜백
+    void OnStageCollisionEnter();
+    void OnStageCollisionExit();
 
 public:
     void Update_Animation();

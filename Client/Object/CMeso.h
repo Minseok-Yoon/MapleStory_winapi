@@ -15,8 +15,6 @@ public:
     int GeMoneyAmount() const { return m_iMoneyAmount; }
 
 public:
-public:
     virtual void Update();
-    virtual void FinalUpdate();
     virtual void Render(HDC _dc);
 };
