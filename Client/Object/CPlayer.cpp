@@ -171,77 +171,50 @@ void CPlayer::Update_Move()
 
 void CPlayer::Update_Animation()
 {
-    // 애니메이션 상태를 초기화
-    static bool isAnimating = false;
-
     switch (m_eCurState)
     {
     case PLAYER_STATE::IDLE:
-        if (!isAnimating || m_iPrevDir != m_iDir)
+    {
+        if (m_iDir == -1)
         {
-            if (m_iDir == -1)
-            {
-                GetAnimator()->Play(L"StandLeft", true);
-            }
-            else
-            {
-                GetAnimator()->Play(L"StandRight", true);
-            }
-            isAnimating = true;
+            GetAnimator()->Play(L"StandLeft", true);
         }
-        break;
+        else {
+            GetAnimator()->Play(L"StandRight", true);
+        }
+    }
+    break;
 
     case PLAYER_STATE::WALK:
-        if (!isAnimating || m_iPrevDir != m_iDir)
+    {
+        if (m_iDir == -1)
         {
-            if (m_iDir == -1)
-            {
-                GetAnimator()->Play(L"WalkLeft", true);
-            }
-            else
-            {
-                GetAnimator()->Play(L"WalkRight", true);
-            }
-            isAnimating = true;
+            GetAnimator()->Play(L"WalkLeft", true);
         }
-        break;
+        else {
+            GetAnimator()->Play(L"WalkRight", true);
+        }
+    }
+    break;
 
     case PLAYER_STATE::JUMP:
-        if (!isAnimating || m_iPrevDir != m_iDir)
+    {
+        if (m_iDir == -1)
         {
-            if (m_iDir == -1)
-            {
-                GetAnimator()->Play(L"JumpLeft", true);
-            }
-            else
-            {
-                GetAnimator()->Play(L"JumpRight", true);
-            }
-            isAnimating = true;
+            GetAnimator()->Play(L"JumpLeft", true);
         }
-        break;
+        else {
+            GetAnimator()->Play(L"JumpRight", true);
+        }
+    }
+    break;
 
     case PLAYER_STATE::ROPE:
-        if (!isAnimating)
-        {
-            GetAnimator()->Play(L"Rope", true);
-            isAnimating = true;
-        }
-        break;
+        GetAnimator()->Play(L"Rope", true);
+    break;
 
     default:
-        // 기본 상태 처리 (예: 플레이어가 상태를 알 수 없는 경우)
         break;
-    }
-
-    // 애니메이션 상태 업데이트
-    if (m_eCurState != PLAYER_STATE::IDLE && m_eCurState != PLAYER_STATE::ROPE)
-    {
-        isAnimating = true;
-    }
-    else if (m_eCurState == PLAYER_STATE::IDLE || m_eCurState == PLAYER_STATE::ROPE)
-    {
-        isAnimating = false;
     }
 
     m_ePrevState = m_eCurState;
