@@ -93,27 +93,22 @@ void CScene_Stage01::Enter()
 
 	// 몬스터 배치
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
-	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(350.f, 0.f));
-	pMon->SetObjName(L"Orange Mushroom");
-	pMon->SetPixelCollider(pBackGround->GetPixelCollider());
-	AddObject(pMon, OBJECT_TYPE::MONSTER);
 
-	//vector<Vec2> monsterPositions = {
-	//	Vec2(680.f, 350.f)
-	//};
-	//
-	//for (const Vec2& pos : monsterPositions)
-	//{
-	//	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, pos)->Clone();
-	//	pMon->SetObjName(L"Orange Mushroom");
-	//	pMon->SetPixelCollider(pBackGround->GetPixelCollider());
-	//	AddObject(pMon, OBJECT_TYPE::MONSTER);
+	// 몬스터 생성할 위치 리스트
+	std::vector<Vec2> monsterPositions = {
+		Vec2(350.f, 415.f),
+		Vec2(650.f, 360.f),
+		Vec2(150.f, 820.f),
+		Vec2(860.f, 540.f)
+	};
 
-	//	// 디버그 출력
-	//	char debugMessage[256];
-	//	sprintf_s(debugMessage, "Monster Position: %.2f, %.2f\n", pos.x, pos.y);
-	//	OutputDebugStringA(debugMessage);
-	//}
+	// 몬스터 생성 반복문
+	for (const auto& pos : monsterPositions) {
+		CMonster* pMonster = CMonFactory::CreateMonster(MON_TYPE::NORMAL, pos);
+		pMonster->SetObjName(L"Monster");
+		pMonster->SetPixelCollider(pBackGround->GetPixelCollider());
+		AddObject(pMonster, OBJECT_TYPE::MONSTER);
+	}
 
 	CCamera::GetInst()->FadeIn(1.f);
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);

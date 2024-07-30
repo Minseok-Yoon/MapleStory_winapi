@@ -1,5 +1,6 @@
 #pragma once
 #include "../pch.h"
+#include "../Factory/CMonFactory.h"
 
 class CObject;
 

@@ -38,6 +38,7 @@ CMonster::CMonster()
 
     CreateGravity();
     CreateRigidBody();
+    CheckPixelColor();
 
     srand(static_cast<unsigned int>(time(nullptr)));
 }
@@ -90,9 +91,12 @@ void CMonster::DropItem()
 
 void CMonster::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
 {
+    std::string colTag = _ColTag->GetColTag();
+    OutputDebugStringA(("OnCollisionEnter called with tag: " + colTag + "\n").c_str());
+
     if (_pOther->GetColTag() == "StageColl")
     {
-        //OutputDebugStringA("Monster! Magenta Pixel Collidering!\n");
+        OutputDebugStringA("Collision Enter with StageColl detected.\n");
         Vec2 vPos = GetPos();
         vPos.y = floor(vPos.y);
         SetPos(vPos);
@@ -132,6 +136,27 @@ void CMonster::OnCollisionExit(CCollider* _ColTag, CCollider* _pOther)
     }
 }
 
+void CMonster::OnStageEndCollision(CCollider* _ColTag, CCollider* _pOther)
+{
+}
+
+void CMonster::OnStageEndCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
+{
+    if (_pOther->GetColTag() == "StageCollEnd")
+    {
+        if (m_eCurMonState == MON_STATE::PATROL || m_eCurMonState == MON_STATE::TRACE) {
+            m_iDir *= -1; // 방향 전환
+        }
+    }
+}
+
+void CMonster::OnStageEndCollisionExit(CCollider* _ColTag, CCollider* _pOther)
+{
+    if (_pOther->GetColTag() == "StageCollEnd")
+    {
+    }
+}
+
 vector<Vec2> CMonster::GetCollisionPoint(const Vec2& _vPos, int _iMonHeightHalf)
 {
     vector<Vec2> collisionPoint;
@@ -141,15 +166,14 @@ vector<Vec2> CMonster::GetCollisionPoint(const Vec2& _vPos, int _iMonHeightHalf)
     int x = static_cast<int>(_vPos.x);
     int y = static_cast<int>(_vPos.y + offsetY);
 
+    // 좌우 충돌 검사 좌표를 계산
+    int xLeft = x - 10.f;
+    int xRight = x + 10.f;
+
     // 충돌 좌표에  벡터를 추가
     collisionPoint.emplace_back(Vec2(x, y));
-
-    // 디버깅 출력
-    /*for (const auto& point : collisionPoint) {
-        char debugOutput[100];
-        snprintf(debugOutput, sizeof(debugOutput), "Monster Collision Point: (%d, %d)\n", point.x, point.y);
-        OutputDebugStringA(debugOutput);
-    }*/
+    collisionPoint.emplace_back(Vec2(xLeft, y));
+    collisionPoint.emplace_back(Vec2(xRight, y));
 
     return collisionPoint;
 }
@@ -170,6 +194,10 @@ bool CMonster::CheckPixelCollision(int _iPosX, int _iPosY, PIXEL& _pPixel, const
         if (_colTag == "StageColl") {
             return (_pPixel.r == 255 && _pPixel.g == 0 && _pPixel.b == 255);
         }
+        else if (_colTag == "StageEnd") {
+            return (_pPixel.r == 128 && _pPixel.g == 0 && _pPixel.b == 0);
+        }
+
     }
     else {
         OutputDebugStringA("Position out of bounds.\n");
@@ -195,8 +223,6 @@ void CMonster::UpdateCollisionState(bool& _bIsColiding, bool _bCollisionDetected
 
 void CMonster::CheckPixelColor()
 {
-    static bool bIsCollStage = false;
-
     if (m_pPixelCollider) {
         Vec2 vPos = GetPos();
 
@@ -208,6 +234,7 @@ void CMonster::CheckPixelColor()
 
         // 충돌 감지 플래그 초기화
         bool stageCollisionDetected = false;
+        bool stageEndCollisionDectected = false;
 
         PIXEL pixel;
         for (const auto& point : collisionPoints) {
@@ -217,7 +244,17 @@ void CMonster::CheckPixelColor()
             }
         }
 
+        // 벽 충돌 검사
+        for (size_t i = 1; i <= 2; ++i) {
+            const auto& point = collisionPoints[i];
+            if (CheckPixelCollision(point.x, point.y, pixel, "Wall")) {
+                m_CollisionPoint.emplace_back(point);
+                stageEndCollisionDectected = true;
+            }
+        }
+
         UpdateCollisionState(bIsCollStage, stageCollisionDetected, "StageColl", &CMonster::OnStageCollisionEnter, &CMonster::OnStageCollisionExit);
+        UpdateCollisionState(bIsCollStageEnd, stageCollisionDetected, "StageCollEnd", &CMonster::OnStageEndCollisionEnter, &CMonster::OnStageEndCollisionExit);
     }
     else {
         OutputDebugStringA("Pixel collider not set.\n");
@@ -233,6 +270,18 @@ void CMonster::OnStageCollisionEnter() {
 void CMonster::OnStageCollisionExit() {
     CCollider tempCollider;
     tempCollider.SetColTag("StageColl");
+    OnCollisionExit(GetCollider().back(), &tempCollider);
+}
+
+void CMonster::OnStageEndCollisionEnter() {
+    CCollider tempCollider;
+    tempCollider.SetColTag("StageCollEnd");
+    OnCollisionEnter(GetCollider().back(), &tempCollider);
+}
+
+void CMonster::OnStageEndCollisionExit() {
+    CCollider tempCollider;
+    tempCollider.SetColTag("StageCollEnd");
     OnCollisionExit(GetCollider().back(), &tempCollider);
 }
 
@@ -362,10 +411,6 @@ void CMonster::Update()
                 m_iDir *= -1;
             }
         }
-    }
-
-    else if (m_eCurMonState == MON_STATE::TRACE)
-    {
     }
 
     SetPos(vMonCurPos);

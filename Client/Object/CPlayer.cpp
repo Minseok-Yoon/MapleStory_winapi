@@ -60,8 +60,9 @@ void CPlayer::PlayerAnimationClip()
     AddAnimationClip(L"StandLeft", L"texture\\Player\\Idle\\Left\\%d.bmp", 3, 0.7f, 54.f, 65.f);
     AddAnimationClip(L"WalkRight", L"texture\\Player\\Walk\\Right\\%d.bmp", 4, 0.3f, 54.f, 65.f);
     AddAnimationClip(L"WalkLeft", L"texture\\Player\\Walk\\Left\\%d.bmp", 4, 0.3f, 54.f, 65.f);
-    AddAnimationClip(L"JumpRight", L"texture\\Player\\Jump\\Right\\%d.bmp", 1, 0.3f, 54.f, 65.f);
+    AddAnimationClip(L"JumpRight", L"texture\\Player\\Jump\\Right\\%d.bmp", 1, 5.3f, 54.f, 65.f);
     AddAnimationClip(L"JumpLeft", L"texture\\Player\\Jump\\Left\\%d.bmp", 1, 1.3f, 54.f, 65.f);
+    AddAnimationClip(L"Rope", L"texture\\Player\\Rope\\%d.bmp", 2, 1.3f, 54.f, 65.f);
 }
 
 void CPlayer::AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath, int _iFrameMax, float _fAnimationLimitTime, float _fFrameSizeX, float _fFrameSizeY)
@@ -80,18 +81,22 @@ void CPlayer::AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath
 
 void CPlayer::Update_State()
 {
-    if (m_bRopeCollision && (KEY_TAP(KEY::UP) || KEY_HOLD(KEY::UP)))
+    if (m_bRopeCollision)
     {
         m_eCurState = PLAYER_STATE::ROPE;
     }
 
-    if (KEY_TAP(KEY::LEFT) || KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::RIGHT) || KEY_HOLD(KEY::RIGHT))
+    if (KEY_TAP(KEY::UP) && m_bRopeCollision ||
+        KEY_HOLD(KEY::UP) && m_bRopeCollision)
     {
-        m_eCurState = PLAYER_STATE::WALK;
+        m_bRopeCollision = true;
+        m_eCurState = PLAYER_STATE::ROPE;
     }
-    else
+
+    if (KEY_TAP(KEY::DOWN) && m_bRopeCollision ||
+        KEY_HOLD(KEY::DOWN) && m_bRopeCollision)
     {
-        m_eCurState = PLAYER_STATE::IDLE;
+        m_eCurState = PLAYER_STATE::ROPE;
     }
 
     if (KEY_TAP(KEY::Z))
@@ -102,6 +107,15 @@ void CPlayer::Update_State()
         {
             GetRigidBody()->SetVelocity(Vec2(GetRigidBody()->GetVelocity().x, -200.f));
         }
+    }
+
+    if (KEY_TAP(KEY::LEFT) || KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::RIGHT) || KEY_HOLD(KEY::RIGHT))
+    {
+        m_eCurState = PLAYER_STATE::WALK;
+    }
+    else
+    {
+        m_eCurState = PLAYER_STATE::IDLE;
     }
 }
 
@@ -157,46 +171,77 @@ void CPlayer::Update_Move()
 
 void CPlayer::Update_Animation()
 {
+    // 애니메이션 상태를 초기화
+    static bool isAnimating = false;
+
     switch (m_eCurState)
     {
     case PLAYER_STATE::IDLE:
-    {
-        if (m_iDir == -1)
+        if (!isAnimating || m_iPrevDir != m_iDir)
         {
-            GetAnimator()->Play(L"StandLeft", true);
+            if (m_iDir == -1)
+            {
+                GetAnimator()->Play(L"StandLeft", true);
+            }
+            else
+            {
+                GetAnimator()->Play(L"StandRight", true);
+            }
+            isAnimating = true;
         }
-        else {
-            GetAnimator()->Play(L"StandRight", true);
-        }
-    }
-    break;
+        break;
 
     case PLAYER_STATE::WALK:
-    {
-        if (m_iDir == -1)
+        if (!isAnimating || m_iPrevDir != m_iDir)
         {
-            GetAnimator()->Play(L"WalkLeft", true);
+            if (m_iDir == -1)
+            {
+                GetAnimator()->Play(L"WalkLeft", true);
+            }
+            else
+            {
+                GetAnimator()->Play(L"WalkRight", true);
+            }
+            isAnimating = true;
         }
-        else {
-            GetAnimator()->Play(L"WalkRight", true);
-        }
-    }
-    break;
+        break;
 
     case PLAYER_STATE::JUMP:
-    {
-        if (m_iDir == -1)
+        if (!isAnimating || m_iPrevDir != m_iDir)
         {
-            GetAnimator()->Play(L"JumpLeft", true);
+            if (m_iDir == -1)
+            {
+                GetAnimator()->Play(L"JumpLeft", true);
+            }
+            else
+            {
+                GetAnimator()->Play(L"JumpRight", true);
+            }
+            isAnimating = true;
         }
-        else {
-            GetAnimator()->Play(L"JumpRight", true);
+        break;
+
+    case PLAYER_STATE::ROPE:
+        if (!isAnimating)
+        {
+            GetAnimator()->Play(L"Rope", true);
+            isAnimating = true;
         }
-    }
-    break;
+        break;
 
     default:
+        // 기본 상태 처리 (예: 플레이어가 상태를 알 수 없는 경우)
         break;
+    }
+
+    // 애니메이션 상태 업데이트
+    if (m_eCurState != PLAYER_STATE::IDLE && m_eCurState != PLAYER_STATE::ROPE)
+    {
+        isAnimating = true;
+    }
+    else if (m_eCurState == PLAYER_STATE::IDLE || m_eCurState == PLAYER_STATE::ROPE)
+    {
+        isAnimating = false;
     }
 
     m_ePrevState = m_eCurState;
@@ -236,6 +281,12 @@ bool CPlayer::CheckPixelCollision(int _iPosX, int _iPosY, PIXEL& _pPixel, const 
     // 좌표가 픽셀 충돌 객체의 범위 내에 있는지 확인
     if (_iPosX >= 0 && _iPosX < m_pPixelCollider->GetWidth() && _iPosY >= 0 && _iPosY < m_pPixelCollider->GetHeight()) {
         _pPixel = m_pPixelCollider->GetPixelColor(_iPosX, _iPosY);
+
+        // 픽셀 값 디버깅출력
+        char debugOutput[100];
+        snprintf(debugOutput, sizeof(debugOutput), "Pixel Color at (%d, %d): (%d, %d, %d)\n",
+            _iPosX, _iPosY, static_cast<int>(_pPixel.r), static_cast<int>(_pPixel.g), static_cast<int>(_pPixel.b));
+        OutputDebugStringA(debugOutput);
 
         // 충돌 태그에 따라 충돌 여부를 판정
         if (_colTag == "StageColl") {
@@ -515,8 +566,8 @@ void CPlayer::Update()
     CheckPixelColor();
 
     Update_State();
-    Update_Move();
     Update_Animation();
+    Update_Move();
 
     bool ropeCollisionDetected = m_bRopeCollision;
     bool spaceKeyTapDetected = KEY_TAP(KEY::SPACE);
@@ -526,6 +577,7 @@ void CPlayer::Update()
     {
         // 로프의 위치로 플레이어 이동
         m_vPos.x = m_vRopePos.x;
+        m_eCurState = PLAYER_STATE::ROPE;
         GetGravity()->SetOnGround(true);
     }
 
@@ -567,6 +619,10 @@ void CPlayer::Render(HDC _dc)
     wchar_t strRightEnable[100];
     swprintf_s(strRightEnable, L"Right Enable: %s", m_bRightEnable ? L"true" : L"false");
     TextOut(_dc, 200, 60, strRightEnable, lstrlen(strRightEnable));
+
+    wchar_t strRopeEnable[100];
+    swprintf_s(strRopeEnable, L"Rope Enable: %s", m_bRopeCollision ? L"true" : L"false");
+    TextOut(_dc, 200, 100, strRopeEnable, lstrlen(strRopeEnable));
 
     // SetOnGround 상태 출력
     wchar_t strOnGround[100];

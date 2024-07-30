@@ -37,6 +37,8 @@ private:
 
     int         m_iHP = 2;
 
+    bool    bIsCollStage;
+    bool    bIsCollStageEnd;
     vector<Vec2> m_CollisionPoint;
 
     CColliderPixel* m_pPixelCollider;
@@ -75,6 +77,10 @@ public:
     virtual void OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
     virtual void OnCollisionExit(CCollider* _ColTag, CCollider* _pOther);
 
+    virtual void OnStageEndCollision(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnStageEndCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnStageEndCollisionExit(CCollider* _ColTag, CCollider* _pOther);
+
 public:
     void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
 
@@ -86,6 +92,9 @@ public:
     // 충돌처리 콜백
     void OnStageCollisionEnter();
     void OnStageCollisionExit();
+
+    void OnStageEndCollisionEnter();
+    void OnStageEndCollisionExit();
 
 public:
     void Update_Animation();

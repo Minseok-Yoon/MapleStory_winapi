@@ -16,6 +16,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 	{
 		pMon = new CMonster;
 		pMon->SetPos(_vPos);
+		pMon->CheckPixelColor();
 
 		tMonInfo info = {};
 		info.fAtt = 10.f;
