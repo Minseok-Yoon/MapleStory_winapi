@@ -9,6 +9,7 @@ public:
 
 private:
     int     m_iMoneyAmount;
+    CTexture* m_pTex;
 
 public:
     void SetMoneyAmount(int _iAmount) { m_iMoneyAmount = _iAmount; }

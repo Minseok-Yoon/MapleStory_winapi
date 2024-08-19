@@ -102,8 +102,21 @@ bool CAnimator::End() const
 	return false;
 }
 
+void CAnimator::Reset()
+{
+	if (m_pCurAnim != nullptr)
+	{
+		m_pCurAnim->SetFrame(0); // 애니메이션 프레임을 처음으로 되돌립니다.
+		m_pCurAnim->ResetTime(); // 애니메이션 재생 시간을 초기화합니다. (CAnimation 클래스에 이 함수가 필요)
+	}
+}
+
 void CAnimator::Update()
 {
+	if (m_pCurAnim != nullptr)
+	{
+		m_pCurAnim->Update();
+	}
 }
 
 void CAnimator::FinalUpdate()

@@ -16,8 +16,9 @@ private:
 
 public:
 	void SetOnGround(bool _bGround);
-
 	bool IsOnGround() const { return m_bGround; }
+
+	void Jump(float _fJumpForce);
 
 public:
 	void FinalUpdate();

@@ -23,7 +23,7 @@ private:
 	UINT			m_iID;			// 충돌체 고유한 ID 값
 	UINT			m_iCol;
 	
-	bool			m_bActive;
+	bool			m_bEnable;
 
 	int				m_iLayer;
 
@@ -51,7 +51,8 @@ public:
 
 	UINT GetID() { return m_iID; }
 
-	void SetActive(bool _bActive) { m_bActive = _bActive; }
+	void Enable(bool _bEnable) { m_bEnable = _bEnable; }
+	bool IsEnable() const { return m_bEnable; }
 
 	void SetLayer(int layer) { m_iLayer = layer; }
 	int GetLayer() const { return m_iLayer; }

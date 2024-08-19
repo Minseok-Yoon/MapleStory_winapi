@@ -95,10 +95,10 @@ void CScene_Stage01::Enter()
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 
 	// 몬스터 생성할 위치 리스트
-	std::vector<Vec2> monsterPositions = {
-		Vec2(350.f, 415.f),
-		Vec2(650.f, 360.f),
-		Vec2(150.f, 820.f),
+	vector<Vec2> monsterPositions = {
+		/*Vec2(350.f, 415.f),
+		Vec2(700.f, 360.f),
+		Vec2(150.f, 820.f)*/
 		Vec2(860.f, 540.f)
 	};
 
@@ -106,6 +106,7 @@ void CScene_Stage01::Enter()
 	for (const auto& pos : monsterPositions) {
 		CMonster* pMonster = CMonFactory::CreateMonster(MON_TYPE::NORMAL, pos);
 		pMonster->SetObjName(L"Monster");
+		pMonster->SetScale(Vec2(100.f, 100.f));
 		pMonster->SetPixelCollider(pBackGround->GetPixelCollider());
 		AddObject(pMonster, OBJECT_TYPE::MONSTER);
 	}

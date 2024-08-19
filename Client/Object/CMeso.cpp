@@ -2,11 +2,15 @@
 #include "CMeso.h"
 #include "../Module/SelectGDI.h"
 #include "../Component/CCollider.h"
+#include "../Resource/CTexture.h"
+#include "../Manager/CResourceManager.h"
 
 CMeso::CMeso() :
 	CItem(),
 	m_iMoneyAmount(0)
 {
+    m_pTex = CResourceManager::GetInst()->LoadTexture(L"Meso", L"texture\\Meso.bmp");
+
     AddCollider();
     auto moneyCollider = GetCollider().back();
     moneyCollider->SetColTag("Meso");
@@ -27,9 +31,18 @@ void CMeso::Render(HDC _dc)
 {
     CObject::ComponentRender(_dc);
 
+    int iWidth = (int)m_pTex->Width();
+    int iHeight = (int)m_pTex->Height();
+
     Vec2 vPos = GetPos();
     vPos = CCamera::GetInst()->GetRenderPos(vPos);
 
     // µ·ÀÇ ·»´õ¸µ ·ÎÁ÷ Ãß°¡
-    Ellipse(_dc, vPos.x - 10, vPos.y - 10, vPos.x + 10, vPos.y + 10);
+    TransparentBlt(_dc,
+        int(vPos.x - (float)(iWidth / 2)),
+        int(vPos.y - (float)(iHeight / 2)),
+        iWidth, iHeight,
+        m_pTex->GetDC(),
+        0, 0, iWidth, iHeight,
+        RGB(255, 255, 255));
 }

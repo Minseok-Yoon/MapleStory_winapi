@@ -136,6 +136,12 @@
     <Filter Include="Engine\07. Component\RigidBody">
       <UniqueIdentifier>{f7ee028a-859c-413c-9f0f-9f756be3f456}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\PixelCollision">
+      <UniqueIdentifier>{b5adae36-73f1-459b-a9b4-f68ad702a8d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\Dead">
+      <UniqueIdentifier>{0e1f0dce-f580-4520-a0f3-f94127e44f8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -279,6 +285,12 @@
     <ClInclude Include="Component\CRigidBody.h">
       <Filter>Engine\07. Component\RigidBody</Filter>
     </ClInclude>
+    <ClInclude Include="Object\CObjPixCollision.h">
+      <Filter>Engine\04. Object\PixelCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\CDeadState.h">
+      <Filter>Engine\08. Module\AI\State\Dead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -403,6 +415,12 @@
     </ClCompile>
     <ClCompile Include="Component\CRigidBody.cpp">
       <Filter>Engine\07. Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CObjPixCollision.cpp">
+      <Filter>Engine\04. Object\PixelCollision</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\CDeadState.cpp">
+      <Filter>Engine\08. Module\AI\State\Dead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

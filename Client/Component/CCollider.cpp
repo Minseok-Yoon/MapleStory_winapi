@@ -9,7 +9,7 @@ CCollider::CCollider()	:
 	m_pOwner(nullptr),
 	m_iID(g_iNextID++),
 	m_iCol(0),
-	m_bActive(true)
+	m_bEnable(true)
 {
 }
 
@@ -18,7 +18,7 @@ CCollider::CCollider(const CCollider& _origin)	:
 	m_vOffsetPos(_origin.m_vOffsetPos),
 	m_vScale(_origin.m_vScale),
 	m_iID(g_iNextID++),
-	m_bActive(_origin.m_bActive)
+	m_bEnable(_origin.m_bEnable)
 {
 }
 
@@ -54,6 +54,10 @@ void CCollider::OnCollisionExit(CCollider* _ColTag, CCollider* _pOther)
 
 void CCollider::FinalUpdate()
 {
+	// 충돌체가 비활성화된 경우, 업데이트 중단
+	if (!m_bEnable)
+		return;
+
 	// 충돌체의 소유자 오브젝트의 위치를 가져온다.
 	Vec2 vObjectPos = m_pOwner->GetPos();
 	m_vFinalPos = vObjectPos + m_vOffsetPos;
@@ -63,6 +67,10 @@ void CCollider::FinalUpdate()
 
 void CCollider::Render(HDC _dc)
 {
+	// 충돌체가 비활성화된 경우, 렌더링 중단
+	if (!m_bEnable)
+		return;
+
 	PEN_TYPE ePen = PEN_TYPE::GREEN;
 
 	if (m_iCol)

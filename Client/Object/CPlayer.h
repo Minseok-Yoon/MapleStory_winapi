@@ -2,6 +2,7 @@
 #include "CObject.h"
 
 class CGravity;
+class CMonster;
 
 class CPlayer :
     public CObject
@@ -15,7 +16,8 @@ private:
     PLAYER_STATE        m_ePrevState;   // 플레이어의 이전 상태
     int                 m_iDir;         // 플레이어의 방향
     int                 m_iPrevDir;     // 플레이어의 이전 방향
-    bool                m_bJump;
+    
+    bool                m_bJumpCycle;
 
     int                 m_iWallCollisionCount;
     bool                m_bLeftEnable;
@@ -26,22 +28,34 @@ private:
     wstring             m_strPortalTag; // 충돌한 포탈의 태그를 저장하는 변수
 
     // Attack관련
+    CCollider* m_pRightAttackCollider;
+    CCollider* m_pLeftAttackCollider;
+
     bool                m_bIsColMonster;
+    bool                m_bAttackCycle;
+    float m_fAttackDelayTime;  // 공격 후 대기 시간
+    float m_fElapsedTime;      // 경과 시간
 
     // Pixel
     PIXEL   m_CollisionPixelColor;
     bool                m_bStageCollision;
+    bool                m_bOnGround;
 
     // Rope 관련
     bool                m_bRopeCollision;
+    bool                m_bRopeCycle;       // 로프에 매달려 있는 상태
     Vec2                m_vRopePos;
 
     CTexture* m_pTex;
-    CColliderPixel* m_pPixelCollider;
     vector<Vec2> m_CollisionPoint;
+    CColliderPixel* m_pPixelCollider;
+    CMonster* m_pTargetMonster;
 
 public:
     void SetPixelCollider(CColliderPixel* _pPixelCollider) { m_pPixelCollider = _pPixelCollider; }
+
+public:
+    void InitColliders();
 
 public:
     void Update_State();
@@ -80,7 +94,7 @@ public:
     virtual void OnRopeCollision(CCollider* _pOther);
     virtual void OnRopeCollisionExit(CCollider* _pOther);
 
-    CGravity* GetGravity() { return m_pGravity; }
+    void PlayerAttack(CMonster* monster);
 
 public:
     virtual void Update();

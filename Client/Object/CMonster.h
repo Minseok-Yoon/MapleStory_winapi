@@ -20,9 +20,10 @@ class CMonster :
 {
     friend class CMonFactory;
     friend class CTraceState;
+    friend class CPlayer;
 
 public:
-    CMonster();
+    CMonster(const Vec2& initialPos);
     virtual ~CMonster();
 
 private:
@@ -35,11 +36,18 @@ private:
     int         m_iDir;
     int         m_iPrevDir;
 
-    int         m_iHP = 2;
+    int         m_iHP = 5;
+
+    bool        m_bDeadAniFin;
 
     bool    bIsCollStage;
+    bool    bIsCollWall;
     bool    bIsCollStageEnd;
     vector<Vec2> m_CollisionPoint;
+
+    int                 m_iWallCollisionCount;
+    bool                m_bLeftEnable;
+    bool                m_bRightEnable;
 
     CColliderPixel* m_pPixelCollider;
     tMonInfo    m_tMonInfo;
@@ -63,19 +71,29 @@ public:
 
     const   tMonInfo& GetInfo() { return m_tMonInfo; }
 
+    int     GetHP() { return m_iHP; }
+
     void    SetAI(AI* _AI);
 
 public:
     bool    IsCollidingWithStage() const { return !m_CollisionPoint.empty(); }
+    void    ReduceHP(int _damage);
 
 private:
     void    SetMonInfo(const tMonInfo& _Info) { m_tMonInfo = _Info; }
     void    DropItem();
 
+    void OnDeath(); // 몬스터가 죽었을 때 호출되는 함수
+    void CheckDeathAnimation();
+
 public:
     virtual void OnCollision(CCollider* _ColTag, CCollider* _pOther);
     virtual void OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
     virtual void OnCollisionExit(CCollider* _ColTag, CCollider* _pOther);
+
+    virtual void OnWallCollision(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnWallCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
+    virtual void OnWallCollisionExit(CCollider* _ColTag, CCollider* _pOther);
 
     virtual void OnStageEndCollision(CCollider* _ColTag, CCollider* _pOther);
     virtual void OnStageEndCollisionEnter(CCollider* _ColTag, CCollider* _pOther);
@@ -92,6 +110,9 @@ public:
     // 충돌처리 콜백
     void OnStageCollisionEnter();
     void OnStageCollisionExit();
+
+    void OnWallCollisionEnter();
+    void OnWallCollisionExit();
 
     void OnStageEndCollisionEnter();
     void OnStageEndCollisionExit();

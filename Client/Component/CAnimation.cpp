@@ -60,6 +60,14 @@ void CAnimation::CreateFrame(const vector<CTexture*>& _vecTextures, Vec2 _vLT,
 	}
 }
 
+void CAnimation::ResetTime()
+{
+	m_fAccTime = 0.f;  // 시간 누적 초기화
+	m_iCurFrm = 0;     // 첫 번째 프레임으로 설정
+	m_bFinish = false; // 재생 끝 상태 초기화
+	m_bEnd = false;    // 종료 상태 초기화
+}
+
 void CAnimation::Update()
 {
 	if (m_bFinish || m_bPause)
