@@ -14,6 +14,8 @@ public:
 private:
 	static UINT		g_iNextID;
 
+	static bool		g_bRenderColliders;  // 충돌체를 렌더링할지 여부를 나타내는 변수
+
 	CObject*		m_pOwner;		// Collider를 소유하고 있는 오브젝트
 	Vec2			m_vOffsetPos;	// 오브젝트로 부터 상대적인 위치
 	Vec2			m_vFinalPos;	// finalUpdate에서 매 프레임마다 계산
@@ -31,6 +33,9 @@ public:
 	string			m_strColTag;
 
 public:
+	static void ToggleRenderColliders() { g_bRenderColliders = !g_bRenderColliders; }
+	static bool IsRenderCollidersEnabled() { return g_bRenderColliders; }
+
 	void SetOwner(CObject* _pOwner) { m_pOwner = _pOwner; }
 	CObject* GetOwner() const { return m_pOwner; }
 

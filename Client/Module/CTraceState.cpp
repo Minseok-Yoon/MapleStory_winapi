@@ -31,7 +31,7 @@ void CTraceState::Update()
     vMonDir.Normalize();
 
     // 몬스터의 생명력 체크
-    if (pMonster->GetHP() <= 0)
+    if (pMonster->m_tMonInfo.fHP <= 0)
     {
         ChangeAIState(GetAI(), MON_STATE::DEAD);
         return; // 죽은 상태에서 더 이상 추적 로직을 실행하지 않음

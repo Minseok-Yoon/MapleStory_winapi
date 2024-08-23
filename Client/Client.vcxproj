@@ -171,6 +171,7 @@
     <ClInclude Include="Manager\CTimeManager.h" />
     <ClInclude Include="Manager\CUIManager.h" />
     <ClInclude Include="Module\AI.h" />
+    <ClInclude Include="Module\CDamagerManager.h" />
     <ClInclude Include="Module\CDeadState.h" />
     <ClInclude Include="Module\CIdleState.h" />
     <ClInclude Include="Module\CState.h" />
@@ -178,14 +179,11 @@
     <ClInclude Include="Module\SelectGDI.h" />
     <ClInclude Include="Object\CBackGround.h" />
     <ClInclude Include="Object\CBtnUI.h" />
-    <ClInclude Include="Object\CInventory.h" />
+    <ClInclude Include="Object\CDamage.h" />
     <ClInclude Include="Object\CItem.h" />
     <ClInclude Include="Object\CMeso.h" />
     <ClInclude Include="Object\CMonster.h" />
     <ClInclude Include="Object\CObject.h" />
-    <ClInclude Include="Object\CObjPixCollision.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Object\CPlayer.h" />
     <ClInclude Include="Object\CPortal.h" />
     <ClInclude Include="Object\CUI.h" />
@@ -226,6 +224,7 @@
     <ClCompile Include="Manager\CTimeManager.cpp" />
     <ClCompile Include="Manager\CUIManager.cpp" />
     <ClCompile Include="Module\AI.cpp" />
+    <ClCompile Include="Module\CDamagerManager.cpp" />
     <ClCompile Include="Module\CDeadState.cpp" />
     <ClCompile Include="Module\CIdleState.cpp" />
     <ClCompile Include="Module\CState.cpp" />
@@ -233,14 +232,11 @@
     <ClCompile Include="Module\SelectGDI.cpp" />
     <ClCompile Include="Object\CBackGround.cpp" />
     <ClCompile Include="Object\CBtnUI.cpp" />
-    <ClCompile Include="Object\CInventory.cpp" />
+    <ClCompile Include="Object\CDamage.cpp" />
     <ClCompile Include="Object\CItem.cpp" />
     <ClCompile Include="Object\CMeso.cpp" />
     <ClCompile Include="Object\CMonster.cpp" />
     <ClCompile Include="Object\CObject.cpp" />
-    <ClCompile Include="Object\CObjPixCollision.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Object\CPlayer.cpp" />
     <ClCompile Include="Object\CPortal.cpp" />
     <ClCompile Include="Object\CUI.cpp" />

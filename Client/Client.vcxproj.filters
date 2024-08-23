@@ -136,11 +136,14 @@
     <Filter Include="Engine\07. Component\RigidBody">
       <UniqueIdentifier>{f7ee028a-859c-413c-9f0f-9f756be3f456}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\04. Object\PixelCollision">
-      <UniqueIdentifier>{b5adae36-73f1-459b-a9b4-f68ad702a8d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\08. Module\AI\State\Dead">
       <UniqueIdentifier>{0e1f0dce-f580-4520-a0f3-f94127e44f8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\DamagerManager">
+      <UniqueIdentifier>{c9916f93-9977-471d-80a8-bc3ff9f6cbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Damage">
+      <UniqueIdentifier>{431a8546-48ce-4634-bb0e-15f324989fc1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -279,17 +282,17 @@
     <ClInclude Include="Object\CMeso.h">
       <Filter>Engine\04. Object\Item\Meso</Filter>
     </ClInclude>
-    <ClInclude Include="Object\CInventory.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Component\CRigidBody.h">
       <Filter>Engine\07. Component\RigidBody</Filter>
     </ClInclude>
-    <ClInclude Include="Object\CObjPixCollision.h">
-      <Filter>Engine\04. Object\PixelCollision</Filter>
-    </ClInclude>
     <ClInclude Include="Module\CDeadState.h">
       <Filter>Engine\08. Module\AI\State\Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\CDamagerManager.h">
+      <Filter>Engine\03. Manager\DamagerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\CDamage.h">
+      <Filter>Engine\04. Object\Damage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -410,17 +413,17 @@
     <ClCompile Include="Object\CMeso.cpp">
       <Filter>Engine\04. Object\Item\Meso</Filter>
     </ClCompile>
-    <ClCompile Include="Object\CInventory.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Component\CRigidBody.cpp">
       <Filter>Engine\07. Component\RigidBody</Filter>
     </ClCompile>
-    <ClCompile Include="Object\CObjPixCollision.cpp">
-      <Filter>Engine\04. Object\PixelCollision</Filter>
-    </ClCompile>
     <ClCompile Include="Module\CDeadState.cpp">
       <Filter>Engine\08. Module\AI\State\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\CDamagerManager.cpp">
+      <Filter>Engine\03. Manager\DamagerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\CDamage.cpp">
+      <Filter>Engine\04. Object\Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

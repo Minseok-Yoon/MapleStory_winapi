@@ -4,6 +4,7 @@
 #include "../Module/SelectGDI.h"
 
 UINT CCollider::g_iNextID = 0;
+bool CCollider::g_bRenderColliders = false;
 
 CCollider::CCollider()	:
 	m_pOwner(nullptr),
@@ -67,8 +68,8 @@ void CCollider::FinalUpdate()
 
 void CCollider::Render(HDC _dc)
 {
-	// 충돌체가 비활성화된 경우, 렌더링 중단
-	if (!m_bEnable)
+	// 충돌체가 비활성화된 경우, 또는 렌더링이 비활성화된 경우 렌더링 중단
+	if (!m_bEnable || !g_bRenderColliders)
 		return;
 
 	PEN_TYPE ePen = PEN_TYPE::GREEN;

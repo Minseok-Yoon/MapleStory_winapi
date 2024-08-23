@@ -8,6 +8,7 @@
 #include "../Manager/CTimeManager.h"
 #include "../Manager/CSceneManager.h"
 #include "../Manager/CResourceManager.h"
+#include "../Module/CDamagerManager.h"
 #include "../Scene/CScene.h"
 #include "../Resource/CTexture.h"
 #include "../Component/CCollider.h"
@@ -33,6 +34,8 @@ CPlayer::CPlayer() :
     m_fAttackDelayTime(1.2f),  // 공격 후 0.2초 동안 대기
     m_fElapsedTime(0.0f)
 {
+    srand(static_cast<unsigned int>(time(nullptr)));
+
     InitColliders();
     PlayerAnimationClip();
     CreateRigidBody();
@@ -627,7 +630,26 @@ void CPlayer::PlayerAttack(CMonster* monster)
 {
     if (monster)
     {
-        monster->ReduceHP(1); // 몬스터의 HP를 1 감소
+        bool isCriticalHit = (rand() % 10) < 2;  // 20% 확률로 크리티컬 히트
+
+        int attackDamage;
+        if (isCriticalHit)
+        {
+            // 크리티컬 데미지: 30 ~ 200
+            attackDamage = 30 + rand() % 171;  // rand() % 171은 0 ~ 170 범위의 값 생성
+        }
+        else
+        {
+            // 일반 데미지: 0 ~ 30
+            attackDamage = rand() % 31;  // rand() % 31은 0 ~ 30 범위의 값 생성
+        }
+
+        // 몬스터 위치에서 데미지를 출력
+        Vec2 monsterPos = monster->GetPos();
+        CDamagerManager::GetInst()->CreateDamage(attackDamage, monsterPos, isCriticalHit);
+
+        // 몬스터에 데미지를 입힘
+        monster->ReduceHP(attackDamage);
     }
 }
 
@@ -676,34 +698,34 @@ void CPlayer::Render(HDC _dc)
     Vec2 vPos = GetPos();
     vPos = CCamera::GetInst()->GetRenderPos(vPos);
 
-    wchar_t strState[100];
-    swprintf_s(strState, L"Player State: %d", static_cast<int>(m_eCurState));
-    TextOut(_dc, 200, 20, strState, lstrlen(strState));
+    //wchar_t strState[100];
+    //swprintf_s(strState, L"Player State: %d", static_cast<int>(m_eCurState));
+    //TextOut(_dc, 200, 20, strState, lstrlen(strState));
 
-    wchar_t strLeftEnable[100];
-    swprintf_s(strLeftEnable, L"Left Enable: %s", m_bLeftEnable ? L"true" : L"false");
-    TextOut(_dc, 200, 40, strLeftEnable, lstrlen(strLeftEnable));
+    //wchar_t strLeftEnable[100];
+    //swprintf_s(strLeftEnable, L"Left Enable: %s", m_bLeftEnable ? L"true" : L"false");
+    //TextOut(_dc, 200, 40, strLeftEnable, lstrlen(strLeftEnable));
 
-    wchar_t strRightEnable[100];
-    swprintf_s(strRightEnable, L"Right Enable: %s", m_bRightEnable ? L"true" : L"false");
-    TextOut(_dc, 200, 60, strRightEnable, lstrlen(strRightEnable));
+    //wchar_t strRightEnable[100];
+    //swprintf_s(strRightEnable, L"Right Enable: %s", m_bRightEnable ? L"true" : L"false");
+    //TextOut(_dc, 200, 60, strRightEnable, lstrlen(strRightEnable));
 
-    wchar_t strRopeEnable[100];
-    swprintf_s(strRopeEnable, L"Rope Enable: %s", m_bRopeCollision ? L"true" : L"false");
-    TextOut(_dc, 200, 100, strRopeEnable, lstrlen(strRopeEnable));
+    //wchar_t strRopeEnable[100];
+    //swprintf_s(strRopeEnable, L"Rope Enable: %s", m_bRopeCollision ? L"true" : L"false");
+    //TextOut(_dc, 200, 100, strRopeEnable, lstrlen(strRopeEnable));
 
-    // SetOnGround 상태 출력
-    wchar_t strOnGround[100];
-    swprintf_s(strOnGround, L"On Ground: %s", GetGravity()->IsOnGround() ? L"true" : L"false");
-    TextOut(_dc, 200, 80, strOnGround, lstrlen(strOnGround));
+    //// SetOnGround 상태 출력
+    //wchar_t strOnGround[100];
+    //swprintf_s(strOnGround, L"On Ground: %s", GetGravity()->IsOnGround() ? L"true" : L"false");
+    //TextOut(_dc, 200, 80, strOnGround, lstrlen(strOnGround));
 
-    wchar_t strJumpCycle[100];
-    swprintf_s(strJumpCycle, L"JumpCycle: %s", m_bJumpCycle ? L"true" : L"false");
-    TextOut(_dc, 200, 120, strJumpCycle, lstrlen(strJumpCycle));
+    //wchar_t strJumpCycle[100];
+    //swprintf_s(strJumpCycle, L"JumpCycle: %s", m_bJumpCycle ? L"true" : L"false");
+    //TextOut(_dc, 200, 120, strJumpCycle, lstrlen(strJumpCycle));
 
-    wchar_t strAttackCycle[100];
-    swprintf_s(strAttackCycle, L"AttackCycle: %s", m_bAttackCycle ? L"true" : L"false");
-    TextOut(_dc, 200, 140, strAttackCycle, lstrlen(strAttackCycle));
+    //wchar_t strAttackCycle[100];
+    //swprintf_s(strAttackCycle, L"AttackCycle: %s", m_bAttackCycle ? L"true" : L"false");
+    //TextOut(_dc, 200, 140, strAttackCycle, lstrlen(strAttackCycle));
 
     // 충돌 위치를 시각화
     HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));

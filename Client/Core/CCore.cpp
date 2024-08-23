@@ -9,6 +9,7 @@
 #include "../Manager/CUIManager.h"
 #include "../Manager/CColliderManager.h"
 #include "../Manager/CCamera.h"
+#include "../Module/CDamagerManager.h"
 #include "../Module/SelectGDI.h"
 #include "../Resource/CTexture.h"
 
@@ -55,6 +56,7 @@ int CCore::Init(HWND _hWnd, POINT _ptResolution)
 	CKeyManager::GetInst()->Init();
 	CCamera::GetInst()->Init();
 	CSceneManager::GetInst()->Init();
+	CDamagerManager::GetInst()->Init();
 
 	return S_OK;
 }
@@ -68,6 +70,7 @@ void CCore::progress()
 	CKeyManager::GetInst()->Update();
 	CCamera::GetInst()->Update();
 	CSceneManager::GetInst()->Update();
+	CDamagerManager::GetInst()->Update();
 
 	CColliderManager::GetInst()->Update();
 
@@ -78,6 +81,7 @@ void CCore::progress()
 	// Rendering
 	CSceneManager::GetInst()->Render(m_pMemTex->GetDC());
 	CCamera::GetInst()->Render(m_pMemTex->GetDC());
+	CDamagerManager::GetInst()->Render(m_pMemTex->GetDC());
 
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y,
 		m_pMemTex->GetDC(), 0, 0, SRCCOPY);

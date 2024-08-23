@@ -63,6 +63,7 @@ enum class OBJECT_TYPE
 	MONSTER,
 	RECTANGLE,
 	PIXEL,
+	DAMAGE,
 
 	UI = 31,
 	END = 32,

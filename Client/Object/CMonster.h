@@ -36,8 +36,6 @@ private:
     int         m_iDir;
     int         m_iPrevDir;
 
-    int         m_iHP = 5;
-
     bool        m_bDeadAniFin;
 
     bool    bIsCollStage;
@@ -70,8 +68,6 @@ public:
     Vec2    GetCenterPos() { return m_vCenterPos; }
 
     const   tMonInfo& GetInfo() { return m_tMonInfo; }
-
-    int     GetHP() { return m_iHP; }
 
     void    SetAI(AI* _AI);
 

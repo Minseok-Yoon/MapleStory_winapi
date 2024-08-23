@@ -58,9 +58,8 @@ void CMonster::SetAI(AI* _AI)
 
 void CMonster::ReduceHP(int _damage)
 {
-    m_iHP -= _damage;
-    if (m_iHP <= 0 && m_eCurMonState != MON_STATE::DEAD)
-    {
+    m_tMonInfo.fHP -= _damage;
+    if (m_tMonInfo.fHP <= 0 && m_eCurMonState != MON_STATE::DEAD) {
         OnDeath(); // 체력이 0 이하일 때 사망 처리
     }
 }

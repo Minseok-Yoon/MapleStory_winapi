@@ -31,6 +31,11 @@ void CScene_Stage01::Update()
 		ChangeScene(SCENE_TYPE::STAGE_02);
 	}
 
+	if(KEY_TAP(KEY::F1))
+	{
+		CCollider::ToggleRenderColliders();
+	}
+
 	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
 	{
 		const vector<CObject*>& vecObj = GetGroupObject((OBJECT_TYPE)i);
@@ -96,9 +101,9 @@ void CScene_Stage01::Enter()
 
 	// 몬스터 생성할 위치 리스트
 	vector<Vec2> monsterPositions = {
-		/*Vec2(350.f, 415.f),
+		Vec2(350.f, 415.f),
 		Vec2(700.f, 360.f),
-		Vec2(150.f, 820.f)*/
+		Vec2(150.f, 820.f),
 		Vec2(860.f, 540.f)
 	};
 

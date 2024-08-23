@@ -40,7 +40,6 @@ void CPortal::PortalAnimationClip()
 	CreateAnimator();
 
 	AddAnimationClip(L"Stand", L"texture\\Portal\\%d.bmp", 8, 1.f, 88.f, 217.f);
-
 }
 
 void CPortal::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, int iFrameMax, float fAnimationLimitTime, float fFrameSizeX, float fFrameSizeY)

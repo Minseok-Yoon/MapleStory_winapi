@@ -26,6 +26,7 @@ enum class KEY
 
 	LBTN,
 	RBTN,
+	F1,
 
 	LAST,
 };
