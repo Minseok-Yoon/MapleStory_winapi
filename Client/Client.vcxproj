@@ -194,7 +194,6 @@
     <ClInclude Include="Resource\CTexture.h" />
     <ClInclude Include="Scene\CScene.h" />
     <ClInclude Include="Scene\CScene_Stage01.h" />
-    <ClInclude Include="Scene\CScene_Stage02.h" />
     <ClInclude Include="Scene\CScene_Start.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="targetver.h" />
@@ -245,7 +244,6 @@
     <ClCompile Include="Resource\CTexture.cpp" />
     <ClCompile Include="Scene\CScene.cpp" />
     <ClCompile Include="Scene\CScene_Stage01.cpp" />
-    <ClCompile Include="Scene\CScene_Stage02.cpp" />
     <ClCompile Include="Scene\CScene_Start.cpp" />
   </ItemGroup>
   <ItemGroup>

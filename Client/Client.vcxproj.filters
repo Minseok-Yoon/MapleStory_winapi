@@ -115,9 +115,6 @@
     <Filter Include="Engine\08. Module\AI\State\Trace">
       <UniqueIdentifier>{8cec3e2e-38c3-4a00-8482-159906e73d9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\05. Scene\Scene_Stage02">
-      <UniqueIdentifier>{07f3f465-b316-4068-b3c0-2ee02d3aa985}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\04. Object\Ground">
       <UniqueIdentifier>{0c987e52-bf75-4ed0-90f4-54f059f48fd4}</UniqueIdentifier>
     </Filter>
@@ -144,6 +141,9 @@
     </Filter>
     <Filter Include="Engine\04. Object\Damage">
       <UniqueIdentifier>{431a8546-48ce-4634-bb0e-15f324989fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CDamageManager">
+      <UniqueIdentifier>{310c85ea-3141-40d2-8717-c91bb7b663d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -260,9 +260,6 @@
     </ClInclude>
     <ClInclude Include="Module\CTraceState.h">
       <Filter>Engine\08. Module\AI\State\Trace</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\CScene_Stage02.h">
-      <Filter>Engine\05. Scene\Scene_Stage02</Filter>
     </ClInclude>
     <ClInclude Include="Object\CBackGround.h">
       <Filter>Engine\04. Object\Ground</Filter>
@@ -391,9 +388,6 @@
     </ClCompile>
     <ClCompile Include="Module\CTraceState.cpp">
       <Filter>Engine\08. Module\AI\State\Trace</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\CScene_Stage02.cpp">
-      <Filter>Engine\05. Scene\Scene_Stage02</Filter>
     </ClCompile>
     <ClCompile Include="Object\CBackGround.cpp">
       <Filter>Engine\04. Object\Ground</Filter>
