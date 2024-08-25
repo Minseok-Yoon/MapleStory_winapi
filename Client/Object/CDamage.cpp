@@ -1,6 +1,6 @@
 #include "../pch.h"
 #include "CDamage.h"
-#include "../Module/CDamagerManager.h"
+#include "../Manager/CDamageManager.h"
 #include "../Resource/CTexture.h"
 
 CDamage::CDamage()	:
@@ -15,19 +15,19 @@ CDamage::~CDamage()
 {
 }
 
-void CDamage::Init(int iDamage, Vec2& vPosition, bool bIsCri, CDamagerManager* pManager, int i)
+void CDamage::Init(int _iDamage, Vec2& _vPosition, bool _bIsCri, CDamageManager* _pManager, int i)
 {
     fDelay = i * 0.1f;
     bEnable = false;
     fExistTime = 0.f;
 
-    string strDamage = to_string(iDamage);
+    string strDamage = to_string(_iDamage);
     iLength = strDamage.length();
-    Vec2 tFirstPos = Vec2(vPosition.x - (float)iLength * 20.f / 2.f, vPosition.y - 100.f - (i - 1) * 26.f);
+    Vec2 tFirstPos = Vec2(_vPosition.x - (float)iLength * 20.f / 2.f, _vPosition.y - 100.f - (i - 1) * 26.f);
 
     for (int j = 0; j < iLength; ++j)
     {
-        CTexture* pTex = pManager->FindNumTexture(strDamage.substr(j, 1), bIsCri);
+        CTexture* pTex = _pManager->FindNumTexture(strDamage.substr(j, 1), _bIsCri);
         if (!pTex) printf("Failed to find texture for digit: %c\n", strDamage[j]);
         m_vecDamage.push_back(pTex);
         Vec2 tPos = Vec2(tFirstPos.x + j * 20.f, tFirstPos.y + 8.f - (float)(j % 2));

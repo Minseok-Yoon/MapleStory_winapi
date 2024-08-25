@@ -1,5 +1,5 @@
 #include "../pch.h"
-#include "CDamagerManager.h"
+#include "CDamageManager.h"
 #include "../Manager/CTimeManager.h"
 #include "../Manager/CResourceManager.h"
 #include "../Resource/CTexture.h"
@@ -7,21 +7,21 @@
 #include "../Object/CObject.h"
 #include "../Object/CDamage.h"
 
-CDamagerManager::CDamagerManager()
+CDamageManager::CDamageManager()
 {
 }
 
-CDamagerManager::~CDamagerManager()
+CDamageManager::~CDamageManager()
 {
 }
 
-CTexture* CDamagerManager::FindNumTexture(string strNum, bool bIsCri)
+CTexture* CDamageManager::FindNumTexture(string _strNum, bool _bIsCri)
 {
     map<string, CTexture*>::iterator iter;
 
-    if (bIsCri)
+    if (_bIsCri)
     {
-        iter = m_mapCriTexture.find(strNum);
+        iter = m_mapCriTexture.find(_strNum);
         if (iter == m_mapCriTexture.end())
         {
             return NULL;
@@ -30,7 +30,7 @@ CTexture* CDamagerManager::FindNumTexture(string strNum, bool bIsCri)
     }
     else
     {
-        iter = m_mapNoCriTexture.find(strNum);
+        iter = m_mapNoCriTexture.find(_strNum);
         if (iter == m_mapNoCriTexture.end())
         {
             return NULL;
@@ -40,26 +40,26 @@ CTexture* CDamagerManager::FindNumTexture(string strNum, bool bIsCri)
     }
 }
 
-void CDamagerManager::CreateDamage(int iDamage, Vec2& vPosition, bool bIsCri, int i)
+void CDamageManager::CreateDamage(int _iDamage, Vec2& _position, bool _bIsCri, int i)
 {
     CDamage* pDamage = new CDamage();
     pDamage->fDelay = i * 0.1f;
     pDamage->bEnable = true;
     pDamage->fExistTime = 0.f;
 
-    string strDamage = to_string(iDamage);
+    string strDamage = to_string(_iDamage);
     pDamage->iLength = strDamage.length();
 
-    Vec2 tFirstPos = Vec2(vPosition.x - (float)pDamage->iLength * 20.f / 2.f,
-        vPosition.y - 300.f - (i - 1) * 26.f);
+    Vec2 tFirstPos = Vec2(_position.x - (float)pDamage->iLength * 20.f / 2.f,
+        _position.y - 300.f - (i - 1) * 26.f);
 
-    CTexture* pFirstTex = FindNumTexture(strDamage.substr(0, 1), bIsCri);
+    CTexture* pFirstTex = FindNumTexture(strDamage.substr(0, 1), _bIsCri);
     pDamage->m_vecDamage.push_back(pFirstTex);
     pDamage->m_vecPos.push_back(tFirstPos);
 
     for (int i = 1; i < pDamage->iLength; i++)
     {
-        CTexture* pTex = FindNumTexture(strDamage.substr(i, 1), bIsCri);
+        CTexture* pTex = FindNumTexture(strDamage.substr(i, 1), _bIsCri);
         pDamage->m_vecDamage.push_back(pTex);
         Vec2 tPos = Vec2(tFirstPos.x + i * 20.f, tFirstPos.y + 8.f - (float)(i % 2));
         pDamage->m_vecPos.push_back(tPos);
@@ -68,7 +68,7 @@ void CDamagerManager::CreateDamage(int iDamage, Vec2& vPosition, bool bIsCri, in
     m_vDamageInit.push_back(pDamage);
 }
 
-bool CDamagerManager::Init()
+bool CDamageManager::Init()
 {
     // NoCri 텍스처 로드
     m_mapNoCriTexture["0"] = CResourceManager::GetInst()->LoadTexture(L"NoCri0", L"texture\\Damage\\NoCri\\0.bmp");
@@ -97,7 +97,7 @@ bool CDamagerManager::Init()
     if (!m_mapNoCriTexture["0"]) OutputDebugStringA("Failed to load Cri0 texture\n");
     m_mapCriTexture["1"] = CResourceManager::GetInst()->LoadTexture(L"Cri1", L"texture\\Damage\\Cri\\1.bmp");
     if (!m_mapNoCriTexture["1"]) OutputDebugStringA("Failed to load Cri1 texture\n");
-    m_mapCriTexture["2"] = CResourceManager::GetInst()->LoadTexture(L"Cri2", L"texture\\Damage\\Cri\\2.bmp"); 
+    m_mapCriTexture["2"] = CResourceManager::GetInst()->LoadTexture(L"Cri2", L"texture\\Damage\\Cri\\2.bmp");
     if (!m_mapNoCriTexture["2"]) OutputDebugStringA("Failed to load Cri2 texture\n");
     m_mapCriTexture["3"] = CResourceManager::GetInst()->LoadTexture(L"Cri3", L"texture\\Damage\\Cri\\3.bmp");
     if (!m_mapNoCriTexture["3"]) OutputDebugStringA("Failed to load Cri3 texture\n");
@@ -117,7 +117,7 @@ bool CDamagerManager::Init()
     return true;
 }
 
-void CDamagerManager::Update()
+void CDamageManager::Update()
 {
     for (auto iter = m_vDamageInit.begin(); iter != m_vDamageInit.end();) {
         CDamage* pDamage = *iter;
@@ -138,7 +138,7 @@ void CDamagerManager::Update()
     }
 }
 
-void CDamagerManager::Render(HDC _dc)
+void CDamageManager::Render(HDC _dc)
 {
     for (auto pDamage : m_vDamageInit) {
         if (pDamage->bEnable) {

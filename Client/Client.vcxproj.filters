@@ -136,9 +136,6 @@
     <Filter Include="Engine\08. Module\AI\State\Dead">
       <UniqueIdentifier>{0e1f0dce-f580-4520-a0f3-f94127e44f8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\03. Manager\DamagerManager">
-      <UniqueIdentifier>{c9916f93-9977-471d-80a8-bc3ff9f6cbea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\04. Object\Damage">
       <UniqueIdentifier>{431a8546-48ce-4634-bb0e-15f324989fc1}</UniqueIdentifier>
     </Filter>
@@ -285,11 +282,11 @@
     <ClInclude Include="Module\CDeadState.h">
       <Filter>Engine\08. Module\AI\State\Dead</Filter>
     </ClInclude>
-    <ClInclude Include="Module\CDamagerManager.h">
-      <Filter>Engine\03. Manager\DamagerManager</Filter>
-    </ClInclude>
     <ClInclude Include="Object\CDamage.h">
       <Filter>Engine\04. Object\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager\CDamageManager.h">
+      <Filter>Engine\03. Manager\CDamageManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -413,11 +410,11 @@
     <ClCompile Include="Module\CDeadState.cpp">
       <Filter>Engine\08. Module\AI\State\Dead</Filter>
     </ClCompile>
-    <ClCompile Include="Module\CDamagerManager.cpp">
-      <Filter>Engine\03. Manager\DamagerManager</Filter>
-    </ClCompile>
     <ClCompile Include="Object\CDamage.cpp">
       <Filter>Engine\04. Object\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager\CDamageManager.cpp">
+      <Filter>Engine\03. Manager\CDamageManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

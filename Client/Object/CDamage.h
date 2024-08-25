@@ -1,7 +1,7 @@
 #pragma once
 #include "CObject.h"
 
-class CDamagerManager;
+class CDamageManager;
 
 class CDamage :
     public CObject
@@ -19,7 +19,7 @@ public:
     float fExistTime; // 존재한 시간
 
 public:
-    void Init(int iDamage, Vec2& vPosition, bool bIsCri, CDamagerManager* pManager, int i = 1);
+    void Init(int _iDamage, Vec2& _vPosition, bool _bIsCri, CDamageManager* _pManager, int i = 1);
     virtual void Update();
     virtual void Render(HDC _dc);
 

@@ -163,6 +163,7 @@
     <ClInclude Include="func.h" />
     <ClInclude Include="Manager\CCamera.h" />
     <ClInclude Include="Manager\CColliderManager.h" />
+    <ClInclude Include="Manager\CDamageManager.h" />
     <ClInclude Include="Manager\CEventManager.h" />
     <ClInclude Include="Manager\CKeyManager.h" />
     <ClInclude Include="Manager\CPathManager.h" />
@@ -171,7 +172,6 @@
     <ClInclude Include="Manager\CTimeManager.h" />
     <ClInclude Include="Manager\CUIManager.h" />
     <ClInclude Include="Module\AI.h" />
-    <ClInclude Include="Module\CDamagerManager.h" />
     <ClInclude Include="Module\CDeadState.h" />
     <ClInclude Include="Module\CIdleState.h" />
     <ClInclude Include="Module\CState.h" />
@@ -215,6 +215,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manager\CCamera.cpp" />
     <ClCompile Include="Manager\CColliderManager.cpp" />
+    <ClCompile Include="Manager\CDamageManager.cpp" />
     <ClCompile Include="Manager\CEventManager.cpp" />
     <ClCompile Include="Manager\CKeyManager.cpp" />
     <ClCompile Include="Manager\CPathManager.cpp" />
@@ -223,7 +224,6 @@
     <ClCompile Include="Manager\CTimeManager.cpp" />
     <ClCompile Include="Manager\CUIManager.cpp" />
     <ClCompile Include="Module\AI.cpp" />
-    <ClCompile Include="Module\CDamagerManager.cpp" />
     <ClCompile Include="Module\CDeadState.cpp" />
     <ClCompile Include="Module\CIdleState.cpp" />
     <ClCompile Include="Module\CState.cpp" />

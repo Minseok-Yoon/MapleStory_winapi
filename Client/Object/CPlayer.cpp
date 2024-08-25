@@ -8,7 +8,7 @@
 #include "../Manager/CTimeManager.h"
 #include "../Manager/CSceneManager.h"
 #include "../Manager/CResourceManager.h"
-#include "../Module/CDamagerManager.h"
+#include "../Manager/CDamageManager.h"
 #include "../Scene/CScene.h"
 #include "../Resource/CTexture.h"
 #include "../Component/CCollider.h"
@@ -646,7 +646,7 @@ void CPlayer::PlayerAttack(CMonster* monster)
 
         // 몬스터 위치에서 데미지를 출력
         Vec2 monsterPos = monster->GetPos();
-        CDamagerManager::GetInst()->CreateDamage(attackDamage, monsterPos, isCriticalHit);
+        CDamageManager::GetInst()->CreateDamage(attackDamage, monsterPos, isCriticalHit);
 
         // 몬스터에 데미지를 입힘
         monster->ReduceHP(attackDamage);
