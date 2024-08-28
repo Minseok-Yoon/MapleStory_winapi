@@ -131,16 +131,6 @@ void CMonster::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
         SetPos(vPos);
         GetGravity()->SetOnGround(true);
     }
-
-    /*if (_pOther->GetColTag() == "Attack")
-    {
-        m_iHP -= 1;
-        if (m_iHP <= 0 && m_eCurMonState != MON_STATE::DEAD)
-        {
-            m_eCurMonState = MON_STATE::DEAD;
-            OnDeath();
-        }
-    }*/
 }
 
 void CMonster::OnCollision(CCollider* _ColTag, CCollider* _pOther)
@@ -416,15 +406,15 @@ void CMonster::MonsterAnimationClip()
 {
     CreateAnimator();
 
-    AddAnimationClip(L"StandRight", L"texture\\Monster\\Idle\\Right\\%d.bmp", 2, 0.7f, 63.f, 58.f);
-    AddAnimationClip(L"StandLeft", L"texture\\Monster\\Idle\\Left\\%d.bmp", 2, 0.7f, 63.f, 58.f);
-    AddAnimationClip(L"WalkRight", L"texture\\Monster\\Walk\\Right\\%d.bmp", 3, 0.6f, 64.f, 64.f);
-    AddAnimationClip(L"WalkLeft", L"texture\\Monster\\Walk\\Left\\%d.bmp", 3, 0.6f, 64.f, 64.f);
-    AddAnimationClip(L"DeadRight", L"texture\\Monster\\Dead\\Right\\%d.bmp", 3, 0.5f, 61.f, 59.f);
-    AddAnimationClip(L"DeadLeft", L"texture\\Monster\\Dead\\Left\\%d.bmp", 3, 0.5f, 61.f, 59.f);
+    AddAnimationClip(L"StandRight", L"texture\\Monster\\Idle\\Right\\%d.bmp", 2, 0.7f, 63.f, 58.f, 0.f, 0.f);
+    AddAnimationClip(L"StandLeft", L"texture\\Monster\\Idle\\Left\\%d.bmp", 2, 0.7f, 63.f, 58.f, 0.f, 0.f);
+    AddAnimationClip(L"WalkRight", L"texture\\Monster\\Walk\\Right\\%d.bmp", 3, 0.6f, 64.f, 64.f, 0.f, 0.f);
+    AddAnimationClip(L"WalkLeft", L"texture\\Monster\\Walk\\Left\\%d.bmp", 3, 0.6f, 64.f, 64.f, 0.f, 0.f);
+    AddAnimationClip(L"DeadRight", L"texture\\Monster\\Dead\\Right\\%d.bmp", 3, 0.5f, 61.f, 59.f, 0.f, 0.f);
+    AddAnimationClip(L"DeadLeft", L"texture\\Monster\\Dead\\Left\\%d.bmp", 3, 0.5f, 61.f, 59.f, 0.f, 0.f);
 }
 
-void CMonster::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, int iFrameMax, float fAnimationLimitTime, float fFrameSizeX, float fFrameSizeY)
+void CMonster::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, int iFrameMax, float fAnimationLimitTime, float fFrameSizeX, float fFrameSizeY, float _fOffsetX, float _fOffsetY)
 {
     vector<wstring> vecFile;
 
@@ -435,7 +425,7 @@ void CMonster::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath,
         vecFile.push_back(strFileName);
     }
 
-    GetAnimator()->CreateFrameAnimation(strKey, vecFile, Vec2(0.f, 0.f), Vec2(fFrameSizeX, fFrameSizeY), fAnimationLimitTime);
+    GetAnimator()->CreateFrameAnimation(strKey, vecFile, Vec2(0.f, 0.f), Vec2(fFrameSizeX, fFrameSizeY), fAnimationLimitTime, Vec2(_fOffsetX, _fOffsetY));
 }
 
 void CMonster::Update()

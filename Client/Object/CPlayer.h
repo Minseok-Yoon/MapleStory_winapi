@@ -16,7 +16,8 @@ private:
     PLAYER_STATE        m_ePrevState;   // 플레이어의 이전 상태
     int                 m_iDir;         // 플레이어의 방향
     int                 m_iPrevDir;     // 플레이어의 이전 방향
-    
+    Vec2                m_vOffsetPos;
+
     bool                m_bJumpCycle;
 
     int                 m_iWallCollisionCount;
@@ -26,6 +27,7 @@ private:
     // Portal관련
     bool                m_bIsColPortal;
     wstring             m_strPortalTag; // 충돌한 포탈의 태그를 저장하는 변수
+    SCENE_TYPE          m_eTargetScene;
 
     // Attack관련
     CCollider* m_pRightAttackCollider;
@@ -63,7 +65,7 @@ public:
     void Update_Animation();
     void PlayerAnimationClip();
 
-    void AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath, int _iFrameMax, float _fAnimationLimitTime, float _fFrameSizeX, float _fFrameSizeY);
+    void AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath, int _iFrameMax, float _fAnimationLimitTime, float _fFrameSizeX, float _fFrameSizeY, float _fOffsetX, float _fOffsetY);
 
     vector<Vec2>GetCollisionPoints(const Vec2& _vPos, int _iPlayerWidthHalf, int _iPlayerHeightHalf);
     bool CheckPixelCollision(int _iPosX, int _iPosY, PIXEL& _pPixel, const string& _colTag);

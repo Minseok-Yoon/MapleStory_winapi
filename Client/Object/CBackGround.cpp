@@ -19,13 +19,30 @@ CBackGround::~CBackGround()
 	delete m_pPixelCollider;
 }
 
-void CBackGround::Init(const wstring& _strKey)
+void CBackGround::Init(SCENE_TYPE eSceneType)
 {
-	m_pPixelCollider = new CColliderPixel();
-	if (!m_pPixelCollider->SetPixelInfo(L"texture\\MainLoad.bmp"))
-	{
-		OutputDebugStringA("Failed to set pixel collider.\n");
-	}
+    m_pPixelCollider = new CColliderPixel();
+
+    switch (eSceneType)
+    {
+    case SCENE_TYPE::STAGE_01:
+        if (!m_pPixelCollider->SetPixelInfo(L"texture\\MainLoad.bmp"))
+        {
+            OutputDebugStringA("Failed to set pixel collider for Stage 01.\n");
+        }
+        break;
+
+    case SCENE_TYPE::STAGE_02:
+        if (!m_pPixelCollider->SetPixelInfo(L"texture\\Stage1Load.bmp"))
+        {
+            OutputDebugStringA("Failed to set pixel collider for Stage 02.\n");
+        }
+        break;
+
+    default:
+        OutputDebugStringA("Unknown scene type.\n");
+        break;
+    }
 }
 
 void CBackGround::Update()

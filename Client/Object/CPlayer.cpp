@@ -32,7 +32,8 @@ CPlayer::CPlayer() :
     m_bIsColMonster(false),
     m_bStageCollision(false),
     m_fAttackDelayTime(1.2f),  // 공격 후 0.2초 동안 대기
-    m_fElapsedTime(0.0f)
+    m_fElapsedTime(0.0f),
+    m_vOffsetPos(Vec2(0.f, 0.f))
 {
     srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -74,18 +75,20 @@ void CPlayer::PlayerAnimationClip()
 {
     CreateAnimator();
 
-    AddAnimationClip(L"StandRight", L"texture\\Player\\Idle\\Right\\%d.bmp", 3, 0.7f, 54.f, 65.f);
-    AddAnimationClip(L"StandLeft", L"texture\\Player\\Idle\\Left\\%d.bmp", 3, 0.7f, 54.f, 65.f);
-    AddAnimationClip(L"WalkRight", L"texture\\Player\\Walk\\Right\\%d.bmp", 4, 0.3f, 54.f, 65.f);
-    AddAnimationClip(L"WalkLeft", L"texture\\Player\\Walk\\Left\\%d.bmp", 4, 0.3f, 54.f, 65.f);
-    AddAnimationClip(L"JumpRight", L"texture\\Player\\Jump\\Right\\%d.bmp", 1, 1.3f, 54.f, 65.f);
-    AddAnimationClip(L"JumpLeft", L"texture\\Player\\Jump\\Left\\%d.bmp", 1, 1.3f, 54.f, 65.f);
-    AddAnimationClip(L"Rope", L"texture\\Player\\Rope\\%d.bmp", 2, 0.9f, 54.f, 65.f);
-    AddAnimationClip(L"AttackRight", L"texture\\Player\\Attack\\Right\\%d.bmp", 3, 0.2f, 55.f, 65.f);
-    AddAnimationClip(L"AttackLeft", L"texture\\Player\\Attack\\Left\\%d.bmp", 3, 0.2f, 55.f, 65.f);
+    AddAnimationClip(L"StandRight", L"texture\\Player\\Idle\\Right\\%d.bmp", 3, 0.7f, 54.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"StandLeft", L"texture\\Player\\Idle\\Left\\%d.bmp", 3, 0.7f, 54.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"WalkRight", L"texture\\Player\\Walk\\Right\\%d.bmp", 4, 0.3f, 54.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"WalkLeft", L"texture\\Player\\Walk\\Left\\%d.bmp", 4, 0.3f, 54.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"JumpRight", L"texture\\Player\\Jump\\Right\\%d.bmp", 1, 1.3f, 54.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"JumpLeft", L"texture\\Player\\Jump\\Left\\%d.bmp", 1, 1.3f, 54.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"Rope", L"texture\\Player\\Rope\\%d.bmp", 2, 0.9f, 54.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"AttackRight", L"texture\\Player\\Attack\\Right\\%d.bmp", 3, 0.2f, 55.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"AttackLeft", L"texture\\Player\\Attack\\Left\\%d.bmp", 3, 0.2f, 55.f, 65.f, 0.f, 0.f);
+    AddAnimationClip(L"ProneLeft", L"texture\\Player\\Prone\\Left\\%d.bmp", 1, 0.2f, 63.f, 37.f, 0.f, 18.f);
+    AddAnimationClip(L"ProneRight", L"texture\\Player\\Prone\\Right\\%d.bmp", 1, 0.2f, 63.f, 37.f, 0.f, 18.f);
 }
 
-void CPlayer::AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath, int _iFrameMax, float _fAnimationLimitTime, float _fFrameSizeX, float _fFrameSizeY)
+void CPlayer::AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath, int _iFrameMax, float _fAnimationLimitTime, float _fFrameSizeX, float _fFrameSizeY, float _fOffsetX, float _fOffsetY)
 {
     vector<wstring> vecFile;
 
@@ -96,7 +99,7 @@ void CPlayer::AddAnimationClip(const wstring& _strKey, const wchar_t* _pFilePath
         vecFile.push_back(strFileName);
     }
 
-    GetAnimator()->CreateFrameAnimation(_strKey, vecFile, Vec2(0.f, 0.f), Vec2(_fFrameSizeX, _fFrameSizeY), _fAnimationLimitTime);
+    GetAnimator()->CreateFrameAnimation(_strKey, vecFile, Vec2(0.f, 0.f), Vec2(_fFrameSizeX, _fFrameSizeY), _fAnimationLimitTime, Vec2(_fOffsetX, _fOffsetY));
 }
 
 void CPlayer::Update_State()
@@ -104,27 +107,25 @@ void CPlayer::Update_State()
     // 공격 입력 처리
     if (KEY_TAP(KEY::X))
     {
-        if (m_eCurState != PLAYER_STATE::ATTACK) // 이전 상태와 동일하지 않은 경우만 변경
+        if (m_eCurState != PLAYER_STATE::ATTACK)
         {
             m_eCurState = PLAYER_STATE::ATTACK;
             m_bAttackCycle = true;
-            m_fElapsedTime = 0.0f;  // 경과 시간 초기화
-            Update_Animation();  // 공격 애니메이션 시작
+            m_fElapsedTime = 0.0f;
+            Update_Animation();
 
-            // 방향에 따른 충돌체 활성화/비활성화
-            if (m_iDir == -1) // 왼쪽을 보고 있을 때
+            if (m_iDir == -1)
             {
-                m_pLeftAttackCollider->Enable(true);   // 왼쪽 충돌체 활성화
-                m_pRightAttackCollider->Enable(false); // 오른쪽 충돌체 비활성화
+                m_pLeftAttackCollider->Enable(true);
+                m_pRightAttackCollider->Enable(false);
                 GetAnimator()->FindAnimation(L"AttackLeft")->SetFrame(0);
             }
-            else // 오른쪽을 보고 있을 때
+            else
             {
-                m_pLeftAttackCollider->Enable(false);  // 왼쪽 충돌체 비활성화
-                m_pRightAttackCollider->Enable(true);  // 오른쪽 충돌체 활성화
+                m_pLeftAttackCollider->Enable(false);
+                m_pRightAttackCollider->Enable(true);
                 GetAnimator()->FindAnimation(L"AttackRight")->SetFrame(0);
             }
-
             return;
         }
         return;
@@ -133,26 +134,24 @@ void CPlayer::Update_State()
     // 공격 상태 처리
     if (m_eCurState == PLAYER_STATE::ATTACK)
     {
-        m_fElapsedTime += fDeltaTime;  // 경과 시간 누적
+        m_fElapsedTime += fDeltaTime;
 
-        // 애니메이션이 끝나고 딜레이가 지난 경우에만 상태를 IDLE로 전환
         if (GetAnimator()->End() && m_fElapsedTime >= m_fAttackDelayTime)
         {
-            m_bAttackCycle = false;  // 공격 사이클 종료
-            m_pRightAttackCollider->Enable(false); // 오른쪽 충돌체 비활성화
-            m_pLeftAttackCollider->Enable(false);  // 왼쪽 충돌체 비활성화
+            m_bAttackCycle = false;
+            m_pRightAttackCollider->Enable(false);
+            m_pLeftAttackCollider->Enable(false);
 
-            // 충돌한 몬스터가 있는지 확인하고, 공격이 성공했는지 확인
             if (m_pTargetMonster != nullptr)
             {
-                PlayerAttack(m_pTargetMonster);  // 공격 처리
-                m_pTargetMonster = nullptr;  // 처리 후 타겟 초기화
+                PlayerAttack(m_pTargetMonster);
+                m_pTargetMonster = nullptr;
             }
 
-            m_eCurState = PLAYER_STATE::IDLE;  // 상태를 IDLE로 전환
-            Update_Animation();  // 애니메이션을 IDLE로 갱신
+            m_eCurState = PLAYER_STATE::IDLE;
+            Update_Animation();
         }
-        return; // 공격 상태에서는 다른 상태로 전환하지 않음
+        return;
     }
 
     // 점프 상태 처리
@@ -163,7 +162,7 @@ void CPlayer::Update_State()
         {
             m_bJumpCycle = false;
             m_eCurState = PLAYER_STATE::IDLE;
-            Update_Animation();  // 애니메이션 갱신
+            Update_Animation();
         }
         return;
     }
@@ -188,6 +187,19 @@ void CPlayer::Update_State()
         return;
     }
 
+    // Prone 상태 처리
+    if (KEY_TAP(KEY::DOWN) || KEY_HOLD(KEY::DOWN))
+    {
+        m_eCurState = PLAYER_STATE::PRONE;
+        return;
+    }
+
+    if (m_eCurState == PLAYER_STATE::PRONE && KEY_AWAY(KEY::DOWN))
+    {
+        m_eCurState = PLAYER_STATE::IDLE;
+        return;
+    }
+
     // 걷기 상태 처리
     if (KEY_TAP(KEY::LEFT) || KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::RIGHT) || KEY_HOLD(KEY::RIGHT))
     {
@@ -196,13 +208,14 @@ void CPlayer::Update_State()
     }
 
     // 기본 상태(IDLE)로 전환
-    if (m_eCurState != PLAYER_STATE::JUMP && m_eCurState != PLAYER_STATE::ATTACK && m_eCurState != PLAYER_STATE::ROPE)
+    if (m_eCurState != PLAYER_STATE::JUMP && m_eCurState != PLAYER_STATE::ATTACK
+        && m_eCurState != PLAYER_STATE::ROPE && m_eCurState != PLAYER_STATE::PRONE)
     {
         m_bJumpCycle = false;
         m_bAttackCycle = false;
         m_bRopeCycle = false;
         m_eCurState = PLAYER_STATE::IDLE;
-        Update_Animation();  // 애니메이션 갱신
+        Update_Animation();
     }
 }
 
@@ -300,6 +313,17 @@ void CPlayer::Update_Animation()
         else
         {
             GetAnimator()->Play(L"AttackRight", false);
+        }
+        break;
+
+    case PLAYER_STATE::PRONE:
+        if (m_iDir == -1)
+        {
+            GetAnimator()->Play(L"ProneLeft", true);
+        }
+        else
+        {
+            GetAnimator()->Play(L"ProneRight", true);
         }
         break;
 
@@ -478,18 +502,26 @@ void CPlayer::OnRopeCollisionExit()
 
 void CPlayer::OnCollisionEnter(CCollider* _ColTag, CCollider* _pOther)
 {
-    if (_ColTag->GetColTag() == "Player" && _pOther->GetColTag() == "Portal 0")
+    if (_ColTag->GetColTag() == "Player")
     {
-        m_bIsColPortal = true;
-    }
-
-    if (_pOther->GetColTag() == "Player" && _pOther->GetColTag() == "Monster")
-    {
-        m_bIsColMonster = true;
-    }
-
-    if (_ColTag->GetColTag() == "Player" && _pOther->GetColTag() == "Item")
-    {
+        if (_pOther->GetColTag() == "Portal 0")
+        {
+            m_bIsColPortal = true;
+            m_eTargetScene = SCENE_TYPE::STAGE_02;
+        }
+        else if (_pOther->GetColTag() == "Portal 1")
+        {
+            m_bIsColPortal = true;
+            m_eTargetScene = SCENE_TYPE::STAGE_01;
+        }
+        else if (_pOther->GetColTag() == "Monster")
+        {
+            m_bIsColMonster = true;
+        }
+        else if (_pOther->GetColTag() == "Item")
+        {
+            // 아이템 충돌 처리
+        }
     }
 }
 
@@ -507,6 +539,12 @@ void CPlayer::OnCollision(CCollider* _ColTag, CCollider* _pOther)
 void CPlayer::OnCollisionExit(CCollider* _ColTag, CCollider* _pOther)
 {
     if (_pOther->GetColTag() == "Portal 0")
+    {
+        m_bIsColPortal = false;
+        m_strPortalTag.clear();
+    }
+
+    if (_pOther->GetColTag() == "Portal 1")
     {
         m_bIsColPortal = false;
         m_strPortalTag.clear();
@@ -684,7 +722,8 @@ void CPlayer::Update()
     if (m_bIsColPortal && KEY_TAP(KEY::UP))
     {
         // Portal과 충돌 중이고 위쪽 방향키가 눌린 경우 ChangeScene 호출
-        ChangeScene(SCENE_TYPE::STAGE_02);
+        ChangeScene(m_eTargetScene);
+        m_bIsColPortal = false;  // 충돌 상태 초기화
     }
 
     m_ePrevState = m_eCurState;
@@ -697,35 +736,6 @@ void CPlayer::Render(HDC _dc)
 
     Vec2 vPos = GetPos();
     vPos = CCamera::GetInst()->GetRenderPos(vPos);
-
-    //wchar_t strState[100];
-    //swprintf_s(strState, L"Player State: %d", static_cast<int>(m_eCurState));
-    //TextOut(_dc, 200, 20, strState, lstrlen(strState));
-
-    //wchar_t strLeftEnable[100];
-    //swprintf_s(strLeftEnable, L"Left Enable: %s", m_bLeftEnable ? L"true" : L"false");
-    //TextOut(_dc, 200, 40, strLeftEnable, lstrlen(strLeftEnable));
-
-    //wchar_t strRightEnable[100];
-    //swprintf_s(strRightEnable, L"Right Enable: %s", m_bRightEnable ? L"true" : L"false");
-    //TextOut(_dc, 200, 60, strRightEnable, lstrlen(strRightEnable));
-
-    //wchar_t strRopeEnable[100];
-    //swprintf_s(strRopeEnable, L"Rope Enable: %s", m_bRopeCollision ? L"true" : L"false");
-    //TextOut(_dc, 200, 100, strRopeEnable, lstrlen(strRopeEnable));
-
-    //// SetOnGround 상태 출력
-    //wchar_t strOnGround[100];
-    //swprintf_s(strOnGround, L"On Ground: %s", GetGravity()->IsOnGround() ? L"true" : L"false");
-    //TextOut(_dc, 200, 80, strOnGround, lstrlen(strOnGround));
-
-    //wchar_t strJumpCycle[100];
-    //swprintf_s(strJumpCycle, L"JumpCycle: %s", m_bJumpCycle ? L"true" : L"false");
-    //TextOut(_dc, 200, 120, strJumpCycle, lstrlen(strJumpCycle));
-
-    //wchar_t strAttackCycle[100];
-    //swprintf_s(strAttackCycle, L"AttackCycle: %s", m_bAttackCycle ? L"true" : L"false");
-    //TextOut(_dc, 200, 140, strAttackCycle, lstrlen(strAttackCycle));
 
     // 충돌 위치를 시각화
     HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));

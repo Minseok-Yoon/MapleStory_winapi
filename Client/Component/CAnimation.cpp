@@ -42,7 +42,7 @@ void CAnimation::CreateAtlas(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize,
 
 // Frame 애니메이션. 여러 개의 텍스처를 순차적으로 사용하는 방식.
 void CAnimation::CreateFrame(const vector<CTexture*>& _vecTextures, Vec2 _vLT, 
-	Vec2 _vSliceSize, float _fDuration)
+	Vec2 _vSliceSize, float _fDuration, Vec2 _vOffset)
 {
 	m_vecFrm.clear();
 
@@ -55,6 +55,7 @@ void CAnimation::CreateFrame(const vector<CTexture*>& _vecTextures, Vec2 _vLT,
 		frm.fDuration = _fDuration;
 		frm.vSlice = _vSliceSize;
 		frm.vLT = _vLT;
+		frm.vOffSet = _vOffset;
 
 		m_vecFrm.push_back(frm);
 	}

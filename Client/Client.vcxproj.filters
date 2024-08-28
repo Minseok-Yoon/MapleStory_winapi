@@ -142,6 +142,9 @@
     <Filter Include="Engine\03. Manager\CDamageManager">
       <UniqueIdentifier>{310c85ea-3141-40d2-8717-c91bb7b663d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Stage02">
+      <UniqueIdentifier>{aba53b6a-3663-458b-94a2-2e1d4dea6606}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -288,6 +291,9 @@
     <ClInclude Include="Manager\CDamageManager.h">
       <Filter>Engine\03. Manager\CDamageManager</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\CScene_Stage02.h">
+      <Filter>Engine\05. Scene\Scene_Stage02</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -415,6 +421,9 @@
     </ClCompile>
     <ClCompile Include="Manager\CDamageManager.cpp">
       <Filter>Engine\03. Manager\CDamageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CScene_Stage02.cpp">
+      <Filter>Engine\05. Scene\Scene_Stage02</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

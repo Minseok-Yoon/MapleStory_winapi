@@ -38,6 +38,8 @@ int g_arrVK[(int)KEY::LAST] =
 	VK_LBUTTON,
 	VK_RBUTTON,
 	VK_F1,
+	VK_F2,
+	VK_F3,
 };
 
 CKeyManager::CKeyManager()

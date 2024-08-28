@@ -40,6 +40,10 @@ void CSceneManager::Init()
 	m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	m_arrScene[(UINT)SCENE_TYPE::STAGE_01]->SetSceneName(L"Scene Stage01");
 
+	//Scene_Stage01 생성
+	m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
+	m_arrScene[(UINT)SCENE_TYPE::STAGE_02]->SetSceneName(L"Scene Stage02");
+
 	// 현재 씬을 START씬으로 지정하고, 현재 씬에 진입한다.
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
 	m_pCurScene->Enter();

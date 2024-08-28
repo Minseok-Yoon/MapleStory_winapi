@@ -55,7 +55,7 @@ private:
 
 public:
 	void CreateAtlas(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount);
-	void CreateFrame(const vector<CTexture*>& _vecTextures, Vec2 _vLT, Vec2 _vSliceSize, float _fDuration);
+	void CreateFrame(const vector<CTexture*>& _vecTextures, Vec2 _vLT, Vec2 _vSliceSize, float _fDuration, Vec2 _vOffset);
 	void ResetTime();
 
 	void Update();

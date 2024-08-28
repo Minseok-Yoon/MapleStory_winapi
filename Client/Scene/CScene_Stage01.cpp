@@ -36,6 +36,26 @@ void CScene_Stage01::Update()
 		CCollider::ToggleRenderColliders();
 	}
 
+	if (KEY_TAP(KEY::F2))
+	{
+		// 새 텍스처로 배경 교체
+		CTexture* newTexture = CResourceManager::GetInst()->LoadTexture(L"InGameBackGround1", L"texture\\MainLoad.bmp");
+		if (newTexture)
+		{
+			m_pBackGround = newTexture;
+		}
+	}
+
+	if (KEY_TAP(KEY::F3))
+	{
+		// 새 텍스처로 배경 교체
+		CTexture* newTexture = CResourceManager::GetInst()->LoadTexture(L"InGameBackGround", L"texture\\Main.bmp");
+		if (newTexture)
+		{
+			m_pBackGround = newTexture;
+		}
+	}
+
 	for (UINT i = 0; i < (UINT)OBJECT_TYPE::END; ++i)
 	{
 		const vector<CObject*>& vecObj = GetGroupObject((OBJECT_TYPE)i);
@@ -74,14 +94,13 @@ void CScene_Stage01::Enter()
 {
 	// 배경 객체 초기화
 	CBackGround* pBackGround = new CBackGround();
-	pBackGround->Init(L"InGameBackGround");
+	pBackGround->Init(SCENE_TYPE::STAGE_01);
 	AddObject(pBackGround, OBJECT_TYPE::PIXEL_BACKGROUND);
 
 	// 포탈 객체 초기화
-	CPortal* pPortal = new CPortal();
+	CPortal* pPortal = new CPortal("Portal 0");
 	pPortal->SetObjName(L"Portal");
-	pPortal->SetPortalTag(L"Portal 0");
-	pPortal->SetPos(Vec2(150.f, 820.f));
+	pPortal->SetPos(Vec2(150.f, 830.f));
 	AddObject(pPortal, OBJECT_TYPE::PORTAL);
 
 	// 플레이어 객체 초기화
@@ -102,9 +121,7 @@ void CScene_Stage01::Enter()
 	// 몬스터 생성할 위치 리스트
 	vector<Vec2> monsterPositions = {
 		Vec2(350.f, 415.f),
-		Vec2(700.f, 360.f),
 		Vec2(150.f, 820.f),
-		Vec2(860.f, 540.f)
 	};
 
 	// 몬스터 생성 반복문
@@ -132,4 +149,7 @@ void CScene_Stage01::Enter()
 void CScene_Stage01::Exit()
 {
 	DeleteAll();
+
+	// 충돌 관리 상태 초기화
+	CColliderManager::GetInst()->Reset();
 }

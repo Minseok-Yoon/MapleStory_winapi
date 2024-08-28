@@ -38,15 +38,5 @@ void CItem::Render(HDC _dc)
         auto itemCollider = GetCollider().back();
         Vec2 colPos = itemCollider->GetPos();
         Vec2 colRenderPos = CCamera::GetInst()->GetRenderPos(colPos);
-
-        // Collider 위치 디버그 출력
-        wchar_t debugText[256];
-        swprintf_s(debugText, L"Collider Pos: (%f, %f)\n", colRenderPos.x, colRenderPos.y);
-        TextOut(_dc, 500, 10, debugText, wcslen(debugText));
     }
-
-    // Ellipse 위치 디버그 출력
-    wchar_t debugText2[256];
-    swprintf_s(debugText2, L"Ellipse Pos: (%f, %f)\n", vPos.x, vPos.y);
-    TextOut(_dc, 500, 30, debugText2, wcslen(debugText2));
 }

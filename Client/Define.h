@@ -96,6 +96,7 @@ enum class PLAYER_STATE
 	ATTACK,
 	JUMP,
 	ROPE,
+	PRONE,
 	DEAD,
 };
 

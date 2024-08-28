@@ -18,7 +18,7 @@ public:
     CColliderPixel* GetPixelCollider() const { return m_pPixelCollider; }
 
 public:
-    void Init(const wstring& _strKey);
+    void Init(SCENE_TYPE eSceneType);
     virtual void Update();
     virtual void Render(HDC _dc);
 

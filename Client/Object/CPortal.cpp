@@ -7,12 +7,13 @@
 
 int CPortal::m_iPortalCount = 0;
 
-CPortal::CPortal()
+CPortal::CPortal(const string& portalTag) :
+	m_strPortalTag(portalTag)
 {
 	AddCollider();
 	GetCollider().back()->SetOffsetPos(Vec2{ 0.f, 0.f });
 	GetCollider().back()->SetScale(Vec2{ 20.f, 20.f });
-	GetCollider().back()->SetColTag("Portal 0");
+	GetCollider().back()->SetColTag(portalTag); // 인자로 받은 태그 설정
 
     PortalAnimationClip();
 }
@@ -28,21 +29,26 @@ CPortal::~CPortal()
 
 void CPortal::StagePortals()
 {
-	m_stagePortals["Stage1"] = {
-		{{150.f, 820.f}, "Stage2"}
+	m_stagePortals["Main"] = {
+		{{150.f, 820.f}, "Stage1"}
 	};
 
-	m_portalToStageMap["Portal 0"] = "Stage2";
+	m_stagePortals["Stage1"] = {
+		{{1280.f, 485.f}, "Main"}
+	};
+
+	m_portalToStageMap["Portal 0"] = "Stage1";
+	m_portalToStageMap["Portal 1"] = "Main";
 }
 
 void CPortal::PortalAnimationClip()
 {
 	CreateAnimator();
 
-	AddAnimationClip(L"Stand", L"texture\\Portal\\%d.bmp", 8, 1.f, 88.f, 217.f);
+	AddAnimationClip(L"Stand", L"texture\\Portal\\%d.bmp", 8, 1.f, 88.f, 217.f, 0.f, 0.f);
 }
 
-void CPortal::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, int iFrameMax, float fAnimationLimitTime, float fFrameSizeX, float fFrameSizeY)
+void CPortal::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, int iFrameMax, float fAnimationLimitTime, float fFrameSizeX, float fFrameSizeY, float _fOffsetX, float _fOffsetY)
 {
     vector<wstring> vecFile;
 
@@ -53,7 +59,7 @@ void CPortal::AddAnimationClip(const wstring& strKey, const wchar_t* pFilePath, 
         vecFile.push_back(strFileName);
     }
 
-    GetAnimator()->CreateFrameAnimation(strKey, vecFile, Vec2(0.f, 0.f), Vec2(fFrameSizeX, fFrameSizeY), fAnimationLimitTime);
+    GetAnimator()->CreateFrameAnimation(strKey, vecFile, Vec2(0.f, 0.f), Vec2(fFrameSizeX, fFrameSizeY), fAnimationLimitTime, Vec2(_fOffsetX, _fOffsetY));
 }
 
 void CPortal::Update()

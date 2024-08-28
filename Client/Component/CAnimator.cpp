@@ -34,7 +34,7 @@ void CAnimator::CreateAnimation(const wstring& _strName, CTexture* _pTex,
 }
 
 void CAnimator::CreateFrameAnimation(const wstring& _strName, const vector<wstring>& _vecFileNames,
-	Vec2 _vLT, Vec2 _vSlicesize, float _fDuration)
+	Vec2 _vLT, Vec2 _vSlicesize, float _fDuration, Vec2 _vOffset)
 {
 	// 이미 같은 이름의 애니메이션이 존재하는지 확인
 	CAnimation* pAnim = FindAnimation(_strName);
@@ -54,7 +54,7 @@ void CAnimator::CreateFrameAnimation(const wstring& _strName, const vector<wstri
 	}
 
 	// 로드된 텍스처 벡터를 사용하여 프레임 애니메이션 생성
-	pAnim->CreateFrame(vecTextures, _vLT, _vSlicesize, _fDuration);
+	pAnim->CreateFrame(vecTextures, _vLT, _vSlicesize, _fDuration, _vOffset);
 
 	// 애니메이션 맵에 추가
 	m_mapAnim.insert(make_pair(_strName, pAnim));

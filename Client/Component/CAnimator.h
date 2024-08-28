@@ -27,7 +27,7 @@ public:
 
 public:
 	void CreateAnimation(const wstring& _strName, CTexture* _pTex, Vec2 _vLT, Vec2 _vSlicesize, Vec2 _vStep, float _fDuration, UINT _iFrameCount);
-	void CreateFrameAnimation(const wstring& _strName, const vector<wstring>& _vecFileNames, Vec2 _vLT, Vec2 _vSlicesize, float _fDuration);
+	void CreateFrameAnimation(const wstring& _strName, const vector<wstring>& _vecFileNames, Vec2 _vLT, Vec2 _vSlicesize, float _fDuration, Vec2 _vOffset);
 
 	CAnimation* FindAnimation(const wstring& _strName);
 
